@@ -494,7 +494,7 @@ function buildExperience(){
   const nick=D.nick||D.f;
   // Footer
   const ft=document.getElementById('footerFname');
-  if(ft)ft.textContent=nick;
+  if(ft)ft.textContent=D.f||'Priya';
 
   // Envelope
   document.getElementById('env-fname').textContent=nick;
