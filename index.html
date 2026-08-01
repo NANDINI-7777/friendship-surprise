@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5, viewport-fit=cover"/>
+  <title>Friendship Surprise Creator 💌</title>
+  <meta name="description" content="Create a personalized interactive friendship surprise experience with photos, a video, and a letter."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@400;500;600;700;800&family=Caveat:wght@500;600;700&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --primary:#e84393; --primary-dark:#d63384; --primary-light:#fd79a8;
+      --accent:#f9ca24; --accent2:#6c5ce7; --teal:#00cec9;
+      --font-d:'DM Serif Display',Georgia,serif;
+      --font-b:'Inter',system-ui,sans-serif;
+      --font-h:'Caveat',cursive;
+    }
+    *,*::before,*::after{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+    html,body{margin:0;padding:0;min-height:100vh;}
+    body{
+      font-family:var(--font-b);
+      background:linear-gradient(135deg,#0a0612,#0f0a1a 40%,#0d1b2a);
+      color:rgba(255,255,255,0.88);
+      -webkit-font-smoothing:antialiased;
+      overflow-x:hidden; text-align:center;
+    }
+    body::before{
+      content:'';position:fixed;inset:0;z-index:0;
+      background:radial-gradient(ellipse 80% 60% at 20% 30%,rgba(232,67,147,.07),transparent),
+        radial-gradient(ellipse 60% 50% at 80% 70%,rgba(108,92,231,.06),transparent);
+      pointer-events:none;animation:meshFloat 20s ease-in-out infinite alternate;
+    }
+    @keyframes meshFloat{0%{opacity:1}100%{opacity:.5}}
+
+    /* Sparkles */
+    .sparkle-field{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:1;overflow:hidden;}
+    .sp{position:absolute;bottom:-10px;width:var(--sz);height:var(--sz);border-radius:50%;opacity:0;animation:floatSp linear infinite;}
+    .sp-g{background:radial-gradient(circle,#ffd700,rgba(255,215,0,0));box-shadow:0 0 8px rgba(255,215,0,.8);}
+    .sp-p{background:radial-gradient(circle,#fd79a8,rgba(253,121,168,0));transform:rotate(45deg);border-radius:2px;}
+    .sp-w{background:radial-gradient(circle,#fff,rgba(255,255,255,0));box-shadow:0 0 10px rgba(255,255,255,.9);}
+    .sp-v{background:radial-gradient(circle,rgba(108,92,231,.9),rgba(108,92,231,0));filter:blur(1px);}
+    @keyframes floatSp{
+      0%{transform:translateX(0) translateY(5vh) scale(0);opacity:0}
+      8%{opacity:var(--pk);transform:translateX(calc(var(--dr)*.1)) translateY(-8vh) scale(1)}
+      50%{transform:translateX(var(--dr)) translateY(-50vh) scale(1.2);opacity:var(--pk)}
+      92%{opacity:var(--pk,.3);transform:translateX(calc(var(--dr)*-.5)) translateY(-95vh) scale(.8)}
+      100%{transform:translateX(calc(var(--dr)*-1)) translateY(-105vh) scale(0);opacity:0}
+    }
+    /* Confetti */
+    .confetti-box{position:fixed;inset:0;pointer-events:none;z-index:999;overflow:hidden;}
+    .cf{position:absolute;top:-20px;opacity:0;animation:cfFall linear forwards;}
+    @keyframes cfFall{0%{opacity:1;transform:translateY(-20px) rotate(0)}100%{opacity:0;transform:translateY(110vh) rotate(720deg)}}
+
+    /* Pages */
+    .page{min-height:100vh;width:100%;display:none;flex-direction:column;justify-content:center;align-items:center;padding:30px 20px 60px;position:relative;z-index:10;}
+    .page.active{display:flex;animation:pageIn .4s ease both;}
+    @keyframes pageIn{from{opacity:0;transform:translateX(24px)}to{opacity:1;transform:translateX(0)}}
+
+    /* Landing */
+    .landing{max-width:760px;width:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:24px;}
+    .badge{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);border-radius:50px;padding:8px 20px;font-size:.78rem;font-weight:600;color:rgba(255,255,255,.7);letter-spacing:.08em;text-transform:uppercase;}
+    .badge-dot{width:6px;height:6px;border-radius:50%;background:#f9ca24;animation:dotPulse 2s ease-in-out infinite;}
+    @keyframes dotPulse{0%,100%{opacity:1}50%{opacity:.3}}
+    .hero-title{font-family:var(--font-d);font-size:clamp(2.1rem,5.5vw,3.6rem);font-weight:400;line-height:1.16;letter-spacing:-.015em;color:rgba(255,255,255,.94);margin:0 0 14px;padding:0 8px;}
+    .shimmer{
+      background:linear-gradient(90deg,var(--primary) 0%,var(--accent) 20%,var(--primary) 40%,var(--primary-light) 60%,var(--accent) 80%,var(--primary) 100%);
+      background-size:200% auto;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+      animation:shimmerTxt 3s linear infinite;font-style:italic;
+    }
+    @keyframes shimmerTxt{0%{background-position:0%}100%{background-position:200%}}
+    .hero-sub{font-size:1.02rem;color:rgba(255,255,255,.45);margin:0 auto;line-height:1.65;max-width:540px;}
+    .pills{display:grid;grid-template-columns:repeat(3,minmax(140px,auto));justify-content:center;align-items:center;gap:12px;max-width:560px;width:100%;margin:4px auto;}
+    .pill{display:flex;align-items:center;justify-content:center;gap:8px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.11);border-radius:50px;padding:10px 18px;font-size:.85rem;font-weight:500;color:rgba(255,255,255,.65);transition:all .25s ease;white-space:nowrap;}
+    .pill:hover{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.25);transform:translateY(-2px);}
+    .cta{background:linear-gradient(135deg,var(--primary),var(--primary-dark));color:#fff;border:none;padding:17px 46px;font-size:1.1rem;font-weight:700;font-family:var(--font-b);border-radius:50px;cursor:pointer;transition:all .3s cubic-bezier(.22,1,.36,1);box-shadow:0 12px 30px rgba(232,67,147,.3);position:relative;overflow:hidden;margin-top:6px;animation:ctaPulse 2s ease-in-out 1.5s infinite;}
+    .cta::before{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.22),transparent);animation:sweep 3s ease-in-out infinite;}
+    @keyframes sweep{0%{left:-100%}50%{left:100%}100%{left:100%}}
+    @keyframes ctaPulse{0%,100%{box-shadow:0 12px 24px rgba(232,67,147,.25)}50%{box-shadow:0 18px 38px rgba(232,67,147,.5)}}
+    .cta:hover{transform:translateY(-3px) scale(1.04);}
+
+    /* Footer */
+    .site-footer{position:absolute;bottom:18px;left:0;right:0;text-align:center;z-index:20;}
+    .footer-text{font-size:.83rem;color:rgba(255,255,255,.5);font-family:var(--font-b);letter-spacing:.03em;margin:0 0 5px;}
+    .footer-heart{display:inline-block;animation:dotPulse 1.8s ease-in-out infinite;}
+    .footer-name{color:var(--primary-light);font-weight:600;}
+    .footer-links{display:flex;align-items:center;justify-content:center;gap:14px;margin-top:3px;}
+    .footer-link{color:rgba(255,255,255,.45);font-size:.78rem;text-decoration:none;transition:all .2s;display:inline-flex;align-items:center;gap:4px;}
+    .footer-link:hover{color:var(--primary-light);transform:translateY(-1px);}
+
+    /* Card wrapper */
+    .form-wrap{max-width:500px;width:100%;}
+    .card{background:rgba(255,255,255,.97);border:1px solid rgba(255,255,255,.7);box-shadow:0 20px 50px rgba(112,68,80,.2);border-radius:28px;padding:28px 22px 24px;position:relative;z-index:10;}
+    .card-hd{text-align:center;margin-bottom:20px;}
+    .card-step{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.16em;color:var(--primary);margin:0 0 5px;}
+    .card-title{font-family:var(--font-d);font-size:clamp(1.45rem,4vw,1.9rem);color:#1a0e2e;margin:0 0 5px;font-weight:400;}
+    .card-sub{margin:0;color:rgba(122,74,90,.75);font-size:.88rem;}
+    /* Progress bar */
+    .step-bar{display:flex;gap:5px;margin-bottom:18px;}
+    .step-seg{height:4px;border-radius:2px;flex:1;background:rgba(194,64,126,.1);transition:background .4s ease;}
+    .step-seg.done{background:rgba(194,64,126,.35);}
+    .step-seg.active{background:var(--primary);}
+    /* Back btn */
+    .btn-back{background:transparent;border:none;color:rgba(255,255,255,.42);font-family:var(--font-b);font-size:.88rem;font-weight:600;cursor:pointer;padding:8px 16px;border-radius:20px;transition:all .2s;margin-bottom:8px;}
+    .btn-back:hover{color:rgba(255,255,255,.75);background:rgba(255,255,255,.07);}
+
+    /* Fields */
+    .field{margin-bottom:13px;}
+    .field label{display:block;font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:#7a4a5a;margin-bottom:5px;padding-left:2px;}
+    .field input,.field textarea{width:100%;border-radius:14px;border:1.5px solid rgba(196,150,140,.5);padding:13px 15px;font-size:.97rem;font-family:var(--font-b);color:#6b4b51;background:rgba(255,255,255,.85);outline:none;transition:border-color .2s,box-shadow .2s;box-shadow:inset 0 2px 5px rgba(122,74,90,.07);}
+    .field input:focus,.field textarea:focus{border-color:#c2407e;box-shadow:inset 0 2px 5px rgba(122,74,90,.07),0 0 0 3px rgba(194,64,126,.1);}
+    .field input::placeholder,.field textarea::placeholder{color:rgba(122,74,90,.45);}
+    .field textarea{min-height:130px;resize:vertical;line-height:1.65;}
+    .field-row{display:flex;gap:10px;}
+    .field-row .field{flex:1;margin-bottom:0;}
+    .char-count{text-align:right;font-size:.7rem;color:rgba(90,53,69,.4);margin-top:4px;}
+    .field-h{font-family:var(--font-d);font-size:.93rem;font-weight:400;color:#1a0e2e;margin:4px 0 8px;text-align:center;}
+
+    /* Option grids */
+    .opt-grid{display:grid;gap:8px;margin-bottom:12px;}
+    .og2{grid-template-columns:repeat(2,1fr);}
+    .og3{grid-template-columns:repeat(3,1fr);}
+    .opt{display:flex;align-items:center;gap:10px;padding:11px 14px;border-radius:14px;border:1.5px solid rgba(196,150,140,.4);background:rgba(255,255,255,.95);color:#8c5b60;font-size:.86rem;font-weight:600;font-family:var(--font-b);cursor:pointer;transition:all .2s ease;}
+    .opt:hover{transform:translateY(-2px);box-shadow:0 8px 18px rgba(112,68,80,.15);}
+    .opt.sel{border-color:#c2407e;background:linear-gradient(135deg,rgba(255,240,245,1),rgba(255,255,255,1));box-shadow:0 6px 16px rgba(194,64,126,.2);}
+    .opt .oi{font-size:1.2rem;flex-shrink:0;}
+
+    /* Theme picker */
+    .theme-row{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:12px;}
+    .theme-chip{display:flex;align-items:center;gap:7px;padding:7px 13px;border-radius:50px;border:2px solid rgba(196,150,140,.35);background:rgba(255,255,255,.9);color:#6b4b51;font-size:.8rem;font-weight:600;cursor:pointer;transition:all .2s;white-space:nowrap;}
+    .theme-chip:hover{transform:translateY(-1px);}
+    .theme-chip.sel{box-shadow:0 4px 14px rgba(0,0,0,.18);}
+    .theme-dot{width:12px;height:12px;border-radius:50%;flex-shrink:0;}
+
+    /* Photo drop zone */
+    .photo-dz{border:2px dashed rgba(196,150,140,.5);border-radius:18px;padding:22px 14px;text-align:center;cursor:pointer;transition:all .2s;background:rgba(255,255,255,.5);margin-bottom:14px;}
+    .photo-dz:hover,.photo-dz.over{border-color:#c2407e;background:rgba(255,240,245,.75);box-shadow:0 0 0 3px rgba(194,64,126,.08);}
+    .dz-icon{font-size:2.2rem;margin-bottom:6px;}
+    .dz-title{font-weight:700;color:#6b4b51;font-size:.9rem;margin:0 0 3px;}
+    .dz-hint{font-size:.76rem;color:rgba(122,74,90,.55);margin:0 0 12px;}
+    .dz-btn{padding:8px 22px;border-radius:20px;background:linear-gradient(135deg,#c2407e,#e88aab);color:#fff;border:none;font-size:.84rem;font-weight:700;cursor:pointer;transition:all .2s;}
+    .dz-btn:hover{transform:translateY(-1px);box-shadow:0 4px 12px rgba(194,64,126,.3);}
+
+    /* Photo grid */
+    .photo-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px;}
+    .photo-item{position:relative;background:#fff;border-radius:10px;padding:5px 5px 28px;box-shadow:0 4px 12px rgba(0,0,0,.13),2px 2px 0 rgba(0,0,0,.04);transform:rotate(-1.2deg);transition:transform .2s,box-shadow .2s;}
+    .photo-item:nth-child(even){transform:rotate(1.5deg);}
+    .photo-item:hover{transform:rotate(0deg) scale(1.09)!important;z-index:5;box-shadow:0 12px 30px rgba(0,0,0,.22);}
+    .photo-item img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:6px;display:block;}
+    .photo-caption{position:absolute;bottom:4px;left:4px;right:4px;border:none;background:transparent;font-family:var(--font-h);font-size:.72rem;font-weight:600;color:#5a3448;text-align:center;outline:none;padding:2px 0;}
+    .photo-caption::placeholder{color:rgba(90,52,72,.4);font-style:italic;}
+    .photo-rm{position:absolute;top:3px;right:3px;width:18px;height:18px;border-radius:50%;background:rgba(220,38,38,.9);color:#fff;border:none;font-size:.62rem;cursor:pointer;display:flex;align-items:center;justify-content:center;font-weight:700;transition:transform .15s;}
+    .photo-rm:hover{transform:scale(1.15);}
+
+    /* Video zone */
+    .vid-section{margin-top:4px;}
+    .vid-dz{border:2px dashed rgba(196,150,140,.4);border-radius:16px;padding:16px;text-align:center;cursor:pointer;transition:all .2s;background:rgba(255,255,255,.4);}
+    .vid-dz:hover{border-color:#c2407e;background:rgba(255,240,245,.6);}
+    .vid-preview-wrap{position:relative;border-radius:14px;overflow:hidden;background:#000;margin-top:8px;}
+    .vid-preview-wrap video{width:100%;max-height:170px;object-fit:cover;display:block;}
+    .vid-rm{position:absolute;top:8px;right:8px;background:rgba(220,38,38,.9);color:#fff;border:none;border-radius:50%;width:28px;height:28px;font-size:.8rem;cursor:pointer;font-weight:700;display:flex;align-items:center;justify-content:center;}
+
+    /* Memory input */
+    .mem-row{display:flex;gap:8px;margin-bottom:12px;}
+    .mem-inp{flex:1;border-radius:14px;border:1.5px solid rgba(196,150,140,.5);padding:11px 14px;font-size:.92rem;font-family:var(--font-b);color:#6b4b51;background:rgba(255,255,255,.85);outline:none;transition:border-color .2s;}
+    .mem-inp:focus{border-color:#c2407e;}
+    .mem-inp::placeholder{color:rgba(122,74,90,.45);}
+    .btn-add{padding:11px 16px;border-radius:14px;background:linear-gradient(135deg,#c2407e,#e88aab);color:#fff;border:none;font-size:1.2rem;font-weight:700;cursor:pointer;transition:all .2s;white-space:nowrap;}
+    .btn-add:hover{transform:translateY(-1px);}
+    .mem-chips{display:flex;flex-wrap:wrap;gap:7px;}
+    .mem-chip{display:flex;align-items:center;gap:6px;background:linear-gradient(135deg,rgba(255,240,245,1),#fff);border:1.5px solid rgba(194,64,126,.25);border-radius:50px;padding:7px 12px;font-size:.81rem;font-weight:600;color:#8c5b60;}
+    .mem-chip-rm{width:16px;height:16px;border-radius:50%;background:rgba(194,64,126,.12);border:none;color:#c2407e;font-size:.65rem;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;}
+    .small-note{font-size:.74rem;color:rgba(90,53,69,.4);margin-top:8px;}
+
+    /* Next btn */
+    .btn-next{width:100%;max-width:280px;border:none;border-radius:14px;padding:14px 28px;font-size:1rem;font-weight:700;font-family:var(--font-b);color:#fff;background:linear-gradient(135deg,#c2407e,#e88aab);box-shadow:0 10px 25px rgba(194,64,126,.35);cursor:pointer;transition:all .3s cubic-bezier(.4,0,.2,1);margin-top:8px;}
+    .btn-next:disabled{opacity:.4;cursor:not-allowed;box-shadow:none;transform:none;}
+    .btn-next:not(:disabled):hover{transform:translateY(-3px);box-shadow:0 15px 35px rgba(194,64,126,.48);}
+    .skip-link{display:block;font-size:.78rem;color:rgba(122,74,90,.5);margin-top:10px;cursor:pointer;transition:color .2s;text-decoration:underline;}
+    .skip-link:hover{color:#c2407e;}
+
+    /* Preview page */
+    .prev-wrap{max-width:500px;width:100%;display:flex;flex-direction:column;align-items:center;gap:16px;padding-bottom:50px;}
+    .prev-title{font-family:var(--font-d);font-size:clamp(1.8rem,5vw,2.6rem);color:rgba(255,255,255,.93);margin:0;font-weight:400;}
+    .prev-sub{color:rgba(255,255,255,.4);font-size:.92rem;margin:0;}
+    .prev-card{background:rgba(255,255,255,.97);border-radius:22px;padding:22px;width:100%;box-shadow:0 20px 50px rgba(0,0,0,.15);}
+    .prev-friend{font-family:var(--font-d);font-size:1.4rem;color:#c2407e;margin:0 0 3px;}
+    .prev-from{color:rgba(122,74,90,.6);font-size:.84rem;margin:0 0 16px;}
+    .prev-rows{display:flex;flex-direction:column;gap:8px;}
+    .prev-row{display:flex;justify-content:space-between;align-items:center;padding:9px 11px;background:rgba(194,64,126,.05);border-radius:10px;}
+    .prev-lbl{font-weight:600;color:#7a4a5a;font-size:.82rem;}
+    .prev-val{color:#333;font-size:.82rem;text-align:right;max-width:58%;}
+    .photo-strip{display:flex;gap:6px;overflow-x:auto;padding:8px 0 2px;margin-top:10px;}
+    .photo-strip img{width:52px;height:52px;border-radius:8px;object-fit:cover;flex-shrink:0;border:2px solid rgba(194,64,126,.25);}
+    .link-box{background:rgba(255,255,255,.97);border-radius:18px;padding:18px;width:100%;box-shadow:0 10px 30px rgba(0,0,0,.1);}
+    .link-label{font-family:var(--font-d);font-size:.95rem;color:#1a0e2e;margin:0 0 10px;font-weight:400;}
+    .link-row{display:flex;gap:7px;align-items:stretch;}
+    .link-url{flex:1;padding:9px 12px;border:1.5px solid #e0e0e0;border-radius:10px;font-size:.76rem;color:#666;background:#f9f9f9;word-break:break-all;font-family:monospace;cursor:text;user-select:all;}
+    .btn-copy{padding:9px 16px;background:linear-gradient(135deg,#c2407e,#a83569);color:#fff;border:none;border-radius:10px;font-weight:700;font-size:.82rem;cursor:pointer;transition:all .3s;white-space:nowrap;}
+    .btn-copy:hover{transform:translateY(-2px);box-shadow:0 5px 15px rgba(194,64,126,.3);}
+    .btn-copy.copied{background:linear-gradient(135deg,#00b894,#00a878);}
+    .link-note{font-size:.7rem;color:rgba(90,53,69,.5);margin:6px 0 0;text-align:center;}
+    .btn-wa{width:100%;display:flex;align-items:center;justify-content:center;gap:10px;padding:14px 20px;background:linear-gradient(135deg,#25d366,#128c7e);color:#fff;border:none;border-radius:14px;font-weight:700;font-size:1rem;cursor:pointer;transition:all .2s;box-shadow:0 6px 20px rgba(37,211,102,.25);}
+    .btn-wa:hover{transform:translateY(-2px);box-shadow:0 10px 28px rgba(37,211,102,.38);}
+    .btn-sec{background:transparent;border:1.5px solid rgba(255,255,255,.18);color:rgba(255,255,255,.45);border-radius:12px;padding:11px 22px;font-family:var(--font-b);font-size:.88rem;font-weight:600;cursor:pointer;transition:all .2s;}
+    .btn-sec:hover{border-color:rgba(255,255,255,.35);color:rgba(255,255,255,.75);}
+
+    @media(max-width:480px){.card{padding:20px 15px 18px;}.photo-grid{gap:6px;}.hero-title{font-size:1.9rem;}}
+  </style>
+</head>
+<body>
+<div class="sparkle-field" id="sfld"></div>
+<div class="confetti-box" id="cfBox"></div>
+
+<!-- ======= PAGE 0: LANDING ======= -->
+<section class="page active" id="page-0">
+  <div class="landing">
+    <div class="badge"><span class="badge-dot"></span>Interactive Gift Experience</div>
+    <div>
+      <h1 class="hero-title">A tiny place on the internet,<br><span class="shimmer">made just for your friend</span></h1>
+      <p class="hero-sub">Send an interactive surprise link — with your photos, a video message, a personal letter, and so much more.</p>
+    </div>
+    <div class="pills">
+      <div class="pill">🏛️ Museum of Us</div>
+      <div class="pill">📸 Photos + Video</div>
+      <div class="pill">🚨 Do-Not-Press Button</div>
+      <div class="pill">💌 Tear-Open Letter</div>
+      <div class="pill">✍️ Friendship Pact</div>
+      <div class="pill">🎨 Custom Themes</div>
+    </div>
+    <button class="cta" onclick="goTo(1)">🎁 Start the Surprise</button>
+  </div>
+  <footer class="site-footer">
+    <p class="footer-text">Crafted with <span class="footer-heart">💖</span> for <span class="footer-name">Priya</span> · Built by <span class="footer-name">Nandini</span></p>
+    <div class="footer-links">
+      <a class="footer-link" href="https://www.linkedin.com/in/nandini-soni-89817029a/" target="_blank" rel="noopener">💼 LinkedIn</a>
+      <a class="footer-link" href="https://github.com/NANDINI-7777" target="_blank" rel="noopener">💻 GitHub</a>
+      <a class="footer-link" href="mailto:nandinisoni7014@gmail.com">✉️ Email</a>
+    </div>
+  </footer>
+</section>
+
+<!-- ======= PAGE 1: NAMES ======= -->
+<section class="page" id="page-1">
+  <div class="form-wrap">
+    <button class="btn-back" onclick="goTo(0)">← Back</button>
+    <div class="card">
+      <div class="step-bar" id="sb1"></div>
+      <div class="card-hd">
+        <p class="card-step">Step 1 of 5</p>
+        <h2 class="card-title">Who's the surprise for? 🌸</h2>
+        <p class="card-sub">Let's start with your names</p>
+      </div>
+      <div class="field-row">
+        <div class="field"><label>Your Name 💛</label><input id="i-sender" type="text" placeholder="e.g. Nandini" maxlength="25"/></div>
+        <div class="field"><label>Friend's Name 🌸</label><input id="i-friend" type="text" placeholder="e.g. Priya" maxlength="25"/></div>
+      </div>
+      <div class="field">
+        <label>Nickname / Pet Name <span style="font-weight:400;text-transform:none;letter-spacing:0;font-size:.68rem;">(optional)</span></label>
+        <input id="i-nick" type="text" placeholder="e.g. pre-yayay"/>
+      </div>
+      <div class="field">
+        <label>How did you two meet? <span style="font-weight:400;text-transform:none;letter-spacing:0;font-size:.68rem;">(optional)</span></label>
+        <input id="i-met" type="text" placeholder="e.g. First day of college, Through a mutual friend..." maxlength="60"/>
+      </div>
+      <div style="text-align:center;margin-top:6px;">
+        <button class="btn-next" id="btn1" onclick="goTo(2)" disabled>Continue →</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======= PAGE 2: DETAILS + THEME ======= -->
+<section class="page" id="page-2">
+  <div class="form-wrap" style="overflow-y:auto;max-height:95vh;">
+    <button class="btn-back" onclick="goTo(1)">← Back</button>
+    <div class="card">
+      <div class="step-bar" id="sb2"></div>
+      <div class="card-hd">
+        <p class="card-step">Step 2 of 5</p>
+        <h2 class="card-title">Your Friendship Story ✨</h2>
+        <p class="card-sub">Help us make it feel uniquely yours</p>
+      </div>
+      <div class="field"><label>Friends Since 📅</label><input id="i-year" type="text" placeholder="e.g. 2019, Class 8, First day of college..." maxlength="30"/></div>
+      <p class="field-h">What's your bond? 🔗</p>
+      <div class="opt-grid og2" id="bondGrid">
+        <button class="opt" data-g="bond" data-v="bffs" onclick="pick(this,'bond')"><span class="oi">👯</span><span>BFFs Forever</span></button>
+        <button class="opt" data-g="bond" data-v="classmates" onclick="pick(this,'bond')"><span class="oi">📚</span><span>Classmates</span></button>
+        <button class="opt" data-g="bond" data-v="childhood" onclick="pick(this,'bond')"><span class="oi">🧸</span><span>Childhood Pals</span></button>
+        <button class="opt" data-g="bond" data-v="coworkers" onclick="pick(this,'bond')"><span class="oi">💼</span><span>Work Besties</span></button>
+        <button class="opt" data-g="bond" data-v="online" onclick="pick(this,'bond')"><span class="oi">💻</span><span>Online Friends</span></button>
+        <button class="opt" data-g="bond" data-v="custom" onclick="pick(this,'bond')"><span class="oi">✨</span><span>Custom...</span></button>
+      </div>
+      <div class="field" id="f-custom-bond" style="display:none;margin-top:6px;margin-bottom:10px;">
+        <input id="i-custom-bond" type="text" placeholder="e.g. Partners in crime 💥, Soul sisters..." maxlength="35"/>
+      </div>
+
+      <p class="field-h">Your vibe? ⚡</p>
+      <div class="opt-grid og2" id="vibeGrid">
+        <button class="opt" data-g="vibe" data-v="chaotic" onclick="pick(this,'vibe')"><span class="oi">🔥</span><span>Chaotic Duo</span></button>
+        <button class="opt" data-g="vibe" data-v="wholesome" onclick="pick(this,'vibe')"><span class="oi">🌸</span><span>Wholesome</span></button>
+        <button class="opt" data-g="vibe" data-v="sarcastic" onclick="pick(this,'vibe')"><span class="oi">😏</span><span>Roast Squad</span></button>
+        <button class="opt" data-g="vibe" data-v="custom" onclick="pick(this,'vibe')"><span class="oi">✨</span><span>Custom...</span></button>
+      </div>
+      <div class="field" id="f-custom-vibe" style="display:none;margin-top:6px;margin-bottom:10px;">
+        <input id="i-custom-vibe" type="text" placeholder="e.g. Unhinged & Loud 🤪, Soft & Cosy ☕..." maxlength="35"/>
+      </div>
+      <p class="field-h">Pick a colour theme 🎨</p>
+      <div class="theme-row" id="themeRow">
+        <button class="theme-chip sel" data-t="pink" onclick="pickTheme(this)" style="color:#e84393;border-color:#e84393;"><span class="theme-dot" style="background:#e84393;"></span>💖 Pink</button>
+        <button class="theme-chip" data-t="purple" onclick="pickTheme(this)" style="color:#9b59b6;"><span class="theme-dot" style="background:#9b59b6;"></span>💜 Purple</button>
+        <button class="theme-chip" data-t="sunset" onclick="pickTheme(this)" style="color:#e17055;"><span class="theme-dot" style="background:#e17055;"></span>🧡 Sunset</button>
+        <button class="theme-chip" data-t="ocean" onclick="pickTheme(this)" style="color:#0984e3;"><span class="theme-dot" style="background:#0984e3;"></span>💙 Ocean</button>
+        <button class="theme-chip" data-t="forest" onclick="pickTheme(this)" style="color:#00b894;"><span class="theme-dot" style="background:#00b894;"></span>💚 Forest</button>
+        <button class="theme-chip" data-t="gold" onclick="pickTheme(this)" style="color:#d4a017;"><span class="theme-dot" style="background:#f9ca24;"></span>✨ Gold</button>
+      </div>
+      <div style="text-align:center;margin-top:6px;">
+        <button class="btn-next" id="btn2" onclick="goTo(3)" disabled>Continue →</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======= PAGE 3: PHOTOS + VIDEO ======= -->
+<section class="page" id="page-3">
+  <div class="form-wrap" style="overflow-y:auto;max-height:95vh;">
+    <button class="btn-back" onclick="goTo(2)">← Back</button>
+    <div class="card">
+      <div class="step-bar" id="sb3"></div>
+      <div class="card-hd">
+        <p class="card-step">Step 3 of 5</p>
+        <h2 class="card-title">Add Photos & Video 📸</h2>
+        <p class="card-sub">Your friend gets a full photo gallery + video message!</p>
+      </div>
+      <!-- Photo drop zone -->
+      <div class="photo-dz" id="photoDZ">
+        <div class="dz-icon">📸</div>
+        <p class="dz-title">Drag & drop your photos here</p>
+        <p class="dz-hint">Supports JPG, PNG, HEIC · Up to 5 photos · Tap captions to label them</p>
+        <button class="dz-btn" type="button" onclick="event.stopPropagation();document.getElementById('photoInp').click()">Choose from Gallery</button>
+        <input type="file" id="photoInp" accept="image/*" multiple hidden/>
+      </div>
+      <div class="photo-grid" id="photoGrid" style="display:none;"></div>
+      <p id="photoNote" class="small-note" style="display:none;margin-bottom:10px;"></p>
+
+      <!-- Video section -->
+      <div class="vid-section">
+        <p class="field-h">🎥 Record a short video message <span style="font-weight:400;font-size:.8rem;">(optional)</span></p>
+        <div class="vid-dz" id="vidDZ">
+          <div class="dz-icon" style="font-size:1.6rem;">🎬</div>
+          <p class="dz-hint" style="margin-bottom:10px;">Any short clip · Under 50MB · Plays in the surprise!</p>
+          <button class="dz-btn" type="button" style="background:rgba(108,92,231,.7);" onclick="event.stopPropagation();document.getElementById('vidInp').click()">Add Video Clip</button>
+          <input type="file" id="vidInp" accept="video/*" hidden/>
+        </div>
+        <div id="vidPreview" style="display:none;"></div>
+      </div>
+
+      <div style="text-align:center;margin-top:16px;">
+        <button class="btn-next" onclick="goTo(4)">Continue →</button>
+      </div>
+      <span class="skip-link" onclick="goTo(4)">Skip — no photos/video →</span>
+    </div>
+  </div>
+</section>
+
+<!-- ======= PAGE 4: MEMORIES ======= -->
+<section class="page" id="page-4">
+  <div class="form-wrap" style="overflow-y:auto;max-height:95vh;">
+    <button class="btn-back" onclick="goTo(3)">← Back</button>
+    <div class="card">
+      <div class="step-bar" id="sb4"></div>
+      <div class="card-hd">
+        <p class="card-step">Step 4 of 5</p>
+        <h2 class="card-title">Your Inside Memories 🌟</h2>
+        <p class="card-sub">Your friend swipes through these — keep or forget? Make them laugh!</p>
+      </div>
+      <div class="mem-row">
+        <input id="memInp" class="mem-inp" type="text" placeholder="e.g. That 2am trip when we got completely lost 😂" maxlength="80" onkeydown="if(event.key==='Enter'){addMem();event.preventDefault();}"/>
+        <button class="btn-add" onclick="addMem()">+</button>
+      </div>
+      <div class="mem-chips" id="memChips"></div>
+      <p class="small-note" id="memNote">0/5 memories · Add your favourite inside moments!</p>
+
+      <!-- PACT DIVIDER -->
+      <div style="display:flex;align-items:center;gap:12px;margin:20px 0 16px;">
+        <div style="flex:1;height:1px;background:rgba(196,150,140,.3);"></div>
+        <span style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:rgba(122,74,90,.5);">Friendship Pact Terms</span>
+        <div style="flex:1;height:1px;background:rgba(196,150,140,.3);"></div>
+      </div>
+      <p class="card-sub" style="font-size:.84rem;margin-bottom:12px;">✍️ Write your own agreement clauses (up to 4) — or leave blank for auto ones based on your bond!</p>
+      <div class="mem-row">
+        <input id="pactInp" class="mem-inp" type="text" placeholder="e.g. Always answer my 3am texts, no matter what 🌙" maxlength="80" onkeydown="if(event.key==='Enter'){addPact();event.preventDefault();}"/>
+        <button class="btn-add" onclick="addPact()" style="background:linear-gradient(135deg,#6c5ce7,#a29bfe);">+</button>
+      </div>
+      <div class="mem-chips" id="pactChips"></div>
+      <p class="small-note" id="pactNote">0/4 clauses · Leave empty to use auto terms</p>
+
+      <div style="text-align:center;margin-top:18px;">
+        <button class="btn-next" onclick="goTo(5)">Continue →</button>
+      </div>
+      <span class="skip-link" onclick="goTo(5)">Skip both — use defaults →</span>
+    </div>
+  </div>
+</section>
+
+<!-- ======= PAGE 5: LETTER ======= -->
+<section class="page" id="page-5">
+  <div class="form-wrap">
+    <button class="btn-back" onclick="goTo(4)">← Back</button>
+    <div class="card">
+      <div class="step-bar" id="sb5"></div>
+      <div class="card-hd">
+        <p class="card-step">Step 5 of 5</p>
+        <h2 class="card-title">Write Your Letter 💌</h2>
+        <p class="card-sub">Your friend tears this open — pour your heart out</p>
+      </div>
+      <div class="field">
+        <label>Your message</label>
+        <textarea id="i-letter" placeholder="Hey! I just wanted to say that having you in my life is one of the best things that's ever happened to me. You make everything better..." maxlength="700"></textarea>
+        <div class="char-count"><span id="charCount">0</span>/700</div>
+      </div>
+      <div style="text-align:center;margin-top:6px;">
+        <button class="btn-next" id="btn5" onclick="generate()" disabled>✨ Create the Surprise →</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======= PAGE 6: PREVIEW + SHARE ======= -->
+<section class="page" id="page-6">
+  <div class="prev-wrap">
+    <div>
+      <p class="prev-title">🎉 Surprise is ready!</p>
+      <p class="prev-sub">Share this link with <span id="prevFTop" style="color:var(--primary-light);">your friend</span> 💛</p>
+    </div>
+    <div class="prev-card">
+      <p class="prev-friend" id="prevFriend">—</p>
+      <p class="prev-from">From <span id="prevSender">—</span> with all the love 💛</p>
+      <div class="prev-rows" id="prevRows"></div>
+      <div id="photoStrip" class="photo-strip" style="display:none;"></div>
+    </div>
+    <div class="link-box">
+      <p class="link-label">🔗 Your magical surprise link</p>
+      <div class="link-row">
+        <div class="link-url" id="linkUrl">—</div>
+        <button class="btn-copy" id="btnCopy" onclick="copyLink()">Copy</button>
+      </div>
+      <p class="link-note">📱 Photos & video work on the same device. To share across devices, host these files online (e.g. GitHub Pages).</p>
+    </div>
+    <button class="btn-wa" onclick="shareWA()">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      Share on WhatsApp
+    </button>
+    <button class="btn-sec" onclick="makeAnother()">+ Make another surprise</button>
+  </div>
+</section>
+
+<script>
+// ========= THEMES =========
+const THEMES = {
+  pink:   {p:'#e84393',pd:'#d63384',pl:'#fd79a8',s:'#f9ca24',a:'#6c5ce7',bg:'linear-gradient(135deg,#0a0612,#0f0a1a 40%,#0d1b2a)'},
+  purple: {p:'#9b59b6',pd:'#8e44ad',pl:'#c39bd3',s:'#e056f5',a:'#74b9ff',bg:'linear-gradient(135deg,#0a0618,#130a20 40%,#1a0d2e)'},
+  sunset: {p:'#e17055',pd:'#d35400',pl:'#f0a899',s:'#f9ca24',a:'#fd79a8',bg:'linear-gradient(135deg,#1a0800,#2d1200 40%,#1a0010)'},
+  ocean:  {p:'#0984e3',pd:'#0770c2',pl:'#74b9ff',s:'#00cec9',a:'#a29bfe',bg:'linear-gradient(135deg,#000d1a,#001420 40%,#000d2a)'},
+  forest: {p:'#00b894',pd:'#00997a',pl:'#55efc4',s:'#fdcb6e',a:'#6c5ce7',bg:'linear-gradient(135deg,#001409,#001f12 40%,#000d08)'},
+  gold:   {p:'#f0b429',pd:'#d4a017',pl:'#fdcb6e',s:'#e84393',a:'#6c5ce7',bg:'linear-gradient(135deg,#0a0808,#100c00 40%,#0a0612)'},
+};
+function applyTheme(k){
+  const t=THEMES[k]||THEMES.pink;
+  const r=document.documentElement;
+  r.style.setProperty('--primary',t.p);
+  r.style.setProperty('--primary-dark',t.pd);
+  r.style.setProperty('--primary-light',t.pl);
+  r.style.setProperty('--accent',t.s);
+  r.style.setProperty('--accent2',t.a);
+  document.body.style.background=t.bg;
+}
+
+// ========= STATE =========
+const S={sender:'',friend:'',nick:'',met:'',year:'',bond:'',vibe:'',theme:'pink',letter:'',memories:[],pactClauses:[],photos:[],video:null,sessionKey:''};
+let curPage=0;
+
+function goTo(n){
+  document.getElementById('page-'+curPage).classList.remove('active');
+  curPage=n;
+  document.getElementById('page-'+n).classList.add('active');
+  window.scrollTo(0,0);
+  updateBars();
+}
+
+function updateBars(){
+  for(let s=1;s<=5;s++){
+    const el=document.getElementById('sb'+s);
+    if(!el)continue;
+    el.innerHTML='';
+    for(let i=1;i<=5;i++){
+      const d=document.createElement('div');
+      d.className='step-seg'+(i<s?' done':i===s?' active':'');
+      el.appendChild(d);
+    }
+  }
+}
+
+// ========= OPTIONS =========
+let rawBondChoice='', rawVibeChoice='';
+function pick(el,g){
+  document.querySelectorAll(`[data-g="${g}"]`).forEach(b=>b.classList.remove('sel'));
+  el.classList.add('sel');
+  if(g==='bond') rawBondChoice=el.dataset.v;
+  if(g==='vibe') rawVibeChoice=el.dataset.v;
+
+  const customField=document.getElementById(`f-custom-${g}`);
+  if(el.dataset.v==='custom'){
+    customField.style.display='block';
+    customField.querySelector('input').focus();
+  } else {
+    customField.style.display='none';
+  }
+  checkStep2();
+}
+function pickTheme(el){
+  document.querySelectorAll('.theme-chip').forEach(b=>b.classList.remove('sel'));
+  el.classList.add('sel');
+  S.theme=el.dataset.t;
+  applyTheme(S.theme);
+}
+
+// ========= VALIDATION =========
+['i-sender','i-friend','i-nick','i-met'].forEach(id=>{
+  document.getElementById(id).addEventListener('input',checkStep1);
+});
+document.getElementById('i-year').addEventListener('input',checkStep2);
+document.getElementById('i-custom-bond').addEventListener('input',checkStep2);
+document.getElementById('i-custom-vibe').addEventListener('input',checkStep2);
+
+document.getElementById('i-letter').addEventListener('input',()=>{
+  const v=document.getElementById('i-letter').value;
+  S.letter=v;
+  document.getElementById('charCount').textContent=v.length;
+  document.getElementById('btn5').disabled=v.trim().length<10;
+});
+function checkStep1(){
+  S.sender=document.getElementById('i-sender').value.trim();
+  S.friend=document.getElementById('i-friend').value.trim();
+  S.nick=document.getElementById('i-nick').value.trim();
+  S.met=document.getElementById('i-met').value.trim();
+  document.getElementById('btn1').disabled=!(S.sender&&S.friend);
+}
+function checkStep2(){
+  S.year=document.getElementById('i-year').value.trim();
+
+  if(rawBondChoice==='custom'){
+    S.bond=document.getElementById('i-custom-bond').value.trim();
+  } else {
+    S.bond=rawBondChoice;
+  }
+
+  if(rawVibeChoice==='custom'){
+    S.vibe=document.getElementById('i-custom-vibe').value.trim();
+  } else {
+    S.vibe=rawVibeChoice;
+  }
+
+  document.getElementById('btn2').disabled=!(S.bond&&S.vibe);
+}
+
+// ========= IMAGE COMPRESSION =========
+async function compress(file,maxDim=500,q=0.72){
+  return new Promise(resolve=>{
+    const fr=new FileReader();
+    fr.onload=e=>{
+      const img=new Image();
+      img.onload=()=>{
+        const canvas=document.createElement('canvas');
+        const ratio=Math.min(maxDim/img.width,maxDim/img.height,1);
+        canvas.width=Math.round(img.width*ratio);
+        canvas.height=Math.round(img.height*ratio);
+        canvas.getContext('2d').drawImage(img,0,0,canvas.width,canvas.height);
+        resolve(canvas.toDataURL('image/jpeg',q));
+      };
+      img.src=e.target.result;
+    };
+    fr.readAsDataURL(file);
+  });
+}
+
+// ========= PHOTO UPLOAD =========
+async function handlePhotos(files){
+  if(!files||S.photos.length>=5)return;
+  const toAdd=Math.min(files.length,5-S.photos.length);
+  for(let i=0;i<toAdd;i++){
+    if(!files[i].type.startsWith('image/'))continue;
+    const data=await compress(files[i]);
+    S.photos.push({data,caption:''});
+  }
+  renderPhotos();
+}
+function renderPhotos(){
+  const grid=document.getElementById('photoGrid');
+  const note=document.getElementById('photoNote');
+  if(S.photos.length===0){grid.style.display='none';note.style.display='none';return;}
+  grid.style.display='grid';
+  note.style.display='block';
+  note.textContent=S.photos.length+'/5 photos · Tap the caption box under each to label it';
+  grid.innerHTML=S.photos.map((p,i)=>`
+    <div class="photo-item">
+      <img src="${p.data}" alt="Photo ${i+1}"/>
+      <input class="photo-caption" type="text" placeholder="Caption..." value="${p.caption.replace(/"/g,'&quot;')}"
+        oninput="S.photos[${i}].caption=this.value" maxlength="30"/>
+      <button class="photo-rm" onclick="removePhoto(${i})">×</button>
+    </div>
+  `).join('');
+  const dz=document.getElementById('photoDZ');
+  if(S.photos.length>=5){
+    dz.querySelector('.dz-title').textContent='5 photos added — all set! 🎉';
+    dz.style.opacity='.6';dz.style.pointerEvents='none';
+  } else {
+    dz.querySelector('.dz-title').textContent=`Add more photos (${S.photos.length}/5)`;
+    dz.style.opacity='1';dz.style.pointerEvents='auto';
+  }
+}
+function removePhoto(i){
+  S.photos.splice(i,1);
+  const dz=document.getElementById('photoDZ');
+  dz.style.opacity='1';dz.style.pointerEvents='auto';
+  dz.querySelector('.dz-title').textContent='Drag & drop your photos here';
+  renderPhotos();
+}
+// Drag-drop photos
+const photoDZ=document.getElementById('photoDZ');
+const photoInp=document.getElementById('photoInp');
+photoDZ.addEventListener('dragover',e=>{e.preventDefault();photoDZ.classList.add('over');});
+photoDZ.addEventListener('dragleave',()=>photoDZ.classList.remove('over'));
+photoDZ.addEventListener('drop',e=>{e.preventDefault();photoDZ.classList.remove('over');handlePhotos(e.dataTransfer.files);});
+photoDZ.addEventListener('click',()=>{if(S.photos.length<5)photoInp.click();});
+photoInp.addEventListener('change',()=>handlePhotos(photoInp.files));
+
+// ========= VIDEO UPLOAD =========
+async function handleVideo(file){
+  if(!file)return;
+  if(file.size>50*1024*1024){alert('Video is too large! Please choose a clip under 50MB.');return;}
+  S.video=file;
+  const url=URL.createObjectURL(file);
+  document.getElementById('vidPreview').style.display='block';
+  document.getElementById('vidPreview').innerHTML=`
+    <div class="vid-preview-wrap">
+      <video src="${url}" controls preload="metadata"></video>
+      <button class="vid-rm" onclick="removeVideo()">×</button>
+    </div>
+    <p class="small-note" style="margin-top:6px;">🎬 Video saved! It'll play in the surprise on this device.</p>
+  `;
+  document.getElementById('vidDZ').style.display='none';
+  await storeVid(S.sessionKey+'_vid',file);
+}
+function removeVideo(){
+  S.video=null;
+  document.getElementById('vidPreview').style.display='none';
+  document.getElementById('vidDZ').style.display='block';
+  document.getElementById('vidInp').value='';
+}
+document.getElementById('vidInp').addEventListener('change',function(){if(this.files[0])handleVideo(this.files[0]);});
+const vidDZ=document.getElementById('vidDZ');
+vidDZ.addEventListener('dragover',e=>{e.preventDefault();vidDZ.style.borderColor='var(--primary)';});
+vidDZ.addEventListener('dragleave',()=>{vidDZ.style.borderColor='';});
+vidDZ.addEventListener('drop',e=>{e.preventDefault();vidDZ.style.borderColor='';if(e.dataTransfer.files[0])handleVideo(e.dataTransfer.files[0]);});
+
+// ========= INDEXEDDB (Video Storage) =========
+function openDB(){
+  return new Promise((res,rej)=>{
+    const r=indexedDB.open('FriendshipDB',1);
+    r.onupgradeneeded=e=>e.target.result.createObjectStore('media',{keyPath:'id'});
+    r.onsuccess=e=>res(e.target.result);
+    r.onerror=rej;
+  });
+}
+async function storeVid(key,blob){
+  try{const db=await openDB();return new Promise((res)=>{const tx=db.transaction('media','readwrite');tx.objectStore('media').put({id:key,data:blob});tx.oncomplete=()=>res(true);tx.onerror=()=>res(false);});}catch{return false;}
+}
+
+// ========= MEMORIES & PACT =========
+function addMem(){
+  const inp=document.getElementById('memInp');
+  const v=inp.value.trim();
+  if(!v||S.memories.length>=5)return;
+  S.memories.push(v);
+  inp.value='';
+  renderMems();
+}
+function removeMem(i){S.memories.splice(i,1);renderMems();}
+function renderMems(){
+  const chips=document.getElementById('memChips');
+  const note=document.getElementById('memNote');
+  chips.innerHTML=S.memories.map((m,i)=>`
+    <div class="mem-chip"><span>${m}</span><button class="mem-chip-rm" onclick="removeMem(${i})">×</button></div>
+  `).join('');
+  note.textContent=S.memories.length+'/5 memories'+(S.memories.length<5?' · add more!':' · all set!');
+  document.getElementById('memInp').disabled=S.memories.length>=5;
+}
+
+function addPact(){
+  const inp=document.getElementById('pactInp');
+  const v=inp.value.trim();
+  if(!v||S.pactClauses.length>=4)return;
+  S.pactClauses.push(v);
+  inp.value='';
+  renderPacts();
+}
+function removePact(i){S.pactClauses.splice(i,1);renderPacts();}
+function renderPacts(){
+  const chips=document.getElementById('pactChips');
+  const note=document.getElementById('pactNote');
+  chips.innerHTML=S.pactClauses.map((p,i)=>`
+    <div class="mem-chip" style="border-color:rgba(108,92,231,.3);"><span>${p}</span><button class="mem-chip-rm" style="color:#6c5ce7;background:rgba(108,92,231,.12);" onclick="removePact(${i})">×</button></div>
+  `).join('');
+  note.textContent=S.pactClauses.length+'/4 clauses'+(S.pactClauses.length<4?' · add more!':' · all set!');
+  document.getElementById('pactInp').disabled=S.pactClauses.length>=4;
+}
+
+// ========= GENERATE LINK =========
+async function generate(){
+  S.sender=document.getElementById('i-sender').value.trim();
+  S.friend=document.getElementById('i-friend').value.trim();
+  S.nick=document.getElementById('i-nick').value.trim();
+  S.met=document.getElementById('i-met').value.trim();
+  S.year=document.getElementById('i-year').value.trim();
+  S.letter=document.getElementById('i-letter').value.trim();
+
+  // Save photos to localStorage
+  if(S.photos.length>0){
+    try{localStorage.setItem(S.sessionKey+'_ph',JSON.stringify(S.photos));}
+    catch(e){console.warn('Photos may be too large for localStorage',e);}
+  }
+
+  const urlData={
+    s:S.sender,f:S.friend,nick:S.nick,met:S.met,
+    y:S.year,b:S.bond,v:S.vibe,t:S.theme,
+    l:S.letter,m:S.memories,pc:S.pactClauses,
+    sk:S.sessionKey,hp:S.photos.length>0,hv:S.video!==null
+  };
+  const encoded=btoa(encodeURIComponent(JSON.stringify(urlData)));
+  const base=window.location.href.split('#')[0].replace('index.html','friend.html');
+  const url=base+'#'+encoded;
+
+  // Build preview
+  document.getElementById('prevFriend').textContent=S.nick||S.friend;
+  document.getElementById('prevFTop').textContent=S.nick||S.friend;
+  document.getElementById('prevSender').textContent=S.sender;
+  const bondL={bffs:'👯 BFFs',classmates:'📚 Classmates',childhood:'🧸 Childhood Pals',coworkers:'💼 Work Besties',online:'💻 Online Friends',neighbors:'🏠 Neighbors'};
+  const vibeL={chaotic:'🔥 Chaotic Duo',wholesome:'🌸 Wholesome',sarcastic:'😏 Roast Squad',emotional:'🥺 Emotional'};
+  const rows=[
+    {l:'For',v:(S.nick?`${S.friend} (${S.nick})`:`${S.friend}`)},
+    {l:'Friends since',v:S.year||'Day one 💛'},
+    {l:'How you met',v:S.met||'It was fate ✨'},
+    {l:'Bond',v:bondL[S.bond]||S.bond},
+    {l:'Vibe',v:vibeL[S.vibe]||S.vibe},
+    {l:'Memories',v:S.memories.length>0?S.memories.length+' custom memories 🌟':'Auto-generated'},
+    {l:'Pact Terms',v:S.pactClauses.length>0?S.pactClauses.length+' custom terms ✍️':'Auto-generated'},
+    {l:'Photos',v:S.photos.length>0?S.photos.length+' photos included 📸':'None'},
+    {l:'Video',v:S.video?'1 video message 🎬':'None'},
+  ];
+  document.getElementById('prevRows').innerHTML=rows.map(r=>`<div class="prev-row"><span class="prev-lbl">${r.l}</span><span class="prev-val">${r.v}</span></div>`).join('');
+  const strip=document.getElementById('photoStrip');
+  if(S.photos.length>0){strip.style.display='flex';strip.innerHTML=S.photos.map(p=>`<img src="${p.data}" alt="photo"/>`).join('');}
+  document.getElementById('linkUrl').textContent=url;
+  launchConfetti();
+  goTo(6);
+}
+
+function copyLink(){
+  const url=document.getElementById('linkUrl').textContent;
+  navigator.clipboard.writeText(url).then(()=>{
+    const btn=document.getElementById('btnCopy');
+    btn.textContent='✓ Copied!';btn.classList.add('copied');
+    setTimeout(()=>{btn.textContent='Copy';btn.classList.remove('copied');},2200);
+  });
+}
+function shareWA(){
+  const url=document.getElementById('linkUrl').textContent;
+  const nm=S.nick||S.friend;
+  const msg=`Hey ${nm}! 🎊 I made you something special for Friendship Day!\n\nClick to open your surprise 🎁✨\n${url}`;
+  window.open('https://wa.me/?text='+encodeURIComponent(msg),'_blank');
+}
+function makeAnother(){
+  location.reload();
+}
+
+// ========= SPARKLES =========
+function createSparkles(){
+  const field=document.getElementById('sfld');
+  const types=['sp-g','sp-p','sp-w','sp-v'];
+  for(let i=0;i<45;i++){
+    const p=document.createElement('div');
+    p.className='sp '+types[i%4];
+    const sz=4+Math.random()*8;
+    p.style.cssText=`--sz:${sz}px;--dr:${(Math.random()-.5)*120}px;--pk:${.2+Math.random()*.5};left:${Math.random()*100}%;animation-duration:${6+Math.random()*12}s;animation-delay:${-Math.random()*15}s;`;
+    field.appendChild(p);
+  }
+}
+
+// ========= CONFETTI =========
+function launchConfetti(){
+  const c=document.getElementById('cfBox');
+  const t=THEMES[S.theme]||THEMES.pink;
+  const cols=[t.p,t.s,t.a,'#ffffff',t.pl,'#a29bfe'];
+  for(let i=0;i<90;i++){
+    setTimeout(()=>{
+      const p=document.createElement('div');
+      p.className='cf';
+      p.style.cssText=`left:${Math.random()*100}%;background:${cols[Math.floor(Math.random()*cols.length)]};width:${7+Math.random()*9}px;height:${7+Math.random()*9}px;border-radius:${Math.random()>.5?'50%':'2px'};animation-duration:${1.5+Math.random()*2}s;`;
+      c.appendChild(p);
+      setTimeout(()=>p.remove(),3500);
+    },i*18);
+  }
+}
+
+// ========= INIT =========
+S.sessionKey='hf_'+Date.now().toString(36);
+createSparkles();
+updateBars();
+</script>
+</body>
+</html>
