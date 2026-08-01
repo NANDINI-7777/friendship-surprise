@@ -152,8 +152,8 @@
     .sw-btn-keep:hover{background:rgba(0,206,201,.25);transform:translateX(3px);}
 
     /* ===== VIDEO ===== */
-    .vid-card{background:rgba(0,0,0,.6);border:1px solid rgba(255,255,255,.1);border-radius:24px;max-width:400px;width:100%;padding:24px;margin:20px 0;}
-    .vid-card video{width:100%;border-radius:16px;display:block;max-height:300px;object-fit:contain;background:#000;}
+    .vid-card{background:rgba(0,0,0,.6);border:1px solid rgba(255,255,255,.1);border-radius:24px;max-width:340px;width:100%;padding:14px;margin:18px 0;}
+    .vid-card video{width:100%;border-radius:18px;display:block;max-height:65vh;object-fit:cover;background:#000;}
     .vid-unavail{font-family:var(--font-h);font-size:1.1rem;color:rgba(255,255,255,.4);line-height:1.6;padding:20px;}
 
     /* ===== LETTER ===== */
@@ -625,6 +625,17 @@ async function setupVideo(){
 
   if(vSrc){
     player.src=vSrc;player.style.display='block';unavail.style.display='none';
+    player.onloadedmetadata=()=>{
+      if(player.videoHeight>player.videoWidth){
+        player.style.aspectRatio='9/16';
+        player.style.maxHeight='68vh';
+        player.style.objectFit='cover';
+      } else {
+        player.style.aspectRatio='16/9';
+        player.style.maxHeight='340px';
+        player.style.objectFit='contain';
+      }
+    };
   } else if(D.hv||D.vu){
     player.style.display='none';unavail.style.display='block';
     unavail.innerHTML=`🎬 <b style="color:#fff;font-size:1.15rem;">A Special Video Note</b><br><br>Recorded with all the love by <span style="color:var(--primary-light);font-weight:600;">${D.s}</span>! 💛`;
