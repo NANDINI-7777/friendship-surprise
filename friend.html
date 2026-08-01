@@ -566,13 +566,14 @@ function buildMuseum(nick){
       {type:'text',icon:'💌',title:'Status',val:'Best friends forever'},
     ];
   }
-  if(D.met){tiles.push({type:'text',icon:'🤝',title:'How You Met',val:D.met});}
+  if(D.met){tiles.push({type:'text',icon:'🤝',title:'How You Met',val:D.met,fullWidth:D.met.length>25});}
 
   grid.innerHTML=tiles.map(t=>{
     if(t.type==='photo'){
       return `<div class="m-tile photo"><img src="${t.photo.data}" alt="Our photo"/>${t.photo.caption?`<p class="ph-caption">${t.photo.caption}</p>`:''}</div>`;
     }
-    return `<div class="m-tile"><span class="tile-icon">${t.icon}</span><p class="tile-title">${t.title}</p><p class="tile-val">${t.val}</p></div>`;
+    const style=t.fullWidth?'style="grid-column: 1 / -1;"':'';
+    return `<div class="m-tile" ${style}><span class="tile-icon">${t.icon}</span><p class="tile-title">${t.title}</p><p class="tile-val">${t.val}</p></div>`;
   }).join('');
 }
 
