@@ -468,8 +468,10 @@ window.addEventListener('load',async()=>{
     D=JSON.parse(decodeURIComponent(atob(hash)));
     if(!D.f||!D.s){showErr();return;}
     applyTheme(D.t||'pink');
-    // Load photos from localStorage
-    if(D.hp&&D.sk){
+    // Load photos: prioritize embedded array (D.ph) for cross-device support
+    if(D.ph&&D.ph.length>0){
+      photos=D.ph;
+    } else if(D.hp&&D.sk){
       try{const raw=localStorage.getItem(D.sk+'_ph');if(raw)photos=JSON.parse(raw);}catch{}
     }
     // Load video from IndexedDB
@@ -619,11 +621,13 @@ function prevPhoto(){showPhoto(photoIdx-1);}
 async function setupVideo(){
   const player=document.getElementById('vidPlayer');
   const unavail=document.getElementById('vidUnavail');
-  if(videoBlob){
-    const url=URL.createObjectURL(videoBlob);
-    player.src=url;player.style.display='block';unavail.style.display='none';
-  } else if(D.hv){
+  let vSrc=D.vu||(videoBlob?URL.createObjectURL(videoBlob):null);
+
+  if(vSrc){
+    player.src=vSrc;player.style.display='block';unavail.style.display='none';
+  } else if(D.hv||D.vu){
     player.style.display='none';unavail.style.display='block';
+    unavail.innerHTML=`🎬 <b style="color:#fff;font-size:1.15rem;">A Special Video Note</b><br><br>Recorded with all the love by <span style="color:var(--primary-light);font-weight:600;">${D.s}</span>! 💛`;
   }
 }
 
