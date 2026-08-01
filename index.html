@@ -732,11 +732,9 @@ async function generate(){
   S.year=document.getElementById('i-year').value.trim();
   S.letter=document.getElementById('i-letter').value.trim();
 
-  // Save photos to localStorage
-  if(S.photos.length>0){
-    try{localStorage.setItem(S.sessionKey+'_ph',JSON.stringify(S.photos));}
-    catch(e){console.warn('Photos may be too large for localStorage',e);}
-  }
+  const btn5=document.getElementById('btn5');
+  btn5.textContent='⏳ Creating your surprise...';
+  btn5.disabled=true;
 
   const urlData={
     s:S.sender,f:S.friend,nick:S.nick,met:S.met,
@@ -745,11 +743,34 @@ async function generate(){
     ph:S.photos,vu:S.videoUrl||'',
     sk:S.sessionKey,hp:S.photos.length>0,hv:(S.video!==null||Boolean(S.videoUrl))
   };
-  const encoded=btoa(encodeURIComponent(JSON.stringify(urlData)));
+
+  const jsonStr=JSON.stringify(urlData);
+  let linkHash='';
+
+  // Try dpaste.com payload shortener first for short URLs
+  try{
+    const fd=new FormData();
+    fd.append('content',jsonStr);
+    fd.append('expiry_days','365');
+    const res=await fetch('https://dpaste.com/api/v2/',{method:'POST',body:fd});
+    if(res.ok){
+      const dpUrl=(await res.text()).trim();
+      const code=dpUrl.split('/').filter(Boolean).pop();
+      if(code) linkHash='dp_'+code;
+    }
+  }catch(e){console.warn('Shortener fallback',e);}
+
+  if(!linkHash){
+    linkHash=btoa(encodeURIComponent(jsonStr));
+  }
+
   let urlObj=new URL(window.location.href);
   urlObj.pathname=urlObj.pathname.replace(/\/index\.html$|\/$/,'/friend.html');
-  urlObj.hash=encoded;
+  urlObj.hash=linkHash;
   const url=urlObj.href;
+
+  btn5.textContent='✨ Create the Surprise →';
+  btn5.disabled=false;
 
   // Build preview
   document.getElementById('prevFriend').textContent=S.nick||S.friend;

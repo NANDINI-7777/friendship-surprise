@@ -465,7 +465,16 @@ window.addEventListener('load',async()=>{
   const hash=window.location.hash.replace('#','');
   if(!hash){showErr();return;}
   try{
-    D=JSON.parse(decodeURIComponent(atob(hash)));
+    if(hash.startsWith('dp_')){
+      const code=hash.replace('dp_','');
+      const res=await fetch(`https://dpaste.com/${code}.txt`);
+      if(!res.ok)throw new Error('Cloud fetch failed');
+      const rawJson=await res.text();
+      D=JSON.parse(rawJson);
+    } else {
+      D=JSON.parse(decodeURIComponent(atob(hash)));
+    }
+
     if(!D.f||!D.s){showErr();return;}
     applyTheme(D.t||'pink');
     // Load photos: prioritize embedded array (D.ph) for cross-device support
