@@ -621,25 +621,66 @@ function prevPhoto(){showPhoto(photoIdx-1);}
 async function setupVideo(){
   const player=document.getElementById('vidPlayer');
   const unavail=document.getElementById('vidUnavail');
+  const vidCard=document.querySelector('.vid-card');
   let vSrc=D.vu||(videoBlob?URL.createObjectURL(videoBlob):null);
 
-  if(vSrc){
-    player.src=vSrc;player.style.display='block';unavail.style.display='none';
-    player.onloadedmetadata=()=>{
-      if(player.videoHeight>player.videoWidth){
-        player.style.aspectRatio='9/16';
-        player.style.maxHeight='68vh';
-        player.style.objectFit='cover';
-      } else {
-        player.style.aspectRatio='16/9';
-        player.style.maxHeight='340px';
-        player.style.objectFit='contain';
-      }
-    };
-  } else if(D.hv||D.vu){
+  if(!vSrc&&(D.hv||D.vu)){
     player.style.display='none';unavail.style.display='block';
     unavail.innerHTML=`🎬 <b style="color:#fff;font-size:1.15rem;">A Special Video Note</b><br><br>Recorded with all the love by <span style="color:var(--primary-light);font-weight:600;">${D.s}</span>! 💛`;
+    return;
   }
+  if(!vSrc)return;
+
+  // 1. Google Drive Link
+  if(vSrc.includes('drive.google.com')){
+    const match=vSrc.match(/\/file\/d\/([^\/\?]+)/)||vSrc.match(/id=([^\&]+)/);
+    if(match&&match[1]){
+      const fileId=match[1];
+      player.style.display='none';unavail.style.display='none';
+      let iframe=document.getElementById('gdriveIframe');
+      if(!iframe){
+        iframe=document.createElement('iframe');
+        iframe.id='gdriveIframe';
+        iframe.style.cssText='width:100%;height:440px;max-height:65vh;border:none;border-radius:18px;background:#000;display:block;';
+        iframe.allow='autoplay; encrypted-media; picture-in-picture';
+        vidCard.appendChild(iframe);
+      }
+      iframe.src=`https://drive.google.com/file/d/${fileId}/preview`;
+      return;
+    }
+  }
+
+  // 2. YouTube Link
+  if(vSrc.includes('youtube.com')||vSrc.includes('youtu.be')){
+    const ytMatch=vSrc.match(/(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))([\w-]{11})/);
+    if(ytMatch&&ytMatch[1]){
+      player.style.display='none';unavail.style.display='none';
+      let iframe=document.getElementById('ytIframe');
+      if(!iframe){
+        iframe=document.createElement('iframe');
+        iframe.id='ytIframe';
+        iframe.style.cssText='width:100%;aspect-ratio:16/9;border:none;border-radius:18px;background:#000;display:block;';
+        iframe.allow='autoplay; encrypted-media; picture-in-picture';
+        vidCard.appendChild(iframe);
+      }
+      iframe.src=`https://www.youtube.com/embed/${ytMatch[1]}?autoplay=1`;
+      return;
+    }
+  }
+
+  // 3. Direct MP4 / Blob Video
+  player.src=vSrc;player.style.display='block';unavail.style.display='none';
+  player.onloadedmetadata=()=>{
+    if(player.videoHeight>player.videoWidth){
+      player.style.aspectRatio='9/16';
+      player.style.maxHeight='68vh';
+      player.style.objectFit='cover';
+    } else {
+      player.style.aspectRatio='16/9';
+      player.style.maxHeight='340px';
+      player.style.objectFit='contain';
+    }
+  };
 }
 
 // ========= SWIPE CARDS =========
