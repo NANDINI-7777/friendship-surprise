@@ -739,8 +739,10 @@ async function generate(){
     sk:S.sessionKey,hp:S.photos.length>0,hv:S.video!==null
   };
   const encoded=btoa(encodeURIComponent(JSON.stringify(urlData)));
-  const base=window.location.href.split('#')[0].replace('index.html','friend.html');
-  const url=base+'#'+encoded;
+  let urlObj=new URL(window.location.href);
+  urlObj.pathname=urlObj.pathname.replace(/\/index\.html$|\/$/,'/friend.html');
+  urlObj.hash=encoded;
+  const url=urlObj.href;
 
   // Build preview
   document.getElementById('prevFriend').textContent=S.nick||S.friend;
@@ -815,6 +817,11 @@ function launchConfetti(){
 }
 
 // ========= INIT =========
+if(window.location.hash&&window.location.hash.length>10){
+  let target=new URL(window.location.href);
+  target.pathname=target.pathname.replace(/\/index\.html$|\/$/,'/friend.html');
+  window.location.href=target.href;
+}
 S.sessionKey='hf_'+Date.now().toString(36);
 createSparkles();
 updateBars();
