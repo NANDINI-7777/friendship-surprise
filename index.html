@@ -843,6 +843,7 @@ function shareWA(){
 }
 function makeAnother(){
   let target=new URL(window.location.href);
+  target.pathname=target.pathname.replace(/\/index(\.html)?$/, '/');
   target.hash='';
   target.search='';
   window.location.href=target.href;

@@ -287,7 +287,8 @@
   <div class="err-card">
     <div style="font-size:3rem;margin-bottom:16px;">💌</div>
     <h2 class="err-title">Hmm, nothing found here</h2>
-    <p class="err-sub">This link looks broken or incomplete. Ask your friend to resend the surprise link!</p>
+    <p class="err-sub">This link looks broken or incomplete. Create a new surprise for your friend!</p>
+    <button class="nav-btn" onclick="makeOwn()" style="margin-top:16px;">✨ Create a Surprise Now →</button>
   </div>
 </section>
 
@@ -478,7 +479,10 @@ const GENERIC_MEMS=[{e:'🎉',t:'That legendary day you both still talk about'},
 window.addEventListener('load',async()=>{
   createSparkles();
   const hash=window.location.hash.replace('#','');
-  if(!hash){showErr();return;}
+  if(!hash){
+    makeOwn();
+    return;
+  }
   try{
     if(hash.startsWith('dp_')){
       const code=hash.replace('dp_','');
@@ -978,7 +982,7 @@ function replayAll(){
 }
 function makeOwn(){
   let target=new URL(window.location.href);
-  target.pathname=target.pathname.replace(/\/friend\.html$/, '/index.html');
+  target.pathname=target.pathname.replace(/\/friend(\.html)?$/, '/');
   target.hash='';
   target.search='';
   window.location.href=target.href;
