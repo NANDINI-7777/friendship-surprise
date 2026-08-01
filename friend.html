@@ -864,28 +864,39 @@ function openEnvelope(){
 function playBuzzerSound(){
   try{
     const ctx=new(window.AudioContext||window.webkitAudioContext)();
-    const pulse=(st)=>{
-      const o1=ctx.createOscillator();const g1=ctx.createGain();
-      o1.type='sawtooth';
-      o1.frequency.setValueAtTime(145,st);
-      o1.frequency.linearRampToValueAtTime(130,st+0.16);
-      g1.gain.setValueAtTime(0.6,st);
-      g1.gain.linearRampToValueAtTime(0.01,st+0.16);
-      o1.connect(g1);g1.connect(ctx.destination);
+    const now=ctx.currentTime;
 
-      const o2=ctx.createOscillator();const g2=ctx.createGain();
-      o2.type='square';
-      o2.frequency.setValueAtTime(72,st);
-      g2.gain.setValueAtTime(0.4,st);
-      g2.gain.linearRampToValueAtTime(0.01,st+0.16);
-      o2.connect(g2);g2.connect(ctx.destination);
+    // 1. Lightning Crack / Crash (Filtered Noise Burst)
+    const bufSize=ctx.sampleRate*0.5;
+    const buf=ctx.createBuffer(1,bufSize,ctx.sampleRate);
+    const data=buf.getChannelData(0);
+    for(let i=0;i<bufSize;i++) data[i]=Math.random()*2-1;
 
-      o1.start(st);o2.start(st);
-      o1.stop(st+0.16);o2.stop(st+0.16);
-    };
-    const t0=ctx.currentTime;
-    pulse(t0);
-    pulse(t0+0.19);
+    const noise=ctx.createBufferSource();
+    noise.buffer=buf;
+    const filter=ctx.createBiquadFilter();
+    filter.type='lowpass';
+    filter.frequency.setValueAtTime(900,now);
+    filter.frequency.exponentialRampToValueAtTime(100,now+0.48);
+
+    const ng=ctx.createGain();
+    ng.gain.setValueAtTime(0.85,now);
+    ng.gain.exponentialRampToValueAtTime(0.01,now+0.48);
+    noise.connect(filter);filter.connect(ng);ng.connect(ctx.destination);
+
+    // 2. Deep Thundering Sub-Bass Boom (90Hz -> 25Hz Pitch Drop)
+    const osc=ctx.createOscillator();
+    const og=ctx.createGain();
+    osc.type='sawtooth';
+    osc.frequency.setValueAtTime(95,now);
+    osc.frequency.exponentialRampToValueAtTime(24,now+0.52);
+
+    og.gain.setValueAtTime(0.9,now);
+    og.gain.exponentialRampToValueAtTime(0.01,now+0.52);
+    osc.connect(og);og.connect(ctx.destination);
+
+    noise.start(now);osc.start(now);
+    noise.stop(now+0.52);osc.stop(now+0.52);
   }catch(e){}
 }
 
