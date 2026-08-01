@@ -977,8 +977,11 @@ function replayAll(){
   showScreen(0);
 }
 function makeOwn(){
-  const url=window.location.href.replace('friend.html','index.html').split('#')[0];
-  window.open(url,'_blank');
+  let target=new URL(window.location.href);
+  target.pathname=target.pathname.replace(/\/friend\.html$/, '/index.html');
+  target.hash='';
+  target.search='';
+  window.location.href=target.href;
 }
 
 // ========= INDEXEDDB =========

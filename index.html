@@ -842,7 +842,10 @@ function shareWA(){
   window.open('https://wa.me/?text='+encodeURIComponent(msg),'_blank');
 }
 function makeAnother(){
-  location.reload();
+  let target=new URL(window.location.href);
+  target.hash='';
+  target.search='';
+  window.location.href=target.href;
 }
 
 // ========= SPARKLES =========
