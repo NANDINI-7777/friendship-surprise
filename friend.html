@@ -486,7 +486,10 @@ window.addEventListener('load',async()=>{
   try{
     if(hash.startsWith('dp_')){
       const code=hash.replace('dp_','');
-      const res=await fetch(`https://dpaste.com/${code}.txt`);
+      const controller=new AbortController();
+      const tid=setTimeout(()=>controller.abort(),8000);
+      const res=await fetch(`https://dpaste.com/${code}.txt`,{signal:controller.signal});
+      clearTimeout(tid);
       if(!res.ok)throw new Error('Cloud fetch failed');
       const rawJson=await res.text();
       D=JSON.parse(rawJson);
