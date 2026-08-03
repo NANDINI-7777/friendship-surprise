@@ -1018,49 +1018,18 @@ function openEnvelope(){
   setTimeout(()=>nextScreen(),900);
 }
 
-function playBuzzerSound(){
+function triggerVibration(){
   try{
-    const ctx=new(window.AudioContext||window.webkitAudioContext)();
-    const now=ctx.currentTime;
-
-    // 1. Lightning Crack / Crash (Filtered Noise Burst)
-    const bufSize=ctx.sampleRate*0.5;
-    const buf=ctx.createBuffer(1,bufSize,ctx.sampleRate);
-    const data=buf.getChannelData(0);
-    for(let i=0;i<bufSize;i++) data[i]=Math.random()*2-1;
-
-    const noise=ctx.createBufferSource();
-    noise.buffer=buf;
-    const filter=ctx.createBiquadFilter();
-    filter.type='lowpass';
-    filter.frequency.setValueAtTime(900,now);
-    filter.frequency.exponentialRampToValueAtTime(100,now+0.48);
-
-    const ng=ctx.createGain();
-    ng.gain.setValueAtTime(0.85,now);
-    ng.gain.exponentialRampToValueAtTime(0.01,now+0.48);
-    noise.connect(filter);filter.connect(ng);ng.connect(ctx.destination);
-
-    // 2. Deep Thundering Sub-Bass Boom (90Hz -> 25Hz Pitch Drop)
-    const osc=ctx.createOscillator();
-    const og=ctx.createGain();
-    osc.type='sawtooth';
-    osc.frequency.setValueAtTime(95,now);
-    osc.frequency.exponentialRampToValueAtTime(24,now+0.52);
-
-    og.gain.setValueAtTime(0.9,now);
-    og.gain.exponentialRampToValueAtTime(0.01,now+0.52);
-    osc.connect(og);og.connect(ctx.destination);
-
-    noise.start(now);osc.start(now);
-    noise.stop(now+0.52);osc.stop(now+0.52);
+    if(navigator.vibrate){
+      navigator.vibrate([200, 100, 200, 100, 300]);
+    }
   }catch(e){}
 }
 
 const dnpReacts=["I SAID DON'T!! 😤","Oh no you didn't!! 😱","You absolute rebel 💀","Ok but WHY tho 😭","You're literally unstoppable 🤣","YOUR FINGER IS STILL GOING??? 😭","I give up. You win. 🏳️","Ok legend, I bow down 👑","HELPPP 😂😂","Fine. FINE. 🙄","I'm not even mad. I'm impressed. 🫡","At this point you're doing it on purpose 💅"];
 function pressDnp(){
   dnpN++;
-  playBuzzerSound();
+  triggerVibration();
   const react=document.getElementById('dnpReact');
   react.style.animation='none';void react.offsetWidth;
   react.style.animation='eBurst .4s ease both';
