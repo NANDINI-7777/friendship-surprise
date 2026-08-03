@@ -3,22 +3,23 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5, viewport-fit=cover"/>
-  <title>Friendship Surprise Creator 💌</title>
+  <title>HeartCraft — Send Someone a Surprise 💌</title>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💌</text></svg>"/>
-  <meta name="description" content="Create a personalized interactive friendship surprise experience with photos, a video, and a letter."/>
-  <meta property="og:title" content="Friendship Surprise Creator 💌"/>
-  <meta property="og:description" content="Create a personalized interactive friendship surprise experience with photos, a video, and a letter."/>
+  <meta name="description" content="Create a personalized interactive surprise experience — for any occasion. Photos, video, a letter, and so much more."/>
+  <meta property="og:title" content="HeartCraft — Send Someone a Surprise 💌"/>
+  <meta property="og:description" content="Create a personalized interactive surprise — for any occasion. Photos, video, a letter, and so much more."/>
   <meta property="og:type" content="website"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@400;500;600;700;800&family=Caveat:wght@500;600;700&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400;1,500&family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Space+Grotesk:wght@400;500;600;700&family=Caveat:wght@500;600;700&display=swap" rel="stylesheet"/>
   <style>
     :root {
       --primary:#e84393; --primary-dark:#d63384; --primary-light:#fd79a8;
       --accent:#f9ca24; --accent2:#6c5ce7; --teal:#00cec9;
-      --font-d:'DM Serif Display',Georgia,serif;
-      --font-b:'Inter',system-ui,sans-serif;
+      --font-d:'Playfair Display',Georgia,serif;
+      --font-b:'Space Grotesk',system-ui,sans-serif;
       --font-h:'Caveat',cursive;
+      --font-l:'Lora',Georgia,serif;
     }
     *,*::before,*::after{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
     html,body{margin:0;padding:0;min-height:100vh;}
@@ -57,25 +58,25 @@
     @keyframes cfFall{0%{opacity:1;transform:translateY(-20px) rotate(0)}100%{opacity:0;transform:translateY(110vh) rotate(720deg)}}
 
     /* Pages */
-    .page{min-height:100vh;width:100%;display:none;flex-direction:column;justify-content:center;align-items:center;padding:30px 20px 60px;position:relative;z-index:10;}
+    .page{min-height:100vh;width:100%;display:none;flex-direction:column;justify-content:center;align-items:center;padding:30px 20px 80px;position:relative;z-index:10;}
     .page.active{display:flex;animation:pageIn .4s ease both;}
     @keyframes pageIn{from{opacity:0;transform:translateX(24px)}to{opacity:1;transform:translateX(0)}}
 
     /* Landing */
-    .landing{max-width:760px;width:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:24px;}
+    .landing{max-width:780px;width:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:28px;}
     .badge{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);border-radius:50px;padding:8px 20px;font-size:.78rem;font-weight:600;color:rgba(255,255,255,.7);letter-spacing:.08em;text-transform:uppercase;}
     .badge-dot{width:6px;height:6px;border-radius:50%;background:#f9ca24;animation:dotPulse 2s ease-in-out infinite;}
     @keyframes dotPulse{0%,100%{opacity:1}50%{opacity:.3}}
-    .hero-title{font-family:var(--font-d);font-size:clamp(2.1rem,5.5vw,3.6rem);font-weight:400;line-height:1.16;letter-spacing:-.015em;color:rgba(255,255,255,.94);margin:0 0 14px;padding:0 8px;}
+    .hero-title{font-family:var(--font-d);font-size:clamp(2.1rem,5.5vw,3.8rem);font-weight:400;line-height:1.16;letter-spacing:-.015em;color:rgba(255,255,255,.94);margin:0 0 14px;padding:0 8px;}
     .shimmer{
       background:linear-gradient(90deg,var(--primary) 0%,var(--accent) 20%,var(--primary) 40%,var(--primary-light) 60%,var(--accent) 80%,var(--primary) 100%);
       background-size:200% auto;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
       animation:shimmerTxt 3s linear infinite;font-style:italic;
     }
     @keyframes shimmerTxt{0%{background-position:0%}100%{background-position:200%}}
-    .hero-sub{font-size:1.02rem;color:rgba(255,255,255,.45);margin:0 auto;line-height:1.65;max-width:540px;}
-    .pills{display:grid;grid-template-columns:repeat(3,minmax(140px,auto));justify-content:center;align-items:center;gap:12px;max-width:560px;width:100%;margin:4px auto;}
-    .pill{display:flex;align-items:center;justify-content:center;gap:8px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.11);border-radius:50px;padding:10px 18px;font-size:.85rem;font-weight:500;color:rgba(255,255,255,.65);transition:all .25s ease;white-space:nowrap;}
+    .hero-sub{font-size:1.02rem;color:rgba(255,255,255,.45);margin:0 auto;line-height:1.65;max-width:560px;font-family:var(--font-l);font-style:italic;}
+    .pills{display:grid;grid-template-columns:repeat(3,minmax(140px,auto));justify-content:center;align-items:center;gap:10px;max-width:560px;width:100%;margin:4px auto;}
+    .pill{display:flex;align-items:center;justify-content:center;gap:8px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.11);border-radius:50px;padding:10px 18px;font-size:.82rem;font-weight:500;color:rgba(255,255,255,.65);transition:all .25s ease;white-space:nowrap;}
     .pill:hover{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.25);transform:translateY(-2px);}
     .cta{background:linear-gradient(135deg,var(--primary),var(--primary-dark));color:#fff;border:none;padding:17px 46px;font-size:1.1rem;font-weight:700;font-family:var(--font-b);border-radius:50px;cursor:pointer;transition:all .3s cubic-bezier(.22,1,.36,1);box-shadow:0 12px 30px rgba(232,67,147,.3);position:relative;overflow:hidden;margin-top:6px;animation:ctaPulse 2s ease-in-out 1.5s infinite;}
     .cta::before{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.22),transparent);animation:sweep 3s ease-in-out infinite;}
@@ -84,21 +85,21 @@
     .cta:hover{transform:translateY(-3px) scale(1.04);}
 
     /* Footer */
-    .site-footer{position:absolute;bottom:18px;left:0;right:0;text-align:center;z-index:20;}
-    .footer-text{font-size:.83rem;color:rgba(255,255,255,.5);font-family:var(--font-b);letter-spacing:.03em;margin:0 0 5px;}
-    .footer-heart{display:inline-block;animation:dotPulse 1.8s ease-in-out infinite;}
-    .footer-name{color:var(--primary-light);font-weight:600;}
-    .footer-links{display:flex;align-items:center;justify-content:center;gap:14px;margin-top:3px;}
-    .footer-link{color:rgba(255,255,255,.45);font-size:.78rem;text-decoration:none;transition:all .2s;display:inline-flex;align-items:center;gap:4px;}
+    .site-footer{position:absolute;bottom:16px;left:0;right:0;text-align:center;z-index:20;}
+    .footer-inner{display:flex;flex-direction:column;align-items:center;gap:5px;}
+    .footer-brand{font-family:var(--font-l);font-size:.82rem;color:rgba(255,255,255,.38);font-style:italic;letter-spacing:.03em;}
+    .footer-links{display:flex;align-items:center;justify-content:center;gap:14px;}
+    .footer-link{color:rgba(255,255,255,.35);font-size:.76rem;text-decoration:none;transition:all .2s;display:inline-flex;align-items:center;gap:4px;font-weight:500;}
     .footer-link:hover{color:var(--primary-light);transform:translateY(-1px);}
+    .footer-sep{color:rgba(255,255,255,.15);font-size:.7rem;}
 
     /* Card wrapper */
     .form-wrap{max-width:500px;width:100%;}
     .card{background:rgba(255,255,255,.97);border:1px solid rgba(255,255,255,.7);box-shadow:0 20px 50px rgba(112,68,80,.2);border-radius:28px;padding:28px 22px 24px;position:relative;z-index:10;}
     .card-hd{text-align:center;margin-bottom:20px;}
-    .card-step{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.16em;color:var(--primary);margin:0 0 5px;}
+    .card-step{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.16em;color:var(--primary);margin:0 0 5px;font-family:var(--font-b);}
     .card-title{font-family:var(--font-d);font-size:clamp(1.45rem,4vw,1.9rem);color:#1a0e2e;margin:0 0 5px;font-weight:400;}
-    .card-sub{margin:0;color:rgba(122,74,90,.75);font-size:.88rem;}
+    .card-sub{margin:0;color:rgba(122,74,90,.75);font-size:.88rem;font-family:var(--font-l);font-style:italic;}
     /* Progress bar */
     .step-bar{display:flex;gap:5px;margin-bottom:18px;}
     .step-seg{height:4px;border-radius:2px;flex:1;background:rgba(194,64,126,.1);transition:background .4s ease;}
@@ -110,15 +111,15 @@
 
     /* Fields */
     .field{margin-bottom:13px;}
-    .field label{display:block;font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:#7a4a5a;margin-bottom:5px;padding-left:2px;}
-    .field input,.field textarea{width:100%;border-radius:14px;border:1.5px solid rgba(196,150,140,.5);padding:13px 15px;font-size:.97rem;font-family:var(--font-b);color:#6b4b51;background:rgba(255,255,255,.85);outline:none;transition:border-color .2s,box-shadow .2s;box-shadow:inset 0 2px 5px rgba(122,74,90,.07);}
-    .field input:focus,.field textarea:focus{border-color:#c2407e;box-shadow:inset 0 2px 5px rgba(122,74,90,.07),0 0 0 3px rgba(194,64,126,.1);}
+    .field label{display:block;font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:#7a4a5a;margin-bottom:5px;padding-left:2px;font-family:var(--font-b);}
+    .field input,.field textarea,.field select{width:100%;border-radius:14px;border:1.5px solid rgba(196,150,140,.5);padding:13px 15px;font-size:.97rem;font-family:var(--font-l);color:#6b4b51;background:rgba(255,255,255,.85);outline:none;transition:border-color .2s,box-shadow .2s;box-shadow:inset 0 2px 5px rgba(122,74,90,.07);}
+    .field input:focus,.field textarea:focus,.field select:focus{border-color:#c2407e;box-shadow:inset 0 2px 5px rgba(122,74,90,.07),0 0 0 3px rgba(194,64,126,.1);}
     .field input::placeholder,.field textarea::placeholder{color:rgba(122,74,90,.45);}
     .field textarea{min-height:130px;resize:vertical;line-height:1.65;}
     .field-row{display:flex;gap:10px;}
     .field-row .field{flex:1;margin-bottom:0;}
     .char-count{text-align:right;font-size:.7rem;color:rgba(90,53,69,.4);margin-top:4px;}
-    .field-h{font-family:var(--font-d);font-size:.93rem;font-weight:400;color:#1a0e2e;margin:4px 0 8px;text-align:center;}
+    .field-h{font-family:var(--font-d);font-size:.95rem;font-weight:400;color:#1a0e2e;margin:4px 0 8px;text-align:center;font-style:italic;}
 
     /* Option grids */
     .opt-grid{display:grid;gap:8px;margin-bottom:12px;}
@@ -129,9 +130,18 @@
     .opt.sel{border-color:#c2407e;background:linear-gradient(135deg,rgba(255,240,245,1),rgba(255,255,255,1));box-shadow:0 6px 16px rgba(194,64,126,.2);}
     .opt .oi{font-size:1.2rem;flex-shrink:0;}
 
+    /* Occasion grid */
+    .occ-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:16px;width:100%;}
+    .occ-card{display:flex;flex-direction:column;align-items:center;gap:8px;padding:16px 10px;border-radius:18px;border:1.5px solid rgba(196,150,140,.35);background:rgba(255,255,255,.93);color:#6b4b51;cursor:pointer;transition:all .22s ease;}
+    .occ-card:hover{transform:translateY(-3px);box-shadow:0 10px 24px rgba(112,68,80,.18);}
+    .occ-card.sel{border-color:#c2407e;background:linear-gradient(135deg,rgba(255,235,248,1),rgba(255,255,255,1));box-shadow:0 8px 22px rgba(194,64,126,.22);}
+    .occ-icon{font-size:1.8rem;line-height:1;}
+    .occ-label{font-size:.82rem;font-weight:700;font-family:var(--font-b);color:#5a3448;text-align:center;line-height:1.3;}
+    .occ-desc{font-size:.7rem;color:rgba(122,74,90,.6);font-family:var(--font-l);font-style:italic;text-align:center;}
+
     /* Theme picker */
     .theme-row{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:12px;}
-    .theme-chip{display:flex;align-items:center;gap:7px;padding:7px 13px;border-radius:50px;border:2px solid rgba(196,150,140,.35);background:rgba(255,255,255,.9);color:#6b4b51;font-size:.8rem;font-weight:600;cursor:pointer;transition:all .2s;white-space:nowrap;}
+    .theme-chip{display:flex;align-items:center;gap:7px;padding:7px 13px;border-radius:50px;border:2px solid rgba(196,150,140,.35);background:rgba(255,255,255,.9);color:#6b4b51;font-size:.8rem;font-weight:600;cursor:pointer;transition:all .2s;white-space:nowrap;font-family:var(--font-b);}
     .theme-chip:hover{transform:translateY(-1px);}
     .theme-chip.sel{box-shadow:0 4px 14px rgba(0,0,0,.18);}
     .theme-dot{width:12px;height:12px;border-radius:50%;flex-shrink:0;}
@@ -140,9 +150,9 @@
     .photo-dz{border:2px dashed rgba(196,150,140,.5);border-radius:18px;padding:22px 14px;text-align:center;cursor:pointer;transition:all .2s;background:rgba(255,255,255,.5);margin-bottom:14px;}
     .photo-dz:hover,.photo-dz.over{border-color:#c2407e;background:rgba(255,240,245,.75);box-shadow:0 0 0 3px rgba(194,64,126,.08);}
     .dz-icon{font-size:2.2rem;margin-bottom:6px;}
-    .dz-title{font-weight:700;color:#6b4b51;font-size:.9rem;margin:0 0 3px;}
-    .dz-hint{font-size:.76rem;color:rgba(122,74,90,.55);margin:0 0 12px;}
-    .dz-btn{padding:8px 22px;border-radius:20px;background:linear-gradient(135deg,#c2407e,#e88aab);color:#fff;border:none;font-size:.84rem;font-weight:700;cursor:pointer;transition:all .2s;}
+    .dz-title{font-weight:700;color:#6b4b51;font-size:.9rem;margin:0 0 3px;font-family:var(--font-b);}
+    .dz-hint{font-size:.76rem;color:rgba(122,74,90,.55);margin:0 0 12px;font-family:var(--font-l);font-style:italic;}
+    .dz-btn{padding:8px 22px;border-radius:20px;background:linear-gradient(135deg,#c2407e,#e88aab);color:#fff;border:none;font-size:.84rem;font-weight:700;cursor:pointer;transition:all .2s;font-family:var(--font-b);}
     .dz-btn:hover{transform:translateY(-1px);box-shadow:0 4px 12px rgba(194,64,126,.3);}
 
     /* Photo grid */
@@ -158,58 +168,56 @@
 
     /* Video zone */
     .vid-section{margin-top:4px;}
-    .vid-dz{border:2px dashed rgba(196,150,140,.4);border-radius:16px;padding:16px;text-align:center;cursor:pointer;transition:all .2s;background:rgba(255,255,255,.4);}
-    .vid-dz:hover{border-color:#c2407e;background:rgba(255,240,245,.6);}
-    .vid-preview-wrap{position:relative;border-radius:18px;overflow:hidden;background:#000;margin-top:8px;max-width:320px;margin-left:auto;margin-right:auto;}
-    .vid-preview-wrap video{width:100%;max-height:360px;object-fit:contain;display:block;}
-    .vid-rm{position:absolute;top:8px;right:8px;background:rgba(220,38,38,.9);color:#fff;border:none;border-radius:50%;width:28px;height:28px;font-size:.8rem;cursor:pointer;font-weight:700;display:flex;align-items:center;justify-content:center;}
+    .vid-dz{border:2px dashed rgba(108,92,231,.4);border-radius:16px;padding:18px 14px;text-align:center;cursor:pointer;transition:all .2s;background:rgba(108,92,231,.05);margin-bottom:10px;}
+    .vid-dz:hover{border-color:#6c5ce7;background:rgba(108,92,231,.1);}
+    .vid-preview-wrap{position:relative;margin-bottom:8px;}
+    .vid-preview-wrap video{width:100%;border-radius:14px;max-height:200px;background:#000;}
+    .vid-rm{position:absolute;top:6px;right:6px;width:24px;height:24px;border-radius:50%;background:rgba(220,38,38,.9);color:#fff;border:none;font-size:.75rem;cursor:pointer;display:flex;align-items:center;justify-content:center;font-weight:700;}
 
-    /* Memory input */
-    .mem-row{display:flex;gap:8px;margin-bottom:12px;}
-    .mem-inp{flex:1;border-radius:14px;border:1.5px solid rgba(196,150,140,.5);padding:11px 14px;font-size:.92rem;font-family:var(--font-b);color:#6b4b51;background:rgba(255,255,255,.85);outline:none;transition:border-color .2s;}
-    .mem-inp:focus{border-color:#c2407e;}
-    .mem-inp::placeholder{color:rgba(122,74,90,.45);}
-    .btn-add{padding:11px 16px;border-radius:14px;background:linear-gradient(135deg,#c2407e,#e88aab);color:#fff;border:none;font-size:1.2rem;font-weight:700;cursor:pointer;transition:all .2s;white-space:nowrap;}
-    .btn-add:hover{transform:translateY(-1px);}
-    .mem-chips{display:flex;flex-wrap:wrap;gap:7px;}
-    .mem-chip{display:flex;align-items:center;gap:6px;background:linear-gradient(135deg,rgba(255,240,245,1),#fff);border:1.5px solid rgba(194,64,126,.25);border-radius:50px;padding:7px 12px;font-size:.81rem;font-weight:600;color:#8c5b60;}
-    .mem-chip-rm{width:16px;height:16px;border-radius:50%;background:rgba(194,64,126,.12);border:none;color:#c2407e;font-size:.65rem;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;}
-    .small-note{font-size:.74rem;color:rgba(90,53,69,.4);margin-top:8px;}
+    /* Memories */
+    .mem-row{display:flex;gap:8px;margin-bottom:10px;}
+    .mem-inp{flex:1;border-radius:14px;border:1.5px solid rgba(196,150,140,.45);padding:12px 14px;font-size:.9rem;font-family:var(--font-l);color:#6b4b51;background:rgba(255,255,255,.9);outline:none;transition:border-color .2s;}
+    .mem-inp:focus{border-color:#c2407e;box-shadow:0 0 0 3px rgba(194,64,126,.1);}
+    .btn-add{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,#c2407e,#e88aab);color:#fff;border:none;font-size:1.3rem;cursor:pointer;transition:all .2s;flex-shrink:0;align-self:center;}
+    .btn-add:hover{transform:scale(1.08);}
+    .mem-chips{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:6px;}
+    .mem-chip{display:inline-flex;align-items:center;gap:6px;background:rgba(255,240,245,.9);border:1px solid rgba(194,64,126,.25);border-radius:50px;padding:6px 12px;font-size:.82rem;color:#8c5b60;font-family:var(--font-l);}
+    .mem-chip-rm{background:none;border:none;color:#c2407e;cursor:pointer;font-size:.85rem;padding:0;line-height:1;font-weight:700;}
+    .small-note{font-size:.74rem;color:rgba(122,74,90,.55);margin:0 0 8px;text-align:center;font-family:var(--font-l);font-style:italic;}
+    .skip-link{display:block;text-align:center;font-size:.8rem;color:rgba(255,255,255,.35);cursor:pointer;margin-top:10px;text-decoration:underline;transition:color .2s;font-family:var(--font-l);font-style:italic;}
+    .skip-link:hover{color:rgba(255,255,255,.65);}
 
-    /* Next btn */
-    .btn-next{width:100%;max-width:280px;border:none;border-radius:14px;padding:14px 28px;font-size:1rem;font-weight:700;font-family:var(--font-b);color:#fff;background:linear-gradient(135deg,#c2407e,#e88aab);box-shadow:0 10px 25px rgba(194,64,126,.35);cursor:pointer;transition:all .3s cubic-bezier(.4,0,.2,1);margin-top:8px;}
-    .btn-next:disabled{opacity:.4;cursor:not-allowed;box-shadow:none;transform:none;}
-    .btn-next:not(:disabled):hover{transform:translateY(-3px);box-shadow:0 15px 35px rgba(194,64,126,.48);}
-    .skip-link{display:block;font-size:.78rem;color:rgba(122,74,90,.5);margin-top:10px;cursor:pointer;transition:color .2s;text-decoration:underline;}
-    .skip-link:hover{color:#c2407e;}
+    /* Buttons */
+    .btn-next{background:linear-gradient(135deg,#c2407e,#e88aab);color:#fff;border:none;padding:14px 36px;font-size:1.02rem;font-weight:700;border-radius:50px;cursor:pointer;transition:all .3s cubic-bezier(.22,1,.36,1);box-shadow:0 10px 24px rgba(194,64,126,.3);font-family:var(--font-b);}
+    .btn-next:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 14px 30px rgba(194,64,126,.4);}
+    .btn-next:disabled{opacity:.45;cursor:not-allowed;}
 
-    /* Preview page */
-    .prev-wrap{max-width:500px;width:100%;display:flex;flex-direction:column;align-items:center;gap:16px;padding-bottom:50px;}
-    .prev-title{font-family:var(--font-d);font-size:clamp(1.8rem,5vw,2.6rem);color:rgba(255,255,255,.93);margin:0;font-weight:400;}
-    .prev-sub{color:rgba(255,255,255,.4);font-size:.92rem;margin:0;}
-    .prev-card{background:rgba(255,255,255,.97);border-radius:22px;padding:22px;width:100%;box-shadow:0 20px 50px rgba(0,0,0,.15);}
-    .prev-friend{font-family:var(--font-d);font-size:1.4rem;color:#c2407e;margin:0 0 3px;}
-    .prev-from{color:rgba(122,74,90,.6);font-size:.84rem;margin:0 0 16px;}
-    .prev-rows{display:flex;flex-direction:column;gap:8px;}
-    .prev-row{display:flex;justify-content:space-between;align-items:center;padding:9px 11px;background:rgba(194,64,126,.05);border-radius:10px;}
-    .prev-lbl{font-weight:600;color:#7a4a5a;font-size:.82rem;}
-    .prev-val{color:#333;font-size:.82rem;text-align:right;max-width:58%;}
-    .photo-strip{display:flex;gap:6px;overflow-x:auto;padding:8px 0 2px;margin-top:10px;}
-    .photo-strip img{width:52px;height:52px;border-radius:8px;object-fit:cover;flex-shrink:0;border:2px solid rgba(194,64,126,.25);}
-    .link-box{background:rgba(255,255,255,.97);border-radius:18px;padding:18px;width:100%;box-shadow:0 10px 30px rgba(0,0,0,.1);}
-    .link-label{font-family:var(--font-d);font-size:.95rem;color:#1a0e2e;margin:0 0 10px;font-weight:400;}
-    .link-row{display:flex;gap:7px;align-items:stretch;}
-    .link-url{flex:1;padding:9px 12px;border:1.5px solid #e0e0e0;border-radius:10px;font-size:.76rem;color:#666;background:#f9f9f9;word-break:break-all;font-family:monospace;cursor:text;user-select:all;}
-    .btn-copy{padding:9px 16px;background:linear-gradient(135deg,#c2407e,#a83569);color:#fff;border:none;border-radius:10px;font-weight:700;font-size:.82rem;cursor:pointer;transition:all .3s;white-space:nowrap;}
-    .btn-copy:hover{transform:translateY(-2px);box-shadow:0 5px 15px rgba(194,64,126,.3);}
-    .btn-copy.copied{background:linear-gradient(135deg,#00b894,#00a878);}
-    .link-note{font-size:.7rem;color:rgba(90,53,69,.5);margin:6px 0 0;text-align:center;}
-    .btn-wa{width:100%;display:flex;align-items:center;justify-content:center;gap:10px;padding:14px 20px;background:linear-gradient(135deg,#25d366,#128c7e);color:#fff;border:none;border-radius:14px;font-weight:700;font-size:1rem;cursor:pointer;transition:all .2s;box-shadow:0 6px 20px rgba(37,211,102,.25);}
-    .btn-wa:hover{transform:translateY(-2px);box-shadow:0 10px 28px rgba(37,211,102,.38);}
-    .btn-sec{background:transparent;border:1.5px solid rgba(255,255,255,.18);color:rgba(255,255,255,.45);border-radius:12px;padding:11px 22px;font-family:var(--font-b);font-size:.88rem;font-weight:600;cursor:pointer;transition:all .2s;}
+    /* Preview */
+    .prev-wrap{max-width:440px;width:100%;display:flex;flex-direction:column;gap:16px;align-items:center;}
+    .prev-title{font-family:var(--font-d);font-size:2rem;font-weight:400;font-style:italic;color:rgba(255,255,255,.9);margin:0;}
+    .prev-sub{font-size:.95rem;color:rgba(255,255,255,.5);margin:0;font-family:var(--font-l);font-style:italic;}
+    .prev-card{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:22px;padding:20px;width:100%;}
+    .prev-friend{font-family:var(--font-d);font-size:1.6rem;font-style:italic;color:var(--primary-light);margin:0 0 4px;}
+    .prev-from{font-size:.85rem;color:rgba(255,255,255,.45);margin:0 0 16px;font-family:var(--font-l);font-style:italic;}
+    .prev-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.07);font-size:.85rem;}
+    .prev-row:last-child{border-bottom:none;}
+    .prev-lbl{color:rgba(255,255,255,.4);font-family:var(--font-b);font-weight:500;}
+    .prev-val{color:rgba(255,255,255,.8);font-weight:600;font-family:var(--font-l);}
+    .photo-strip{display:flex;gap:6px;margin-top:10px;overflow:hidden;border-radius:10px;}
+    .photo-strip img{width:60px;height:60px;object-fit:cover;border-radius:8px;flex-shrink:0;}
+    .link-box{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:18px;padding:16px;width:100%;}
+    .link-label{font-size:.7rem;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,.4);margin:0 0 8px;font-family:var(--font-b);font-weight:600;}
+    .link-row{display:flex;gap:8px;align-items:center;}
+    .link-url{flex:1;font-size:.77rem;color:rgba(255,255,255,.65);word-break:break-all;text-align:left;font-family:var(--font-l);}
+    .btn-copy{padding:9px 16px;border-radius:12px;background:linear-gradient(135deg,#c2407e,#e88aab);color:#fff;border:none;font-size:.82rem;font-weight:700;cursor:pointer;transition:all .2s;white-space:nowrap;font-family:var(--font-b);}
+    .btn-copy.copied{background:linear-gradient(135deg,#00b894,#00cec9);}
+    .link-note{font-size:.74rem;color:rgba(255,255,255,.3);margin:8px 0 0;font-family:var(--font-l);font-style:italic;}
+    .btn-wa{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;padding:15px;border-radius:18px;background:linear-gradient(135deg,#25d366,#128c7e);color:#fff;border:none;font-size:1rem;font-weight:700;cursor:pointer;transition:all .3s;box-shadow:0 8px 22px rgba(37,211,102,.25);font-family:var(--font-b);}
+    .btn-wa:hover{transform:translateY(-2px);box-shadow:0 12px 28px rgba(37,211,102,.35);}
+    .btn-sec{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.16);color:rgba(255,255,255,.6);padding:13px 28px;border-radius:50px;font-size:.92rem;font-weight:600;cursor:pointer;transition:all .25s;font-family:var(--font-b);}
     .btn-sec:hover{border-color:rgba(255,255,255,.35);color:rgba(255,255,255,.75);}
 
-    @media(max-width:480px){.card{padding:20px 15px 18px;}.photo-grid{gap:6px;}.hero-title{font-size:1.9rem;}}
+    @media(max-width:480px){.card{padding:20px 15px 18px;}.photo-grid{gap:6px;}.hero-title{font-size:1.9rem;}.occ-grid{grid-template-columns:repeat(2,1fr);gap:8px;}}
   </style>
 </head>
 <body>
@@ -221,30 +229,34 @@
   <div class="landing">
     <div class="badge"><span class="badge-dot"></span>Interactive Gift Experience</div>
     <div>
-      <h1 class="hero-title">A tiny place on the internet,<br><span class="shimmer">made just for your friend</span></h1>
-      <p class="hero-sub">Send an interactive surprise link — with your photos, a video message, a personal letter, and so much more.</p>
+      <h1 class="hero-title">A tiny place on the internet,<br><span class="shimmer">made just for someone special</span></h1>
+      <p class="hero-sub">Send an interactive surprise link — with your photos, a video message, a personal letter, and so much more. For any occasion.</p>
     </div>
     <div class="pills">
       <div class="pill">🏛️ Museum of Us</div>
       <div class="pill">📸 Photos + Video</div>
       <div class="pill">🚨 Do-Not-Press Button</div>
       <div class="pill">💌 Tear-Open Letter</div>
-      <div class="pill">✍️ Friendship Pact</div>
+      <div class="pill">✍️ Custom Pact</div>
       <div class="pill">🎨 Custom Themes</div>
     </div>
-    <button class="cta" onclick="goTo(1)">🎁 Start the Surprise</button>
+    <button class="cta" onclick="goTo(1)">🎁 Start Creating</button>
   </div>
   <footer class="site-footer">
-    <p class="footer-text">Crafted with <span class="footer-heart">💖</span> for <span class="footer-name">Priya</span> · Built by <span class="footer-name">Nandini</span></p>
-    <div class="footer-links">
-      <a class="footer-link" href="https://www.linkedin.com/in/nandini-soni-89817029a/" target="_blank" rel="noopener">💼 LinkedIn</a>
-      <a class="footer-link" href="https://github.com/NANDINI-7777" target="_blank" rel="noopener">💻 GitHub</a>
-      <a class="footer-link" href="mailto:nandinisoni7014@gmail.com">✉️ Email</a>
+    <div class="footer-inner">
+      <span class="footer-brand">Built with 💌 by Nandini Soni</span>
+      <div class="footer-links">
+        <a class="footer-link" href="https://www.linkedin.com/in/nandini-soni-89817029a/" target="_blank" rel="noopener">💼 LinkedIn</a>
+        <span class="footer-sep">·</span>
+        <a class="footer-link" href="https://github.com/NANDINI-7777" target="_blank" rel="noopener">💻 GitHub</a>
+        <span class="footer-sep">·</span>
+        <a class="footer-link" href="mailto:nandinisoni7014@gmail.com">✉️ Email</a>
+      </div>
     </div>
   </footer>
 </section>
 
-<!-- ======= PAGE 1: NAMES ======= -->
+<!-- ======= PAGE 1: OCCASION ======= -->
 <section class="page" id="page-1">
   <div class="form-wrap">
     <button class="btn-back" onclick="goTo(0)">← Back</button>
@@ -252,60 +264,108 @@
       <div class="step-bar" id="sb1"></div>
       <div class="card-hd">
         <p class="card-step">Step 1 of 5</p>
-        <h2 class="card-title">Who's the surprise for? 🌸</h2>
-        <p class="card-sub">Let's start with your names</p>
+        <h2 class="card-title">What's the occasion? 🎊</h2>
+        <p class="card-sub">Choose what this surprise is for</p>
       </div>
-      <div class="field-row">
-        <div class="field"><label>Your Name 💛</label><input id="i-sender" type="text" placeholder="e.g. Nandini" maxlength="25"/></div>
-        <div class="field"><label>Friend's Name 🌸</label><input id="i-friend" type="text" placeholder="e.g. Priya" maxlength="25"/></div>
+      <div class="occ-grid" id="occGrid">
+        <button class="occ-card" data-occ="friendship" onclick="pickOcc(this)">
+          <span class="occ-icon">💛</span>
+          <span class="occ-label">Friendship Day</span>
+          <span class="occ-desc">For your bestie</span>
+        </button>
+        <button class="occ-card" data-occ="birthday" onclick="pickOcc(this)">
+          <span class="occ-icon">🎂</span>
+          <span class="occ-label">Birthday</span>
+          <span class="occ-desc">Celebrate them!</span>
+        </button>
+        <button class="occ-card" data-occ="valentine" onclick="pickOcc(this)">
+          <span class="occ-icon">💝</span>
+          <span class="occ-label">Valentine's Day</span>
+          <span class="occ-desc">For someone you love</span>
+        </button>
+        <button class="occ-card" data-occ="graduation" onclick="pickOcc(this)">
+          <span class="occ-icon">🎓</span>
+          <span class="occ-label">Graduation</span>
+          <span class="occ-desc">Proud of you!</span>
+        </button>
+        <button class="occ-card" data-occ="thankyou" onclick="pickOcc(this)">
+          <span class="occ-icon">🙏</span>
+          <span class="occ-label">Thank You</span>
+          <span class="occ-desc">Show your gratitude</span>
+        </button>
+        <button class="occ-card" data-occ="missyou" onclick="pickOcc(this)">
+          <span class="occ-icon">🌙</span>
+          <span class="occ-label">Miss You</span>
+          <span class="occ-desc">Long distance love</span>
+        </button>
+        <button class="occ-card" data-occ="anniversary" onclick="pickOcc(this)">
+          <span class="occ-icon">💍</span>
+          <span class="occ-label">Anniversary</span>
+          <span class="occ-desc">Celebrate your love</span>
+        </button>
+        <button class="occ-card" data-occ="justbecause" onclick="pickOcc(this)">
+          <span class="occ-icon">🌸</span>
+          <span class="occ-label">Just Because</span>
+          <span class="occ-desc">No reason needed</span>
+        </button>
       </div>
-      <div class="field">
-        <label>Nickname / Pet Name <span style="font-weight:400;text-transform:none;letter-spacing:0;font-size:.68rem;">(optional)</span></label>
-        <input id="i-nick" type="text" placeholder="e.g. pre-yayay"/>
-      </div>
-      <div class="field">
-        <label>How did you two meet? <span style="font-weight:400;text-transform:none;letter-spacing:0;font-size:.68rem;">(optional)</span></label>
-        <textarea id="i-met" class="mem-inp" style="min-height:70px;resize:vertical;" placeholder="e.g. First day of college when we got assigned the same lab desk..." maxlength="300"></textarea>
-      </div>
-      <div style="text-align:center;margin-top:6px;">
+      <div style="text-align:center;margin-top:4px;">
         <button class="btn-next" id="btn1" onclick="goTo(2)" disabled>Continue →</button>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ======= PAGE 2: DETAILS + THEME ======= -->
+<!-- ======= PAGE 2: NAMES ======= -->
 <section class="page" id="page-2">
-  <div class="form-wrap" style="overflow-y:auto;max-height:95vh;">
+  <div class="form-wrap">
     <button class="btn-back" onclick="goTo(1)">← Back</button>
     <div class="card">
       <div class="step-bar" id="sb2"></div>
       <div class="card-hd">
         <p class="card-step">Step 2 of 5</p>
-        <h2 class="card-title">Your Friendship Story ✨</h2>
+        <h2 class="card-title" id="namesTitle">Who's the surprise for? 🌸</h2>
+        <p class="card-sub">Let's start with your names</p>
+      </div>
+      <div class="field-row">
+        <div class="field"><label id="senderLabel">Your Name 💛</label><input id="i-sender" type="text" placeholder="e.g. Nandini" maxlength="25"/></div>
+        <div class="field"><label id="friendLabel">Friend's Name 🌸</label><input id="i-friend" type="text" placeholder="e.g. Priya" maxlength="25"/></div>
+      </div>
+      <div class="field">
+        <label>Nickname / Pet Name <span style="font-weight:400;text-transform:none;letter-spacing:0;font-size:.68rem;">(optional)</span></label>
+        <input id="i-nick" type="text" placeholder="e.g. pre-yayay"/>
+      </div>
+      <div class="field">
+        <label id="metLabel">How did you two meet? <span style="font-weight:400;text-transform:none;letter-spacing:0;font-size:.68rem;">(optional)</span></label>
+        <textarea id="i-met" class="mem-inp" style="min-height:70px;resize:vertical;" placeholder="e.g. First day of college when we got assigned the same lab desk..." maxlength="300"></textarea>
+      </div>
+      <div style="text-align:center;margin-top:6px;">
+        <button class="btn-next" id="btn2" onclick="goTo(3)" disabled>Continue →</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======= PAGE 3: DETAILS + THEME ======= -->
+<section class="page" id="page-3">
+  <div class="form-wrap" style="overflow-y:auto;max-height:95vh;">
+    <button class="btn-back" onclick="goTo(2)">← Back</button>
+    <div class="card">
+      <div class="step-bar" id="sb3"></div>
+      <div class="card-hd">
+        <p class="card-step">Step 3 of 5</p>
+        <h2 class="card-title" id="detailsTitle">Your Story ✨</h2>
         <p class="card-sub">Help us make it feel uniquely yours</p>
       </div>
-      <div class="field"><label>Friends Since 📅</label><input id="i-year" type="text" placeholder="e.g. 2019, Class 8, First day of college..." maxlength="30"/></div>
-      <p class="field-h">What's your bond? 🔗</p>
-      <div class="opt-grid og2" id="bondGrid">
-        <button class="opt" data-g="bond" data-v="bffs" onclick="pick(this,'bond')"><span class="oi">👯</span><span>BFFs Forever</span></button>
-        <button class="opt" data-g="bond" data-v="classmates" onclick="pick(this,'bond')"><span class="oi">📚</span><span>Classmates</span></button>
-        <button class="opt" data-g="bond" data-v="childhood" onclick="pick(this,'bond')"><span class="oi">🧸</span><span>Childhood Pals</span></button>
-        <button class="opt" data-g="bond" data-v="coworkers" onclick="pick(this,'bond')"><span class="oi">💼</span><span>Work Besties</span></button>
-        <button class="opt" data-g="bond" data-v="online" onclick="pick(this,'bond')"><span class="oi">💻</span><span>Online Friends</span></button>
-        <button class="opt" data-g="bond" data-v="custom" onclick="pick(this,'bond')"><span class="oi">✨</span><span>Custom...</span></button>
-      </div>
+      <div class="field"><label id="sinceLabel">Friends Since 📅</label><input id="i-year" type="text" placeholder="e.g. 2019, Class 8, First day of college..." maxlength="30"/></div>
+      <p class="field-h" id="bondLabel">What's your bond? 🔗</p>
+      <div class="opt-grid og2" id="bondGrid"></div>
       <div class="field" id="f-custom-bond" style="display:none;margin-top:6px;margin-bottom:10px;">
         <input id="i-custom-bond" type="text" placeholder="e.g. Partners in crime 💥, Soul sisters..." maxlength="35"/>
       </div>
 
-      <p class="field-h">Your vibe? ⚡</p>
-      <div class="opt-grid og2" id="vibeGrid">
-        <button class="opt" data-g="vibe" data-v="chaotic" onclick="pick(this,'vibe')"><span class="oi">🔥</span><span>Chaotic Duo</span></button>
-        <button class="opt" data-g="vibe" data-v="wholesome" onclick="pick(this,'vibe')"><span class="oi">🌸</span><span>Wholesome</span></button>
-        <button class="opt" data-g="vibe" data-v="sarcastic" onclick="pick(this,'vibe')"><span class="oi">😏</span><span>Roast Squad</span></button>
-        <button class="opt" data-g="vibe" data-v="custom" onclick="pick(this,'vibe')"><span class="oi">✨</span><span>Custom...</span></button>
-      </div>
+      <p class="field-h" id="vibeLabel">Your vibe? ⚡</p>
+      <div class="opt-grid og2" id="vibeGrid"></div>
       <div class="field" id="f-custom-vibe" style="display:none;margin-top:6px;margin-bottom:10px;">
         <input id="i-custom-vibe" type="text" placeholder="e.g. Unhinged & Loud 🤪, Soft & Cosy ☕..." maxlength="35"/>
       </div>
@@ -319,22 +379,22 @@
         <button class="theme-chip" data-t="gold" onclick="pickTheme(this)" style="color:#d4a017;"><span class="theme-dot" style="background:#f9ca24;"></span>✨ Gold</button>
       </div>
       <div style="text-align:center;margin-top:6px;">
-        <button class="btn-next" id="btn2" onclick="goTo(3)" disabled>Continue →</button>
+        <button class="btn-next" id="btn3" onclick="goTo(4)" disabled>Continue →</button>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ======= PAGE 3: PHOTOS + VIDEO ======= -->
-<section class="page" id="page-3">
+<!-- ======= PAGE 4: PHOTOS + VIDEO ======= -->
+<section class="page" id="page-4">
   <div class="form-wrap" style="overflow-y:auto;max-height:95vh;">
-    <button class="btn-back" onclick="goTo(2)">← Back</button>
+    <button class="btn-back" onclick="goTo(3)">← Back</button>
     <div class="card">
-      <div class="step-bar" id="sb3"></div>
+      <div class="step-bar" id="sb4"></div>
       <div class="card-hd">
-        <p class="card-step">Step 3 of 5</p>
+        <p class="card-step">Step 4 of 5</p>
         <h2 class="card-title">Add Photos & Video 📸</h2>
-        <p class="card-sub">Your friend gets a full photo gallery + video message!</p>
+        <p class="card-sub" id="photosSub">They get a full photo gallery + video!</p>
       </div>
       <!-- Photo drop zone -->
       <div class="photo-dz" id="photoDZ">
@@ -345,7 +405,7 @@
         <input type="file" id="photoInp" accept="image/*" multiple hidden/>
       </div>
       <div class="photo-grid" id="photoGrid" style="display:none;"></div>
-      <p id="photoNote" class="small-note" style="display:none;margin-bottom:10px;"></p>
+      <p id="photoNote" class="small-note" style="display:none;"></p>
 
       <!-- Video section -->
       <div class="vid-section">
@@ -365,23 +425,23 @@
       </div>
 
       <div style="text-align:center;margin-top:16px;">
-        <button class="btn-next" onclick="goTo(4)">Continue →</button>
+        <button class="btn-next" onclick="goTo(5)">Continue →</button>
       </div>
-      <span class="skip-link" onclick="goTo(4)">Skip — no photos/video →</span>
+      <span class="skip-link" onclick="goTo(5)">Skip — no photos/video →</span>
     </div>
   </div>
 </section>
 
-<!-- ======= PAGE 4: MEMORIES ======= -->
-<section class="page" id="page-4">
+<!-- ======= PAGE 5: MEMORIES ======= -->
+<section class="page" id="page-5">
   <div class="form-wrap" style="overflow-y:auto;max-height:95vh;">
-    <button class="btn-back" onclick="goTo(3)">← Back</button>
+    <button class="btn-back" onclick="goTo(4)">← Back</button>
     <div class="card">
-      <div class="step-bar" id="sb4"></div>
+      <div class="step-bar" id="sb5"></div>
       <div class="card-hd">
-        <p class="card-step">Step 4 of 5</p>
-        <h2 class="card-title">Your Inside Memories 🌟</h2>
-        <p class="card-sub">Your friend swipes through these — keep or forget? Make them laugh!</p>
+        <p class="card-step">Step 5 of 5</p>
+        <h2 class="card-title" id="memsTitle">Your Inside Memories 🌟</h2>
+        <p class="card-sub">They swipe through these — keep or forget? Make them smile!</p>
       </div>
       <div class="mem-row">
         <input id="memInp" class="mem-inp" type="text" placeholder="e.g. That 2am trip when we got completely lost 😂" maxlength="80" onkeydown="if(event.key==='Enter'){addMem();event.preventDefault();}"/>
@@ -393,10 +453,10 @@
       <!-- PACT DIVIDER -->
       <div style="display:flex;align-items:center;gap:12px;margin:20px 0 16px;">
         <div style="flex:1;height:1px;background:rgba(196,150,140,.3);"></div>
-        <span style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:rgba(122,74,90,.5);">Friendship Pact Terms</span>
+        <span id="pactDivLabel" style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:rgba(122,74,90,.5);font-family:var(--font-b);">Pact Terms</span>
         <div style="flex:1;height:1px;background:rgba(196,150,140,.3);"></div>
       </div>
-      <p class="card-sub" style="font-size:.84rem;margin-bottom:12px;">✍️ Write your own agreement clauses (up to 4) — or leave blank for auto ones based on your bond!</p>
+      <p class="card-sub" style="font-size:.84rem;margin-bottom:12px;" id="pactHint">✍️ Write your own agreement clauses (up to 4) — or leave blank for auto ones!</p>
       <div class="mem-row">
         <input id="pactInp" class="mem-inp" type="text" placeholder="e.g. Always answer my 3am texts, no matter what 🌙" maxlength="80" onkeydown="if(event.key==='Enter'){addPact();event.preventDefault();}"/>
         <button class="btn-add" onclick="addPact()" style="background:linear-gradient(135deg,#6c5ce7,#a29bfe);">+</button>
@@ -404,33 +464,21 @@
       <div class="mem-chips" id="pactChips"></div>
       <p class="small-note" id="pactNote">0/4 clauses · Leave empty to use auto terms</p>
 
-      <div style="text-align:center;margin-top:18px;">
-        <button class="btn-next" onclick="goTo(5)">Continue →</button>
-      </div>
-      <span class="skip-link" onclick="goTo(5)">Skip both — use defaults →</span>
-    </div>
-  </div>
-</section>
-
-<!-- ======= PAGE 5: LETTER ======= -->
-<section class="page" id="page-5">
-  <div class="form-wrap">
-    <button class="btn-back" onclick="goTo(4)">← Back</button>
-    <div class="card">
-      <div class="step-bar" id="sb5"></div>
-      <div class="card-hd">
-        <p class="card-step">Step 5 of 5</p>
-        <h2 class="card-title">Write Your Letter 💌</h2>
-        <p class="card-sub">Your friend tears this open — pour your heart out</p>
+      <!-- LETTER -->
+      <div style="display:flex;align-items:center;gap:12px;margin:20px 0 16px;">
+        <div style="flex:1;height:1px;background:rgba(196,150,140,.3);"></div>
+        <span style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:rgba(122,74,90,.5);font-family:var(--font-b);">Your Letter 💌</span>
+        <div style="flex:1;height:1px;background:rgba(196,150,140,.3);"></div>
       </div>
       <div class="field">
         <label>Your message</label>
-        <textarea id="i-letter" placeholder="Hey! I just wanted to say that having you in my life is one of the best things that's ever happened to me. You make everything better..." maxlength="700"></textarea>
+        <textarea id="i-letter" maxlength="700"></textarea>
         <div class="char-count"><span id="charCount">0</span>/700</div>
       </div>
       <div style="text-align:center;margin-top:6px;">
         <button class="btn-next" id="btn5" onclick="generate()" disabled>✨ Create the Surprise →</button>
       </div>
+      <span class="skip-link" onclick="goTo(5)">Skip both — use defaults →</span>
     </div>
   </div>
 </section>
@@ -466,6 +514,202 @@
 </section>
 
 <script>
+// ========= OCCASIONS =========
+const OCCASIONS = {
+  friendship: {
+    icon:'💛', label:'Friendship Day',
+    namesTitle:"Who's the surprise for? 🌸",
+    senderLabel:"Your Name 💛", friendLabel:"Friend's Name 🌸",
+    metLabel:"How did you two meet?",
+    detailsTitle:"Your Friendship Story ✨",
+    sinceLabel:"Friends Since 📅",
+    bondLabel:"What's your bond? 🔗",
+    vibeLabel:"Your vibe? ⚡",
+    memsTitle:"Your Inside Memories 🌟",
+    pactDivLabel:"Friendship Pact Terms",
+    pactHint:"✍️ Write your own friendship pact clauses (up to 4) — or leave blank for auto ones!",
+    letterPlaceholder:"Hey! I just wanted to say that having you in my life is one of the best things that's ever happened to me. You make everything better...",
+    shareMsg: (name, url) => `Hey ${name}! 💛 I made you something special for Friendship Day!\n\nClick to open your surprise 🎁✨\n${url}`,
+    bonds:[
+      {v:'bffs',i:'👯',l:'BFFs Forever'},{v:'classmates',i:'📚',l:'Classmates'},
+      {v:'childhood',i:'🧸',l:'Childhood Pals'},{v:'coworkers',i:'💼',l:'Work Besties'},
+      {v:'online',i:'💻',l:'Online Friends'},{v:'custom',i:'✨',l:'Custom...'}
+    ],
+    vibes:[
+      {v:'chaotic',i:'🔥',l:'Chaotic Duo'},{v:'wholesome',i:'🌸',l:'Wholesome'},
+      {v:'sarcastic',i:'😏',l:'Roast Squad'},{v:'custom',i:'✨',l:'Custom...'}
+    ],
+  },
+  birthday: {
+    icon:'🎂', label:'Birthday',
+    namesTitle:"Who's turning special today? 🎂",
+    senderLabel:"Your Name 💛", friendLabel:"Birthday Person's Name 🎉",
+    metLabel:"A special memory you share?",
+    detailsTitle:"Tell us about them ✨",
+    sinceLabel:"Known them since 📅",
+    bondLabel:"Your relationship? 🎀",
+    vibeLabel:"Celebration vibe? 🥳",
+    memsTitle:"Favourite Shared Moments 🌟",
+    pactDivLabel:"Birthday Wishes",
+    pactHint:"🎂 Write your birthday wishes for them (up to 4) — or leave blank for auto wishes!",
+    letterPlaceholder:"Happy Birthday! I just want you to know how special you are to me and how grateful I am to have you in my life...",
+    shareMsg: (name, url) => `Hey ${name}! 🎂 I made you something magical for your birthday!\n\nOpen your surprise 🎁✨\n${url}`,
+    bonds:[
+      {v:'bffs',i:'👯',l:'Best Friend'},{v:'classmates',i:'📚',l:'Classmate'},
+      {v:'coworkers',i:'💼',l:'Colleague'},{v:'childhood',i:'🧸',l:'Family'},
+      {v:'online',i:'💻',l:'Online Friend'},{v:'custom',i:'✨',l:'Custom...'}
+    ],
+    vibes:[
+      {v:'wholesome',i:'🌸',l:'Sweet & Warm'},{v:'chaotic',i:'🔥',l:'Party Mode'},
+      {v:'sarcastic',i:'😏',l:'Roast & Toast'},{v:'custom',i:'✨',l:'Custom...'}
+    ],
+  },
+  valentine: {
+    icon:'💝', label:"Valentine's Day",
+    namesTitle:"Who's the love of your life? 💝",
+    senderLabel:"Your Name 💕", friendLabel:"Their Name 💝",
+    metLabel:"How did your love story begin?",
+    detailsTitle:"Your Love Story 💕",
+    sinceLabel:"Together since 💕",
+    bondLabel:"What are you to each other? 💑",
+    vibeLabel:"Your love vibe? 💞",
+    memsTitle:"Your Sweetest Moments 🌹",
+    pactDivLabel:"Love Promises 💝",
+    pactHint:"💕 Write your promises to each other (up to 4) — or leave blank for auto ones!",
+    letterPlaceholder:"My love, you are the most wonderful person in my world. Every day with you is a gift I'll never take for granted...",
+    shareMsg: (name, url) => `My love ${name}! 💝 I made something special for you this Valentine's Day...\n\nOpen your surprise 🌹✨\n${url}`,
+    bonds:[
+      {v:'bffs',i:'💕',l:'Partner'},{v:'classmates',i:'💘',l:'Crush'},
+      {v:'childhood',i:'💍',l:'Spouse'},{v:'online',i:'💻',l:'Long Distance'},
+      {v:'coworkers',i:'🌹',l:'Soulmate'},{v:'custom',i:'✨',l:'Custom...'}
+    ],
+    vibes:[
+      {v:'wholesome',i:'🌸',l:'Pure Romance'},{v:'chaotic',i:'🔥',l:'Passionate'},
+      {v:'sarcastic',i:'😏',l:'Playful & Teasing'},{v:'custom',i:'✨',l:'Custom...'}
+    ],
+  },
+  graduation: {
+    icon:'🎓', label:'Graduation',
+    namesTitle:"Who's graduating? 🎓",
+    senderLabel:"Your Name 💛", friendLabel:"Graduate's Name 🎓",
+    metLabel:"A favourite memory together?",
+    detailsTitle:"Their Achievement Story 🏆",
+    sinceLabel:"Known them since 📅",
+    bondLabel:"Your relationship? 🎀",
+    vibeLabel:"Celebration vibe? 🎉",
+    memsTitle:"Favourite Moments Together 🌟",
+    pactDivLabel:"Graduation Wishes ✨",
+    pactHint:"🎓 Write your wishes for their future (up to 4) — or leave blank for auto wishes!",
+    letterPlaceholder:"Look how far you've come! I am so incredibly proud of you. The journey wasn't easy, but you did it — and this is just the beginning...",
+    shareMsg: (name, url) => `Hey ${name}! 🎓 I made something special to celebrate your big achievement!\n\nOpen your surprise 🎁✨\n${url}`,
+    bonds:[
+      {v:'bffs',i:'👯',l:'Best Friend'},{v:'classmates',i:'📚',l:'Classmate'},
+      {v:'coworkers',i:'💼',l:'Mentor'},{v:'childhood',i:'🧸',l:'Family'},
+      {v:'online',i:'💻',l:'Study Partner'},{v:'custom',i:'✨',l:'Custom...'}
+    ],
+    vibes:[
+      {v:'wholesome',i:'🌸',l:'Proud & Warm'},{v:'chaotic',i:'🔥',l:'Hyped Up'},
+      {v:'sarcastic',i:'😏',l:'Finally Done!'},{v:'custom',i:'✨',l:'Custom...'}
+    ],
+  },
+  thankyou: {
+    icon:'🙏', label:'Thank You',
+    namesTitle:"Who are you thanking? 🙏",
+    senderLabel:"Your Name 💛", friendLabel:"Their Name 🌸",
+    metLabel:"How do you know them?",
+    detailsTitle:"Your Gratitude Story 🌟",
+    sinceLabel:"Known them since 📅",
+    bondLabel:"Your relationship? 🤝",
+    vibeLabel:"Your appreciation vibe? 💫",
+    memsTitle:"Moments They Made Special 🌟",
+    pactDivLabel:"Gratitude Promises 🙏",
+    pactHint:"🙏 Write your promises in return (up to 4) — or leave blank for auto ones!",
+    letterPlaceholder:"I don't think I say it enough — thank you. Thank you for being there, for everything you do, for being exactly who you are...",
+    shareMsg: (name, url) => `Hey ${name}! 🙏 I made something special to say thank you!\n\nOpen your surprise 🎁✨\n${url}`,
+    bonds:[
+      {v:'bffs',i:'👯',l:'Best Friend'},{v:'coworkers',i:'💼',l:'Mentor/Teacher'},
+      {v:'childhood',i:'🧸',l:'Family'},{v:'classmates',i:'📚',l:'Colleague'},
+      {v:'online',i:'💻',l:'Someone Inspiring'},{v:'custom',i:'✨',l:'Custom...'}
+    ],
+    vibes:[
+      {v:'wholesome',i:'🌸',l:'Warm & Heartfelt'},{v:'emotional',i:'🥺',l:'Deep & Sincere'},
+      {v:'sarcastic',i:'😏',l:'Light & Fun'},{v:'custom',i:'✨',l:'Custom...'}
+    ],
+  },
+  missyou: {
+    icon:'🌙', label:'Miss You',
+    namesTitle:"Who do you miss? 🌙",
+    senderLabel:"Your Name 💛", friendLabel:"Who you miss 🌙",
+    metLabel:"Your favourite memory together?",
+    detailsTitle:"Your Story 🌟",
+    sinceLabel:"Known them since 📅",
+    bondLabel:"Your relationship? 🤍",
+    vibeLabel:"Your vibe? 🌙",
+    memsTitle:"Memories You Cherish 🌟",
+    pactDivLabel:"Long Distance Promises 🌙",
+    pactHint:"🌙 Write your distance promises (up to 4) — or leave blank for auto ones!",
+    letterPlaceholder:"I don't know how to say how much I miss you. The distance is real, but so is every memory we have. I think about you more than you know...",
+    shareMsg: (name, url) => `Hey ${name}! 🌙 I miss you so much and made something special for you...\n\nOpen this 💌✨\n${url}`,
+    bonds:[
+      {v:'bffs',i:'👯',l:'Best Friend'},{v:'childhood',i:'🧸',l:'Family'},
+      {v:'online',i:'💻',l:'Long Distance'},{v:'coworkers',i:'💼',l:'Ex-Colleague'},
+      {v:'classmates',i:'📚',l:'Ex-Classmate'},{v:'custom',i:'✨',l:'Custom...'}
+    ],
+    vibes:[
+      {v:'wholesome',i:'🌸',l:'Warm & Nostalgic'},{v:'emotional',i:'🥺',l:'Deep & Emotional'},
+      {v:'sarcastic',i:'😏',l:'Miss you but roast'},{v:'custom',i:'✨',l:'Custom...'}
+    ],
+  },
+  anniversary: {
+    icon:'💍', label:'Anniversary',
+    namesTitle:"Who are you celebrating with? 💍",
+    senderLabel:"Your Name 💕", friendLabel:"Partner's Name 💍",
+    metLabel:"Where did it all begin?",
+    detailsTitle:"Your Love Journey 💕",
+    sinceLabel:"Together since 💕",
+    bondLabel:"Your relationship? 💑",
+    vibeLabel:"Celebration vibe? 🥂",
+    memsTitle:"Your Most Cherished Moments 🌹",
+    pactDivLabel:"Anniversary Vows 💍",
+    pactHint:"💍 Renew your vows or write new promises (up to 4) — or leave blank for auto ones!",
+    letterPlaceholder:"Another year with you — and I'd choose you again, a thousand times over. This journey with you has been the greatest adventure of my life...",
+    shareMsg: (name, url) => `My love ${name}! 💍 Happy Anniversary — I made something special for us...\n\nOpen your surprise 🥂✨\n${url}`,
+    bonds:[
+      {v:'bffs',i:'💕',l:'Partner'},{v:'childhood',i:'💍',l:'Spouse'},
+      {v:'online',i:'💻',l:'Long Distance'},{v:'coworkers',i:'🌹',l:'Soulmate'},
+      {v:'classmates',i:'💘',l:'Life Partner'},{v:'custom',i:'✨',l:'Custom...'}
+    ],
+    vibes:[
+      {v:'wholesome',i:'🌸',l:'Pure Romance'},{v:'chaotic',i:'🔥',l:'Passionate'},
+      {v:'emotional',i:'🥺',l:'Deep & Heartfelt'},{v:'custom',i:'✨',l:'Custom...'}
+    ],
+  },
+  justbecause: {
+    icon:'🌸', label:'Just Because',
+    namesTitle:"Who's getting the surprise? 🌸",
+    senderLabel:"Your Name 💛", friendLabel:"Their Name 🌸",
+    metLabel:"How do you know them?",
+    detailsTitle:"Your Connection ✨",
+    sinceLabel:"Known them since 📅",
+    bondLabel:"Your relationship? 🌸",
+    vibeLabel:"Your vibe? ⚡",
+    memsTitle:"Your Favourite Moments 🌟",
+    pactDivLabel:"Little Promises 🌸",
+    pactHint:"🌸 Write some sweet little promises (up to 4) — or leave blank for auto ones!",
+    letterPlaceholder:"Hey, I just wanted to make this for you — no special occasion, no reason other than the fact that you deserve to feel appreciated today...",
+    shareMsg: (name, url) => `Hey ${name}! 🌸 I made you something special — just because you deserve it!\n\nOpen your surprise 🎁✨\n${url}`,
+    bonds:[
+      {v:'bffs',i:'👯',l:'Best Friend'},{v:'classmates',i:'📚',l:'Friend'},
+      {v:'childhood',i:'🧸',l:'Family'},{v:'coworkers',i:'💼',l:'Colleague'},
+      {v:'online',i:'💻',l:'Online Friend'},{v:'custom',i:'✨',l:'Custom...'}
+    ],
+    vibes:[
+      {v:'wholesome',i:'🌸',l:'Sweet & Warm'},{v:'chaotic',i:'🔥',l:'Fun & Chaotic'},
+      {v:'sarcastic',i:'😏',l:'Playful'},{v:'custom',i:'✨',l:'Custom...'}
+    ],
+  },
+};
+
 // ========= THEMES =========
 const THEMES = {
   pink:   {p:'#e84393',pd:'#d63384',pl:'#fd79a8',s:'#f9ca24',a:'#6c5ce7',bg:'linear-gradient(135deg,#0a0612,#0f0a1a 40%,#0d1b2a)'},
@@ -487,7 +731,7 @@ function applyTheme(k){
 }
 
 // ========= STATE =========
-const S={sender:'',friend:'',nick:'',met:'',year:'',bond:'',vibe:'',theme:'pink',letter:'',memories:[],pactClauses:[],photos:[],video:null,videoUrl:'',sessionKey:''};
+const S={occ:'',sender:'',friend:'',nick:'',met:'',year:'',bond:'',vibe:'',theme:'pink',letter:'',memories:[],pactClauses:[],photos:[],video:null,videoUrl:'',sessionKey:''};
 let curPage=0;
 
 function goTo(n){
@@ -511,6 +755,51 @@ function updateBars(){
   }
 }
 
+// ========= OCCASION PICKER =========
+function pickOcc(el){
+  document.querySelectorAll('.occ-card').forEach(b=>b.classList.remove('sel'));
+  el.classList.add('sel');
+  S.occ=el.dataset.occ;
+  document.getElementById('btn1').disabled=false;
+  applyOccasionLabels(S.occ);
+}
+
+function applyOccasionLabels(occ){
+  const o=OCCASIONS[occ];
+  if(!o)return;
+  document.getElementById('namesTitle').textContent=o.namesTitle;
+  document.getElementById('senderLabel').textContent=o.senderLabel;
+  document.getElementById('friendLabel').textContent=o.friendLabel;
+  document.getElementById('metLabel').innerHTML=o.metLabel+' <span style="font-weight:400;text-transform:none;letter-spacing:0;font-size:.68rem;">(optional)</span>';
+  document.getElementById('detailsTitle').textContent=o.detailsTitle;
+  document.getElementById('sinceLabel').textContent=o.sinceLabel;
+  document.getElementById('bondLabel').textContent=o.bondLabel;
+  document.getElementById('vibeLabel').textContent=o.vibeLabel;
+  document.getElementById('memsTitle').textContent=o.memsTitle;
+  document.getElementById('pactDivLabel').textContent=o.pactDivLabel;
+  document.getElementById('pactHint').textContent=o.pactHint;
+  document.getElementById('i-letter').placeholder=o.letterPlaceholder;
+
+  // Rebuild bond grid
+  const bg=document.getElementById('bondGrid');
+  bg.innerHTML=o.bonds.map(b=>`<button class="opt" data-g="bond" data-v="${b.v}" onclick="pick(this,'bond')"><span class="oi">${b.i}</span><span>${b.l}</span></button>`).join('');
+
+  // Rebuild vibe grid
+  const vg=document.getElementById('vibeGrid');
+  vg.innerHTML=o.vibes.map(v=>`<button class="opt" data-g="vibe" data-v="${v.v}" onclick="pick(this,'vibe')"><span class="oi">${v.i}</span><span>${v.l}</span></button>`).join('');
+
+  // Re-bind event listeners for new bond/vibe buttons
+  document.querySelectorAll('[data-g="bond"]').forEach(b=>b.addEventListener('click',()=>pick(b,'bond')));
+  document.querySelectorAll('[data-g="vibe"]').forEach(b=>b.addEventListener('click',()=>pick(b,'vibe')));
+
+  // Reset bond/vibe selections
+  rawBondChoice='';rawVibeChoice='';
+  S.bond='';S.vibe='';
+  document.getElementById('btn3').disabled=true;
+  document.getElementById('f-custom-bond').style.display='none';
+  document.getElementById('f-custom-vibe').style.display='none';
+}
+
 // ========= OPTIONS =========
 let rawBondChoice='', rawVibeChoice='';
 function pick(el,g){
@@ -526,7 +815,7 @@ function pick(el,g){
   } else {
     customField.style.display='none';
   }
-  checkStep2();
+  checkStep3();
 }
 function pickTheme(el){
   document.querySelectorAll('.theme-chip').forEach(b=>b.classList.remove('sel'));
@@ -537,11 +826,11 @@ function pickTheme(el){
 
 // ========= VALIDATION =========
 ['i-sender','i-friend','i-nick','i-met'].forEach(id=>{
-  document.getElementById(id).addEventListener('input',checkStep1);
+  document.getElementById(id).addEventListener('input',checkStep2);
 });
-document.getElementById('i-year').addEventListener('input',checkStep2);
-document.getElementById('i-custom-bond').addEventListener('input',checkStep2);
-document.getElementById('i-custom-vibe').addEventListener('input',checkStep2);
+document.getElementById('i-year').addEventListener('input',checkStep3);
+document.getElementById('i-custom-bond').addEventListener('input',checkStep3);
+document.getElementById('i-custom-vibe').addEventListener('input',checkStep3);
 
 document.getElementById('i-letter').addEventListener('input',()=>{
   const v=document.getElementById('i-letter').value;
@@ -549,14 +838,14 @@ document.getElementById('i-letter').addEventListener('input',()=>{
   document.getElementById('charCount').textContent=v.length;
   document.getElementById('btn5').disabled=v.trim().length<10;
 });
-function checkStep1(){
+function checkStep2(){
   S.sender=document.getElementById('i-sender').value.trim();
   S.friend=document.getElementById('i-friend').value.trim();
   S.nick=document.getElementById('i-nick').value.trim();
   S.met=document.getElementById('i-met').value.trim();
-  document.getElementById('btn1').disabled=!(S.sender&&S.friend);
+  document.getElementById('btn2').disabled=!(S.sender&&S.friend);
 }
-function checkStep2(){
+function checkStep3(){
   S.year=document.getElementById('i-year').value.trim();
 
   if(rawBondChoice==='custom'){
@@ -571,7 +860,7 @@ function checkStep2(){
     S.vibe=rawVibeChoice;
   }
 
-  document.getElementById('btn2').disabled=!(S.bond&&S.vibe);
+  document.getElementById('btn3').disabled=!(S.bond&&S.vibe);
 }
 
 // ========= IMAGE COMPRESSION =========
@@ -740,7 +1029,7 @@ async function generate(){
   btn5.disabled=true;
 
   const urlData={
-    s:S.sender,f:S.friend,nick:S.nick,met:S.met,
+    occ:S.occ,s:S.sender,f:S.friend,nick:S.nick,met:S.met,
     y:S.year,b:S.bond,v:S.vibe,t:S.theme,
     l:S.letter,m:S.memories,pc:S.pactClauses,
     ph:S.photos,vu:S.videoUrl||'',
@@ -768,7 +1057,7 @@ async function generate(){
   }
 
   let urlObj=new URL(window.location.href);
-  urlObj.pathname=urlObj.pathname.replace(/\/index\.html$|\/$/,'/friend.html');
+  urlObj.pathname=urlObj.pathname.replace(/\/index\.html$|\/$/, '/friend.html');
   urlObj.hash=linkHash;
   const url=urlObj.href;
 
@@ -779,14 +1068,14 @@ async function generate(){
   document.getElementById('prevFriend').textContent=S.nick||S.friend;
   document.getElementById('prevFTop').textContent=S.nick||S.friend;
   document.getElementById('prevSender').textContent=S.sender;
-  const bondL={bffs:'👯 BFFs',classmates:'📚 Classmates',childhood:'🧸 Childhood Pals',coworkers:'💼 Work Besties',online:'💻 Online Friends',neighbors:'🏠 Neighbors'};
-  const vibeL={chaotic:'🔥 Chaotic Duo',wholesome:'🌸 Wholesome',sarcastic:'😏 Roast Squad',emotional:'🥺 Emotional'};
+  const occ=OCCASIONS[S.occ]||OCCASIONS.friendship;
   const rows=[
+    {l:'Occasion',v:occ.icon+' '+occ.label},
     {l:'For',v:(S.nick?`${S.friend} (${S.nick})`:`${S.friend}`)},
-    {l:'Friends since',v:S.year||'Day one 💛'},
+    {l:'Known since',v:S.year||'Day one 💛'},
     {l:'How you met',v:S.met||'It was fate ✨'},
-    {l:'Bond',v:bondL[S.bond]||S.bond},
-    {l:'Vibe',v:vibeL[S.vibe]||S.vibe},
+    {l:'Bond',v:S.bond},
+    {l:'Vibe',v:S.vibe},
     {l:'Memories',v:S.memories.length>0?S.memories.length+' custom memories 🌟':'Auto-generated'},
     {l:'Pact Terms',v:S.pactClauses.length>0?S.pactClauses.length+' custom terms ✍️':'Auto-generated'},
     {l:'Photos',v:S.photos.length>0?S.photos.length+' photos included 📸':'None'},
@@ -821,7 +1110,7 @@ async function shortenLink(){
     const res=await fetch('https://tinyurl.com/api-create.php?url='+encodeURIComponent(longUrl));
     if(res.ok){
       const shortUrl=await res.text();
-      if(shortUrl && shortUrl.startsWith('http')){
+      if(shortUrl&&shortUrl.startsWith('http')){
         linkEl.textContent=shortUrl.trim();
         btn.textContent='✓ Done!';
         btn.style.background='linear-gradient(135deg,#00b894,#00a878)';
@@ -838,7 +1127,8 @@ async function shortenLink(){
 function shareWA(){
   const url=document.getElementById('linkUrl').textContent;
   const nm=S.nick||S.friend;
-  const msg=`Hey ${nm}! 🎊 I made you something special for Friendship Day!\n\nClick to open your surprise 🎁✨\n${url}`;
+  const occ=OCCASIONS[S.occ]||OCCASIONS.friendship;
+  const msg=occ.shareMsg(nm,url);
   window.open('https://wa.me/?text='+encodeURIComponent(msg),'_blank');
 }
 function makeAnother(){
@@ -881,12 +1171,17 @@ function launchConfetti(){
 // ========= INIT =========
 if(window.location.hash&&window.location.hash.length>10){
   let target=new URL(window.location.href);
-  target.pathname=target.pathname.replace(/\/index\.html$|\/$/,'/friend.html');
+  target.pathname=target.pathname.replace(/\/index\.html$|\/$/, '/friend.html');
   window.location.href=target.href;
 }
 S.sessionKey='hf_'+Date.now().toString(36);
 createSparkles();
 updateBars();
+// Default occasion to friendship
+pickOcc(document.querySelector('[data-occ="friendship"]'));
+document.getElementById('btn1').disabled=true; // Still require them to pick
+document.querySelector('[data-occ="friendship"]').classList.remove('sel');
+S.occ='';
 </script>
 </body>
 </html>
