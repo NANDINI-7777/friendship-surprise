@@ -241,6 +241,7 @@
       <div class="pill">🎨 Custom Themes</div>
     </div>
     <button class="cta" onclick="goTo(1)">🎁 Start Creating</button>
+    <button class="btn-sec" style="margin-top:-10px;font-size:.85rem;" onclick="openTrackModal()">📊 Track Surprise Opens</button>
   </div>
   <footer class="site-footer">
     <div class="footer-inner">
@@ -505,6 +506,23 @@
       </div>
       <p class="link-note" id="linkNote">✨ Click <b>Shorten</b> to get a tiny link, or paste into <a href="https://tinyurl.com" target="_blank" style="color:var(--primary);">tinyurl.com</a> / <a href="https://is.gd" target="_blank" style="color:var(--primary);">is.gd</a>!</p>
     </div>
+    <!-- LIVE VISIT ANALYTICS CARD -->
+    <div class="prev-card" style="margin-top:0;background:rgba(30,20,50,.85);border-color:rgba(108,92,231,.3);text-align:left;width:100%;">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+        <span style="font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--primary-light);font-family:var(--font-b);">📊 Live Visit Analytics</span>
+        <button onclick="checkAnalytics()" style="background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:#fff;border-radius:10px;padding:3px 10px;font-size:.72rem;cursor:pointer;font-family:var(--font-b);">🔄 Refresh</button>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;background:rgba(0,0,0,.25);border-radius:14px;padding:12px 14px;">
+        <div>
+          <p style="font-size:.68rem;color:rgba(255,255,255,.45);margin:0;font-family:var(--font-b);font-weight:600;">TOTAL OPENS</p>
+          <p id="anaViews" style="font-size:1.5rem;font-weight:700;color:var(--accent);margin:2px 0 0;font-family:var(--font-b);">0</p>
+        </div>
+        <div>
+          <p style="font-size:.68rem;color:rgba(255,255,255,.45);margin:0;font-family:var(--font-b);font-weight:600;">RECIPIENT STATUS</p>
+          <p id="anaStatus" style="font-size:.82rem;font-weight:600;color:rgba(255,255,255,.8);margin:4px 0 0;font-family:var(--font-l);font-style:italic;">Not opened yet ⏳</p>
+        </div>
+      </div>
+    </div>
     <button class="btn-wa" onclick="shareWA()">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
       Share on WhatsApp
@@ -512,6 +530,24 @@
     <button class="btn-sec" onclick="makeAnother()">+ Make another surprise</button>
   </div>
 </section>
+
+<!-- TRACK SURPRISE MODAL -->
+<div id="trackModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.75);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);z-index:1000;align-items:center;justify-content:center;padding:20px;">
+  <div style="background:rgba(20,14,35,.95);border:1px solid rgba(255,255,255,.2);border-radius:24px;padding:26px 20px;max-width:400px;width:100%;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.6);">
+    <h3 style="font-family:var(--font-d);font-size:1.5rem;font-style:italic;margin:0 0 6px;color:#fff;">📊 Track Surprise Opens</h3>
+    <p style="font-size:.82rem;color:rgba(255,255,255,.5);margin:0 0 16px;font-family:var(--font-l);font-style:italic;">Paste your surprise link or code below to check how many times it was opened!</p>
+    <div style="display:flex;gap:8px;margin-bottom:14px;">
+      <input id="trackInp" type="text" placeholder="Paste link or dp_code..." style="flex:1;border-radius:12px;border:1px solid rgba(196,150,140,.5);padding:11px 13px;font-size:.88rem;background:rgba(255,255,255,.1);color:#fff;outline:none;font-family:var(--font-b);" />
+      <button onclick="trackLinkManual()" style="padding:11px 18px;border-radius:12px;background:linear-gradient(135deg,var(--primary),var(--primary-dark));color:#fff;border:none;font-weight:700;cursor:pointer;font-family:var(--font-b);">Check</button>
+    </div>
+    <div id="trackResult" style="display:none;background:rgba(255,255,255,.06);border-radius:14px;padding:14px;margin-bottom:14px;text-align:left;border:1px solid rgba(255,255,255,.1);">
+      <p style="font-size:.7rem;color:rgba(255,255,255,.45);margin:0;font-family:var(--font-b);font-weight:600;">TOTAL VIEWS</p>
+      <p id="trackViewsVal" style="font-size:1.5rem;font-weight:700;color:var(--accent);margin:2px 0 4px;font-family:var(--font-b);">0</p>
+      <p id="trackDetailVal" style="font-size:.82rem;color:rgba(255,255,255,.75);margin:0;font-family:var(--font-l);font-style:italic;"></p>
+    </div>
+    <button onclick="closeTrackModal()" style="background:none;border:none;color:rgba(255,255,255,.4);font-size:.84rem;cursor:pointer;font-family:var(--font-b);">Close</button>
+  </div>
+</div>
 
 <script>
 // ========= OCCASIONS =========
@@ -1085,6 +1121,10 @@ async function generate(){
   const strip=document.getElementById('photoStrip');
   if(S.photos.length>0){strip.style.display='flex';strip.innerHTML=S.photos.map(p=>`<img src="${p.data}" alt="photo"/>`).join('');}
   document.getElementById('linkUrl').textContent=url;
+  currentSurpriseId = linkHash || S.sessionKey;
+  checkAnalytics();
+  if(analyticsTimer) clearInterval(analyticsTimer);
+  analyticsTimer = setInterval(checkAnalytics, 10000);
   launchConfetti();
   goTo(6);
 }
@@ -1137,6 +1177,108 @@ function makeAnother(){
   target.hash='';
   target.search='';
   window.location.href=target.href;
+}
+
+// ========= LIVE ANALYTICS & TRACKER =========
+let currentSurpriseId = '';
+let analyticsTimer = null;
+
+async function checkAnalytics(){
+  const anaViews = document.getElementById('anaViews');
+  const anaStatus = document.getElementById('anaStatus');
+  if(!anaViews || !currentSurpriseId) return;
+
+  anaViews.textContent = '⏳ ...';
+  try{
+    const cleanId = currentSurpriseId.replace(/[^a-zA-Z0-9_-]/g, '');
+    const getUrl = `https://keyvalue.immanuel.co/api/KeyVal/GetValue/hc_surprises_v1/${cleanId}`;
+    const res = await fetch(getUrl);
+    const text = await res.text();
+    const views = parseInt(text.replace(/[^0-9]/g,'')) || 0;
+    anaViews.textContent = views;
+
+    const timeRes = await fetch(`https://keyvalue.immanuel.co/api/KeyVal/GetValue/hc_surprises_v1/${cleanId}_time`);
+    const timeText = await timeRes.text();
+    const ts = parseInt(timeText.replace(/[^0-9]/g,''));
+
+    if(views > 0){
+      let timeAgo = 'Just now';
+      if(ts){
+        const diffMs = Date.now() - ts;
+        const mins = Math.floor(diffMs / 60000);
+        const hours = Math.floor(mins / 60);
+        const days = Math.floor(hours / 24);
+        if(days > 0) timeAgo = days + 'd ago';
+        else if(hours > 0) timeAgo = hours + 'h ago';
+        else if(mins > 0) timeAgo = mins + 'm ago';
+        else timeAgo = 'Just now';
+      }
+      anaStatus.innerHTML = `<span style="color:#55efc4;font-style:normal;">✓ Opened (${timeAgo})!</span> 🎉`;
+    } else {
+      anaStatus.textContent = 'Not opened yet ⏳';
+    }
+  }catch(e){
+    anaViews.textContent = '0';
+    anaStatus.textContent = 'Not opened yet ⏳';
+  }
+}
+
+function openTrackModal(){
+  document.getElementById('trackModal').style.display = 'flex';
+}
+function closeTrackModal(){
+  document.getElementById('trackModal').style.display = 'none';
+}
+async function trackLinkManual(){
+  const inp = document.getElementById('trackInp').value.trim();
+  const resBox = document.getElementById('trackResult');
+  const viewsEl = document.getElementById('trackViewsVal');
+  const detailEl = document.getElementById('trackDetailVal');
+  if(!inp) return;
+
+  resBox.style.display = 'block';
+  viewsEl.textContent = '⏳ Checking...';
+  detailEl.textContent = '';
+
+  let code = inp;
+  if(inp.includes('#')){
+    code = inp.split('#').pop();
+  } else if(inp.includes('/')){
+    code = inp.split('/').filter(Boolean).pop();
+  }
+  const cleanId = code.replace(/[^a-zA-Z0-9_-]/g, '');
+
+  try{
+    const getUrl = `https://keyvalue.immanuel.co/api/KeyVal/GetValue/hc_surprises_v1/${cleanId}`;
+    const res = await fetch(getUrl);
+    const text = await res.text();
+    const views = parseInt(text.replace(/[^0-9]/g,'')) || 0;
+    viewsEl.textContent = views + (views === 1 ? ' open' : ' opens');
+
+    const timeRes = await fetch(`https://keyvalue.immanuel.co/api/KeyVal/GetValue/hc_surprises_v1/${cleanId}_time`);
+    const timeText = await timeRes.text();
+    const ts = parseInt(timeText.replace(/[^0-9]/g,''));
+
+    if(views > 0){
+      let timeAgo = 'recently';
+      if(ts){
+        const diffMs = Date.now() - ts;
+        const mins = Math.floor(diffMs / 60000);
+        const hours = Math.floor(mins / 60);
+        const days = Math.floor(hours / 24);
+        if(days > 0) timeAgo = days + ' day' + (days>1?'s':'') + ' ago';
+        else if(hours > 0) timeAgo = hours + ' hour' + (hours>1?'s':'') + ' ago';
+        else if(mins > 0) timeAgo = mins + ' minute' + (mins>1?'s':'') + ' ago';
+        else timeAgo = 'just now';
+      }
+      detailEl.innerHTML = `<span style="color:#55efc4;font-style:normal;">✓ Opened by recipient (${timeAgo})!</span> 🎉`;
+    } else {
+      detailEl.textContent = 'Not opened yet — share your link with your recipient! ⏳';
+    }
+  }catch(e){
+    viewsEl.textContent = '0 opens';
+    detailEl.textContent = 'No visit records found for this link yet.';
+  }
 }
 
 // ========= SPARKLES =========

@@ -622,6 +622,9 @@ window.addEventListener('load',async()=>{
 
     if(!D.f||!D.s){showErr();return;}
     applyTheme(D.t||'pink');
+    // Track visit
+    recordVisit(hash, D);
+
     // Load photos: prioritize embedded array (D.ph) for cross-device support
     if(D.ph&&D.ph.length>0){
       photos=D.ph;
@@ -637,6 +640,28 @@ window.addEventListener('load',async()=>{
     showScreen(0);
   }catch(e){showErr();}
 });
+
+async function recordVisit(hash, DData){
+  try{
+    let targetId = '';
+    if(hash.startsWith('dp_')){
+      targetId = hash;
+    } else if(DData && DData.sk){
+      targetId = DData.sk;
+    } else {
+      targetId = 'sp_' + hash.slice(-16);
+    }
+    const cleanId = targetId.replace(/[^a-zA-Z0-9_-]/g, '');
+    const getUrl = `https://keyvalue.immanuel.co/api/KeyVal/GetValue/hc_surprises_v1/${cleanId}`;
+    const res = await fetch(getUrl);
+    const text = await res.text();
+    const cur = (parseInt(text.replace(/[^0-9]/g,'')) || 0) + 1;
+    const postUrl = `https://keyvalue.immanuel.co/api/KeyVal/UpdateValue/hc_surprises_v1/${cleanId}/${cur}`;
+    fetch(postUrl, {method:'POST'});
+    const timeUrl = `https://keyvalue.immanuel.co/api/KeyVal/UpdateValue/hc_surprises_v1/${cleanId}_time/${Date.now()}`;
+    fetch(timeUrl, {method:'POST'});
+  }catch(e){}
+}
 
 function showErr(){
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
