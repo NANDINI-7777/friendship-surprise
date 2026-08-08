@@ -658,8 +658,13 @@ async function recordVisit(hash, DData){
     const cur = (parseInt(text.replace(/[^0-9]/g,'')) || 0) + 1;
     const postUrl = `https://keyvalue.immanuel.co/api/KeyVal/UpdateValue/hc_surprises_v1/${cleanId}/${cur}`;
     fetch(postUrl, {method:'POST'});
-    const timeUrl = `https://keyvalue.immanuel.co/api/KeyVal/UpdateValue/hc_surprises_v1/${cleanId}_time/${Date.now()}`;
+    
+    const now = new Date();
+    const dateStr = now.toLocaleDateString('en-US', {month:'short', day:'numeric', year:'numeric'}) + ' at ' + now.toLocaleTimeString('en-US', {hour:'2-digit', minute:'2-digit'});
+    const timeUrl = `https://keyvalue.immanuel.co/api/KeyVal/UpdateValue/hc_surprises_v1/${cleanId}_time/${now.getTime()}`;
     fetch(timeUrl, {method:'POST'});
+    const strUrl = `https://keyvalue.immanuel.co/api/KeyVal/UpdateValue/hc_surprises_v1/${cleanId}_str/${encodeURIComponent(dateStr)}`;
+    fetch(strUrl, {method:'POST'});
   }catch(e){}
 }
 
