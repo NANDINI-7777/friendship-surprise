@@ -640,6 +640,24 @@ window.addEventListener('load',async()=>{
   }catch(e){showErr();}
 });
 
+async function getVisitorLocation(){
+  try {
+    const res = await fetch('https://ipwho.is/');
+    const d = await res.json();
+    if(d && d.success && d.city){
+      return `${d.city}, ${d.region || d.country}`;
+    }
+  } catch(e){}
+  try {
+    const res = await fetch('https://ipapi.co/json/');
+    const d = await res.json();
+    if(d && d.city){
+      return `${d.city}, ${d.region || d.country_name}`;
+    }
+  } catch(e){}
+  return '';
+}
+
 async function recordVisit(hash, DData){
   try{
     let targetId = '';
@@ -660,12 +678,18 @@ async function recordVisit(hash, DData){
     
     const now = new Date();
     const dateStr = now.toLocaleDateString('en-US', {month:'short', day:'numeric', year:'numeric'}) + ' at ' + now.toLocaleTimeString('en-US', {hour:'2-digit', minute:'2-digit'});
+    const locStr = await getVisitorLocation();
+
     const timeUrl = `https://keyvalue.immanuel.co/api/KeyVal/UpdateValue/hc_surprises_v1/${cleanId}_time/${now.getTime()}`;
     fetch(timeUrl, {method:'POST'});
     const strUrl = `https://keyvalue.immanuel.co/api/KeyVal/UpdateValue/hc_surprises_v1/${cleanId}_str/${encodeURIComponent(dateStr)}`;
     fetch(strUrl, {method:'POST'});
+    if(locStr){
+      const locUrl = `https://keyvalue.immanuel.co/api/KeyVal/UpdateValue/hc_surprises_v1/${cleanId}_loc/${encodeURIComponent(locStr)}`;
+      fetch(locUrl, {method:'POST'});
+    }
 
-    // Save full visit history log array (_history)
+    // Save full visit history log array (_history) with location
     try {
       const histRes = await fetch(`https://keyvalue.immanuel.co/api/KeyVal/GetValue/hc_surprises_v1/${cleanId}_history`);
       const histText = await histRes.text();
@@ -674,7 +698,7 @@ async function recordVisit(hash, DData){
       if(histRaw && histRaw.startsWith('[')) {
         try { historyArr = JSON.parse(histRaw); } catch(e){}
       }
-      historyArr.push({ visit: cur, date: dateStr, ts: now.getTime() });
+      historyArr.push({ visit: cur, date: dateStr, loc: locStr, ts: now.getTime() });
       if(historyArr.length > 20) historyArr = historyArr.slice(-20);
       const histPostUrl = `https://keyvalue.immanuel.co/api/KeyVal/UpdateValue/hc_surprises_v1/${cleanId}_history/${encodeURIComponent(JSON.stringify(historyArr))}`;
       fetch(histPostUrl, {method:'POST'});

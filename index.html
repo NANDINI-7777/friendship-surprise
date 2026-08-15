@@ -1232,7 +1232,13 @@ async function checkAnalytics(){
       }
       anaStatus.innerHTML = `<span style="color:#55efc4;font-style:normal;">✓ Opened (${timeAgo})</span> 🎉`;
       if(anaTime && dateStr && dateStr !== 'null'){
-        anaTime.innerHTML = `📅 <b>Opened at:</b> ${dateStr}`;
+        let locText = '';
+        try {
+          const locRes = await fetch(`https://keyvalue.immanuel.co/api/KeyVal/GetValue/hc_surprises_v1/${cleanId}_loc`);
+          const lRaw = decodeURIComponent(await locRes.text()).replace(/"/g,'');
+          if(lRaw && lRaw !== 'null') locText = ` &nbsp;📍 ${lRaw}`;
+        } catch(e){}
+        anaTime.innerHTML = `📅 <b>Opened at:</b> ${dateStr}${locText}`;
       }
     } else {
       anaStatus.textContent = 'Not opened yet ⏳';
@@ -1281,6 +1287,9 @@ async function trackLinkManual(){
     const strRes = await fetch(`https://keyvalue.immanuel.co/api/KeyVal/GetValue/hc_surprises_v1/${cleanId}_str`);
     const dateStr = decodeURIComponent(await strRes.text()).replace(/"/g,'');
 
+    const locRes = await fetch(`https://keyvalue.immanuel.co/api/KeyVal/GetValue/hc_surprises_v1/${cleanId}_loc`);
+    const lastLoc = decodeURIComponent(await locRes.text()).replace(/"/g,'');
+
     const timeRes = await fetch(`https://keyvalue.immanuel.co/api/KeyVal/GetValue/hc_surprises_v1/${cleanId}_time`);
     const timeText = await timeRes.text();
     const ts = parseInt(timeText.replace(/[^0-9]/g,''));
@@ -1299,7 +1308,8 @@ async function trackLinkManual(){
       }
       detailEl.innerHTML = `<span style="color:#55efc4;font-style:normal;">✓ Link opened (${timeAgo})!</span> 🎉`;
       if(dateEl && dateStr && dateStr !== 'null'){
-        dateEl.innerHTML = `📅 <b>Last opened:</b> ${dateStr}`;
+        const locBadge = (lastLoc && lastLoc !== 'null') ? `<br>📍 <b>Location:</b> ${lastLoc}` : '';
+        dateEl.innerHTML = `📅 <b>Last opened:</b> ${dateStr}${locBadge}`;
       }
 
       // Render full visit history timeline if recorded
@@ -1312,7 +1322,8 @@ async function trackLinkManual(){
         if(historyArr.length > 0 && dateEl) {
           let histHtml = `<div style="margin-top:10px;padding-top:8px;border-top:1px dashed rgba(255,255,255,.15);"><p style="font-size:.7rem;font-weight:700;color:var(--primary-light);margin:0 0 6px;">📜 VISIT HISTORY LOG (${historyArr.length} OPENS)</p>`;
           historyArr.reverse().forEach(h => {
-            histHtml += `<p style="font-size:.75rem;color:rgba(255,255,255,.8);margin:3px 0;font-family:var(--font-l);"><b>Open #${h.visit}:</b> ${h.date}</p>`;
+            const locText = h.loc ? ` &nbsp;📍 <i>${h.loc}</i>` : '';
+            histHtml += `<p style="font-size:.75rem;color:rgba(255,255,255,.8);margin:4px 0;font-family:var(--font-l);"><b>Open #${h.visit}:</b> ${h.date}${locText}</p>`;
           });
           histHtml += `</div>`;
           dateEl.innerHTML += histHtml;
