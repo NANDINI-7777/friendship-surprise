@@ -1211,12 +1211,16 @@ async function checkAnalytics(){
     const views = parseInt(text.replace(/[^0-9]/g,'')) || 0;
     anaViews.textContent = views;
 
-    const strRes = await fetch(`https://keyvalue.immanuel.co/api/KeyVal/GetValue/hc_surprises_v1/${cleanId}_str`);
-    const dateStr = decodeURIComponent(await strRes.text()).replace(/"/g,'');
-
     const timeRes = await fetch(`https://keyvalue.immanuel.co/api/KeyVal/GetValue/hc_surprises_v1/${cleanId}_time`);
     const timeText = await timeRes.text();
     const ts = parseInt(timeText.replace(/[^0-9]/g,''));
+
+    const strRes = await fetch(`https://keyvalue.immanuel.co/api/KeyVal/GetValue/hc_surprises_v1/${cleanId}_str`);
+    let dateStr = decodeURIComponent(await strRes.text()).replace(/^"|"$/g,'').trim();
+    if(!dateStr && ts){
+      const d = new Date(ts);
+      dateStr = d.toLocaleDateString('en-US', {month:'short', day:'numeric', year:'numeric'}) + ' at ' + d.toLocaleTimeString('en-US', {hour:'2-digit', minute:'2-digit'});
+    }
 
     if(views > 0){
       let timeAgo = 'Just now';
@@ -1231,11 +1235,11 @@ async function checkAnalytics(){
         else timeAgo = 'Just now';
       }
       anaStatus.innerHTML = `<span style="color:#55efc4;font-style:normal;">✓ Opened (${timeAgo})</span> 🎉`;
-      if(anaTime && dateStr && dateStr !== 'null'){
+      if(anaTime && dateStr){
         let locText = '';
         try {
           const locRes = await fetch(`https://keyvalue.immanuel.co/api/KeyVal/GetValue/hc_surprises_v1/${cleanId}_loc`);
-          const lRaw = decodeURIComponent(await locRes.text()).replace(/"/g,'');
+          const lRaw = decodeURIComponent(await locRes.text()).replace(/^"|"$/g,'').trim();
           if(lRaw && lRaw !== 'null') locText = ` &nbsp;📍 ${lRaw}`;
         } catch(e){}
         anaTime.innerHTML = `📅 <b>Opened at:</b> ${dateStr}${locText}`;
@@ -1284,15 +1288,19 @@ async function trackLinkManual(){
     const views = parseInt(text.replace(/[^0-9]/g,'')) || 0;
     viewsEl.textContent = views + (views === 1 ? ' open' : ' opens');
 
-    const strRes = await fetch(`https://keyvalue.immanuel.co/api/KeyVal/GetValue/hc_surprises_v1/${cleanId}_str`);
-    const dateStr = decodeURIComponent(await strRes.text()).replace(/"/g,'');
-
-    const locRes = await fetch(`https://keyvalue.immanuel.co/api/KeyVal/GetValue/hc_surprises_v1/${cleanId}_loc`);
-    const lastLoc = decodeURIComponent(await locRes.text()).replace(/"/g,'');
-
     const timeRes = await fetch(`https://keyvalue.immanuel.co/api/KeyVal/GetValue/hc_surprises_v1/${cleanId}_time`);
     const timeText = await timeRes.text();
     const ts = parseInt(timeText.replace(/[^0-9]/g,''));
+
+    const strRes = await fetch(`https://keyvalue.immanuel.co/api/KeyVal/GetValue/hc_surprises_v1/${cleanId}_str`);
+    let dateStr = decodeURIComponent(await strRes.text()).replace(/^"|"$/g,'').trim();
+    if(!dateStr && ts){
+      const d = new Date(ts);
+      dateStr = d.toLocaleDateString('en-US', {month:'short', day:'numeric', year:'numeric'}) + ' at ' + d.toLocaleTimeString('en-US', {hour:'2-digit', minute:'2-digit'});
+    }
+
+    const locRes = await fetch(`https://keyvalue.immanuel.co/api/KeyVal/GetValue/hc_surprises_v1/${cleanId}_loc`);
+    const lastLoc = decodeURIComponent(await locRes.text()).replace(/^"|"$/g,'').trim();
 
     if(views > 0){
       let timeAgo = 'recently';
@@ -1307,7 +1315,7 @@ async function trackLinkManual(){
         else timeAgo = 'just now';
       }
       detailEl.innerHTML = `<span style="color:#55efc4;font-style:normal;">✓ Link opened (${timeAgo})!</span> 🎉`;
-      if(dateEl && dateStr && dateStr !== 'null'){
+      if(dateEl && (dateStr || ts)){
         const locBadge = (lastLoc && lastLoc !== 'null') ? `<br>📍 <b>Location:</b> ${lastLoc}` : '';
         dateEl.innerHTML = `📅 <b>Last opened:</b> ${dateStr}${locBadge}`;
       }
@@ -1319,10 +1327,15 @@ async function trackLinkManual(){
         let histRaw = decodeURIComponent(histText).replace(/^"|"$/g,'').trim();
         let historyArr = [];
         if(histRaw && histRaw.startsWith('[')) historyArr = JSON.parse(histRaw);
+        
+        if(historyArr.length === 0 && views > 0) {
+          historyArr = [{ visit: views, date: dateStr, loc: lastLoc }];
+        }
+
         if(historyArr.length > 0 && dateEl) {
-          let histHtml = `<div style="margin-top:10px;padding-top:8px;border-top:1px dashed rgba(255,255,255,.15);"><p style="font-size:.7rem;font-weight:700;color:var(--primary-light);margin:0 0 6px;">📜 VISIT HISTORY LOG (${historyArr.length} OPENS)</p>`;
-          historyArr.reverse().forEach(h => {
-            const locText = h.loc ? ` &nbsp;📍 <i>${h.loc}</i>` : '';
+          let histHtml = `<div style="margin-top:10px;padding-top:8px;border-top:1px dashed rgba(255,255,255,.15);"><p style="font-size:.7rem;font-weight:700;color:var(--primary-light);margin:0 0 6px;">📜 VISIT HISTORY LOG (${views} OPENS)</p>`;
+          historyArr.slice().reverse().forEach(h => {
+            const locText = (h.loc && h.loc !== 'null') ? ` &nbsp;📍 <i>${h.loc}</i>` : '';
             histHtml += `<p style="font-size:.75rem;color:rgba(255,255,255,.8);margin:4px 0;font-family:var(--font-l);"><b>Open #${h.visit}:</b> ${h.date}${locText}</p>`;
           });
           histHtml += `</div>`;
