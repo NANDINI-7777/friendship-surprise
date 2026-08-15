@@ -1297,10 +1297,27 @@ async function trackLinkManual(){
         else if(mins > 0) timeAgo = mins + ' minute' + (mins>1?'s':'') + ' ago';
         else timeAgo = 'just now';
       }
-      detailEl.innerHTML = `<span style="color:#55efc4;font-style:normal;">✓ Opened (${timeAgo})!</span> 🎉`;
+      detailEl.innerHTML = `<span style="color:#55efc4;font-style:normal;">✓ Link opened (${timeAgo})!</span> 🎉`;
       if(dateEl && dateStr && dateStr !== 'null'){
-        dateEl.innerHTML = `📅 <b>Opened at:</b> ${dateStr}`;
+        dateEl.innerHTML = `📅 <b>Last opened:</b> ${dateStr}`;
       }
+
+      // Render full visit history timeline if recorded
+      try {
+        const histRes = await fetch(`https://keyvalue.immanuel.co/api/KeyVal/GetValue/hc_surprises_v1/${cleanId}_history`);
+        const histText = await histRes.text();
+        let histRaw = decodeURIComponent(histText).replace(/^"|"$/g,'').trim();
+        let historyArr = [];
+        if(histRaw && histRaw.startsWith('[')) historyArr = JSON.parse(histRaw);
+        if(historyArr.length > 0 && dateEl) {
+          let histHtml = `<div style="margin-top:10px;padding-top:8px;border-top:1px dashed rgba(255,255,255,.15);"><p style="font-size:.7rem;font-weight:700;color:var(--primary-light);margin:0 0 6px;">📜 VISIT HISTORY LOG (${historyArr.length} OPENS)</p>`;
+          historyArr.reverse().forEach(h => {
+            histHtml += `<p style="font-size:.75rem;color:rgba(255,255,255,.8);margin:3px 0;font-family:var(--font-l);"><b>Open #${h.visit}:</b> ${h.date}</p>`;
+          });
+          histHtml += `</div>`;
+          dateEl.innerHTML += histHtml;
+        }
+      } catch(e){}
     } else {
       detailEl.textContent = 'Not opened yet — share your link with your recipient! ⏳';
     }
