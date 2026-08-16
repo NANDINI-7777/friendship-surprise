@@ -536,10 +536,7 @@
     }
   </style>
 </head>
-<body>
-<button class="music-toggle-btn" id="musicBtn" onclick="toggleMusic()" style="display:none;">
-  <span id="musicIcon">🎵</span> <span id="musicLabel">Music</span>
-</button>
+
 <div class="prog-bar"><div class="prog-fill" id="progFill" style="width:0%"></div></div>
 <div class="sfld" id="sfld"></div>
 <div class="cfbox" id="cfBox"></div>
@@ -1531,24 +1528,16 @@ let audioCtx = null;
 let isMusicPlaying = false;
 
 function startMusicAuto(){
-  const btn = document.getElementById('musicBtn');
-  if(btn) btn.style.display = 'flex';
   if(!isMusicPlaying){
     toggleMusic();
   }
 }
 
 function toggleMusic(){
-  const btn = document.getElementById('musicBtn');
-  const icon = document.getElementById('musicIcon');
-  const label = document.getElementById('musicLabel');
-
   try {
     if(isMusicPlaying){
       isMusicPlaying = false;
       if(audioCtx) audioCtx.suspend();
-      if(icon) icon.textContent = '🔇';
-      if(label) label.textContent = 'Muted';
     } else {
       isMusicPlaying = true;
       if(!audioCtx){
@@ -1557,8 +1546,6 @@ function toggleMusic(){
       if(audioCtx){
         audioCtx.resume();
       }
-      if(icon) icon.textContent = '🎵';
-      if(label) label.textContent = 'Playing';
     }
   } catch(e){
     console.warn('Toggle music error', e);
