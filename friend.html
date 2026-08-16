@@ -1369,11 +1369,20 @@ function setupAudio(){
   if(!title||!sub||!wrap)return;
 
   const url=(D.su||D.vd||'').trim();
-  title.textContent=`Dedicated Song from ${D.s} 🎵`;
-  sub.textContent='A special track dedicated just for you!';
+  title.textContent=`Dedicated Song from ${D.s} 📻`;
+  sub.textContent='A special mixtape track dedicated just for you!';
 
   if(!url){
-    wrap.innerHTML='<p style="font-size:.9rem;color:var(--sub);font-style:italic;">No custom song link provided.</p>';
+    wrap.innerHTML=`
+      <div style="background:#ffffff;border:2px solid var(--peach);border-radius:24px;padding:24px 20px;box-shadow:0 12px 32px rgba(210,175,160,.18);">
+        <div class="vinyl-disc" id="vinylDisc" style="width:110px;height:110px;border-radius:50%;background:radial-gradient(circle,#1c1917 35%,#3a322d 36%,#1c1917 65%,var(--orchid) 66%);margin:0 auto 16px;box-shadow:0 10px 24px rgba(0,0,0,.18);display:flex;align-items:center;justify-content:center;transition:transform 0.8s cubic-bezier(.22,1,.36,1);">
+          <div style="width:36px;height:36px;border-radius:50%;background:#faf4ed;border:3px solid var(--orchid);display:flex;align-items:center;justify-content:center;font-size:1rem;">🎵</div>
+        </div>
+        <p style="font-family:var(--font-h);font-size:1.15rem;font-weight:700;color:var(--text);margin:0 0 6px;">Cozy Memories Mixtape</p>
+        <p style="font-family:var(--font-l);font-size:.86rem;color:var(--sub);font-style:italic;margin:0 0 16px;">Dedicated with love from ${D.s}</p>
+        <button onclick="toggleMusic();if(document.getElementById('vinylDisc'))document.getElementById('vinylDisc').style.transform='rotate(360deg)';" style="padding:12px 28px;border-radius:50px;background:linear-gradient(135deg,var(--coral),var(--orchid));color:#fff;border:none;font-weight:700;font-size:.95rem;cursor:pointer;box-shadow:0 6px 18px rgba(209,118,172,.35);">▶ Play Mixtape Music</button>
+      </div>
+    `;
     return;
   }
 
@@ -1406,7 +1415,7 @@ function buildScreenList(){
   if(photos.length>0)screenList.push('photos');
   screenList.push('dnp','swipe');
   if(videoBlob||D.hv||D.vu)screenList.push('video');
-  if(D.su||D.vd||D.ha)screenList.push('audio');
+  screenList.push('audio');
   screenList.push('letter','pact','finale');
 }
 function showScreen(idx){
