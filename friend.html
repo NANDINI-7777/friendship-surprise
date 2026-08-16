@@ -37,13 +37,13 @@
     }
 
     /* Floating Cute Pastel Stickers */
-    .sfld{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:1;overflow:hidden;}
+    .sfld{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0;overflow:hidden;}
     .sp{position:absolute;bottom:-30px;font-size:var(--sz);opacity:0;animation:floatSticker linear infinite;}
     @keyframes floatSticker{
       0%{transform:translateX(0) translateY(5vh) rotate(0deg);opacity:0}
-      10%{opacity:0.75;transform:translateX(calc(var(--dr)*.1)) translateY(-8vh) rotate(15deg)}
-      50%{transform:translateX(var(--dr)) translateY(-50vh) rotate(-20deg);opacity:0.85}
-      90%{opacity:0.4;transform:translateX(calc(var(--dr)*-.5)) translateY(-95vh) rotate(10deg)}
+      10%{opacity:0.55;transform:translateX(calc(var(--dr)*.1)) translateY(-8vh) rotate(15deg)}
+      50%{transform:translateX(var(--dr)) translateY(-50vh) rotate(-20deg);opacity:0.65}
+      90%{opacity:0.3;transform:translateX(calc(var(--dr)*-.5)) translateY(-95vh) rotate(10deg)}
       100%{transform:translateX(calc(var(--dr)*-1)) translateY(-105vh) rotate(30deg);opacity:0}
     }
 
