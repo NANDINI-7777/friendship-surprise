@@ -474,10 +474,34 @@
         </div>
       </div>
 
+      <!-- AUDIO & VOICE NOTE SECTION -->
+      <div class="audio-section" style="margin-top:20px;padding-top:16px;border-top:1px dashed var(--peach);">
+        <p class="field-h">🎵 Add a Song Link or Record Voice Note <span style="font-weight:400;font-size:.8rem;">(optional)</span></p>
+        
+        <div class="field" style="text-align:left;">
+          <label>Option 1: Paste Song Link / MP3 URL 🔗</label>
+          <input id="i-songurl" type="url" placeholder="e.g. https://example.com/song.mp3 or YouTube/audio link" oninput="S.songUrl=this.value.trim()"/>
+        </div>
+
+        <div class="field" style="text-align:left;margin-top:12px;">
+          <label>Option 2: Record a Live Voice Note 🎙️</label>
+          <div class="voice-recorder-card" style="background:#fdf5ef;border:1.5px dashed var(--orchid);border-radius:18px;padding:16px;text-align:center;">
+            <button class="rec-btn" id="recBtn" type="button" onclick="toggleVoiceRecord()" style="background:linear-gradient(135deg,var(--coral),var(--orchid));color:#fff;border:none;padding:12px 24px;border-radius:50px;font-weight:700;cursor:pointer;font-family:var(--font-b);display:inline-flex;align-items:center;gap:8px;box-shadow:0 6px 16px rgba(209,118,172,.3);">
+              <span id="recIcon">🎙️</span> <span id="recLabel">Record Voice Note</span>
+            </button>
+            <div id="recTimer" style="display:none;font-weight:700;color:var(--orchid);margin-top:10px;font-size:.9rem;">🔴 Recording... <span id="recTimeSec">00:00</span></div>
+            <div id="recPlaybackWrap" style="display:none;margin-top:12px;">
+              <audio id="recAudioPreview" controls style="width:100%;height:38px;margin-bottom:8px;"></audio>
+              <button type="button" onclick="resetVoiceRecord()" style="background:none;border:none;color:#e11d48;font-size:.82rem;font-weight:600;cursor:pointer;">🗑️ Delete & Record Again</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div style="text-align:center;margin-top:16px;">
         <button class="btn-next" onclick="goTo(5)">Continue →</button>
       </div>
-      <span class="skip-link" onclick="goTo(5)">Skip — no photos/video →</span>
+      <span class="skip-link" onclick="goTo(5)">Skip — no media/audio →</span>
     </div>
   </div>
 </section>
@@ -821,7 +845,7 @@ function applyTheme(k){
 }
 
 // ========= STATE =========
-const S={occ:'',sender:'',friend:'',nick:'',met:'',year:'',bond:'',vibe:'',theme:'journal',music:'lofi',letter:'',memories:[],pactClauses:[],photos:[],video:null,videoUrl:'',sessionKey:''};
+const S={occ:'',sender:'',friend:'',nick:'',met:'',year:'',bond:'',vibe:'',theme:'journal',music:'lofi',letter:'',memories:[],pactClauses:[],photos:[],video:null,videoUrl:'',songUrl:'',voiceData:'',sessionKey:''};
 let curPage=0;
 
 function goTo(n){
@@ -1110,6 +1134,61 @@ function renderPacts(){
   document.getElementById('pactInp').disabled=S.pactClauses.length>=4;
 }
 
+// ========= VOICE RECORDING =========
+let mediaRecorder=null,audioChunks=[],recInterval=null,recSeconds=0;
+
+async function toggleVoiceRecord(){
+  const icon=document.getElementById('recIcon');
+  const label=document.getElementById('recLabel');
+  const timer=document.getElementById('recTimer');
+  const playbackWrap=document.getElementById('recPlaybackWrap');
+
+  if(mediaRecorder && mediaRecorder.state === 'recording'){
+    mediaRecorder.stop();
+    if(recInterval) clearInterval(recInterval);
+    icon.textContent='🎙️';
+    label.textContent='Record Voice Note';
+    timer.style.display='none';
+  } else {
+    try {
+      const stream=await navigator.mediaDevices.getUserMedia({ audio: true });
+      audioChunks=[];
+      mediaRecorder=new MediaRecorder(stream);
+      mediaRecorder.ondataavailable=e=>{ if(e.data.size>0) audioChunks.push(e.data); };
+      mediaRecorder.onstop=()=>{
+        const audioBlob=new Blob(audioChunks,{type:'audio/mp3'});
+        const reader=new FileReader();
+        reader.onloadend=()=>{
+          S.voiceData=reader.result;
+          document.getElementById('recAudioPreview').src=reader.result;
+          playbackWrap.style.display='block';
+        };
+        reader.readAsDataURL(audioBlob);
+        stream.getTracks().forEach(t=>t.stop());
+      };
+      mediaRecorder.start();
+      recSeconds=0;
+      timer.style.display='block';
+      icon.textContent='⏹️';
+      label.textContent='Stop Recording';
+      recInterval=setInterval(()=>{
+        recSeconds++;
+        const mins=String(Math.floor(recSeconds/60)).padStart(2,'0');
+        const secs=String(recSeconds%60).padStart(2,'0');
+        document.getElementById('recTimeSec').textContent=`${mins}:${secs}`;
+      },1000);
+    } catch(err){
+      alert('Microphone access is required to record a voice note! Please grant microphone permissions.');
+    }
+  }
+}
+
+function resetVoiceRecord(){
+  S.voiceData='';
+  document.getElementById('recPlaybackWrap').style.display='none';
+  document.getElementById('recBtn').innerHTML='<span id="recIcon">🎙️</span> <span id="recLabel">Record Voice Note</span>';
+}
+
 // ========= GENERATE LINK =========
 async function generate(){
   S.sender=document.getElementById('i-sender').value.trim();
@@ -1128,7 +1207,9 @@ async function generate(){
     y:S.year,b:S.bond,v:S.vibe,t:S.theme,bgm:S.music||'lofi',
     l:S.letter,m:S.memories,pc:S.pactClauses,
     ph:S.photos,vu:S.videoUrl||'',
-    sk:S.sessionKey,hp:S.photos.length>0,hv:(S.video!==null||Boolean(S.videoUrl))
+    su:S.songUrl||'',vd:S.voiceData||'',
+    sk:S.sessionKey,hp:S.photos.length>0,hv:(S.video!==null||Boolean(S.videoUrl)),
+    ha:(Boolean(S.songUrl)||Boolean(S.voiceData))
   };
 
   const jsonStr=JSON.stringify(urlData);

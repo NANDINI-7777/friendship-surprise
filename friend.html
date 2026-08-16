@@ -675,6 +675,24 @@
   <button class="nav-btn" onclick="nextScreen()">Continue →</button>
 </section>
 
+<!-- AUDIO & VOICE PLAYER -->
+<section class="screen" id="s-audio">
+  <h2 class="sc-title">🎧 Special Audio Message</h2>
+  <p class="sc-sub">Press play to listen to your custom audio message ✨</p>
+  
+  <div class="aesthetic-music-card" id="aestheticMusicCard" style="margin:20px auto;max-width:360px;background:#ffffff;border:2.5px dashed var(--peach);border-radius:28px;padding:26px 20px;box-shadow:0 20px 45px rgba(210,175,160,.2);text-align:center;">
+    <div class="vinyl-disc" id="vinylDisc" style="width:100px;height:100px;border-radius:50%;background:radial-gradient(circle,#1c1917 35%,#3a322d 36%,#1c1917 65%,var(--orchid) 66%);margin:0 auto 16px;box-shadow:0 10px 24px rgba(0,0,0,.15);display:flex;align-items:center;justify-content:center;transition:transform 0.5s cubic-bezier(.22,1,.36,1);">
+      <div style="width:32px;height:32px;border-radius:50%;background:#faf4ed;border:3px solid var(--orchid);display:flex;align-items:center;justify-content:center;font-size:.85rem;">🎵</div>
+    </div>
+    <h3 class="track-title" id="trackTitle" style="font-family:var(--font-d);font-weight:700;font-size:1.25rem;color:var(--text);margin:0 0 4px;">Voice Note from Friend 🎤</h3>
+    <p class="track-sub" id="trackSub" style="font-size:.85rem;color:var(--sub);margin:0 0 16px;font-family:var(--font-l);font-style:italic;">Listen to this audio recorded just for you</p>
+    
+    <audio id="customAudioPlayer" controls style="width:100%;height:42px;border-radius:12px;outline:none;" onplay="document.getElementById('vinylDisc').style.transform='rotate(360deg)'"></audio>
+  </div>
+
+  <button class="nav-btn" onclick="nextScreen()">Continue →</button>
+</section>
+
 <!-- GIFT BOX & LETTER -->
 <section class="screen" id="s-letter">
   <h2 class="sc-title" id="letterTitle">🎁 Open Your Gift Box</h2>
@@ -948,6 +966,7 @@ function buildExperience(){
   // Video
   document.getElementById('vid-sname').textContent=D.s;
   setupVideo();
+  setupAudio();
 
   // Swipe
   document.getElementById('swipeTitle').textContent=occ.swipeTitle;
@@ -1224,12 +1243,31 @@ function checkSwipeDone(){
   }
 }
 
+// ========= AUDIO & VOICE PLAYER =========
+function setupAudio(){
+  const player=document.getElementById('customAudioPlayer');
+  const title=document.getElementById('trackTitle');
+  const sub=document.getElementById('trackSub');
+  if(!player||!title||!sub)return;
+
+  if(D.vd){
+    player.src=D.vd;
+    title.textContent=`Voice Note from ${D.s} 🎤`;
+    sub.textContent='Listen to this voice message recorded just for you!';
+  } else if(D.su){
+    player.src=D.su;
+    title.textContent=`Special Song from ${D.s} 🎵`;
+    sub.textContent='Playing the custom song chosen for you!';
+  }
+}
+
 // ========= SCREEN NAVIGATION =========
 function buildScreenList(){
   screenList=['notif','envelope','museum'];
   if(photos.length>0)screenList.push('photos');
   screenList.push('dnp','swipe');
-  if(videoBlob||D.hv)screenList.push('video');
+  if(videoBlob||D.hv||D.vu)screenList.push('video');
+  if(D.su||D.vd||D.ha)screenList.push('audio');
   screenList.push('letter','pact','finale');
 }
 function showScreen(idx){
