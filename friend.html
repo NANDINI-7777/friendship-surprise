@@ -326,11 +326,11 @@
     /* ===== FOOTER ===== */
     .site-footer{position:fixed;bottom:12px;left:0;right:0;text-align:center;z-index:20;pointer-events:none;}
     .footer-inner{display:inline-flex;flex-direction:column;align-items:center;gap:4px;pointer-events:all;}
-    .footer-brand{font-family:var(--font-l);font-size:.76rem;color:rgba(255,255,255,.3);font-style:italic;}
+    .footer-brand{font-family:var(--font-l);font-size:.78rem;color:var(--sub);font-style:italic;}
     .footer-links{display:flex;align-items:center;gap:10px;}
-    .footer-link{color:rgba(255,255,255,.3);font-size:.72rem;text-decoration:none;transition:color .2s;font-family:var(--font-b);font-weight:500;}
-    .footer-link:hover{color:var(--primary-light);}
-    .footer-sep{color:rgba(255,255,255,.15);font-size:.65rem;}
+    .footer-link{color:var(--sub);font-size:.74rem;text-decoration:none;transition:color .2s;font-family:var(--font-b);font-weight:600;}
+    .footer-link:hover{color:var(--orchid);}
+    .footer-sep{color:#c7b8ad;font-size:.68rem;}
 
     /* ===== JOURNAL & DOODLE AESTHETIC ===== */
     body.journal-mode .museum-card,
@@ -545,15 +545,6 @@
 <div class="sfld" id="sfld"></div>
 <div class="cfbox" id="cfBox"></div>
 
-<!-- LOADER (DEFAULT ON LOAD) -->
-<section class="screen active" id="s-loader">
-  <div style="text-align:center;">
-    <div style="font-size:3.5rem;animation:hb 1.2s ease-in-out infinite;">💌</div>
-    <h2 style="font-family:var(--font-d);font-size:1.6rem;font-weight:700;font-style:italic;color:var(--text);margin:14px 0 6px;">Opening your surprise...</h2>
-    <p style="font-size:.9rem;color:var(--sub);margin:0;font-family:var(--font-l);font-style:italic;">Preparing magical moments ✨</p>
-  </div>
-</section>
-
 <!-- ERROR -->
 <section class="screen" id="s-error">
   <div class="err-card">
@@ -565,7 +556,7 @@
 </section>
 
 <!-- NOTIFICATION SCREEN -->
-<section class="screen" id="s-notif">
+<section class="screen active" id="s-notif">
   <div class="notif-headline">
     <h1>You've got<br><span id="notifOccLabel" style="color:var(--primary-light);">a surprise</span></h1>
     <p>Someone made something magical just for you</p>
