@@ -381,16 +381,24 @@
       <div class="field" id="f-custom-vibe" style="display:none;margin-top:6px;margin-bottom:10px;">
         <input id="i-custom-vibe" type="text" placeholder="e.g. Unhinged & Loud 🤪, Soft & Cosy ☕..." maxlength="35"/>
       </div>
-      <p class="field-h">Pick a colour theme 🎨</p>
+      <p class="field-h">Pick a colour & vibe theme 🎨</p>
       <div class="theme-row" id="themeRow">
-        <button class="theme-chip sel" data-t="pink" onclick="pickTheme(this)" style="color:#e84393;border-color:#e84393;"><span class="theme-dot" style="background:#e84393;"></span>💖 Pink</button>
-        <button class="theme-chip" data-t="journal" onclick="pickTheme(this)" style="color:#d97706;"><span class="theme-dot" style="background:#d97706;"></span>📜 Journal</button>
+        <button class="theme-chip sel" data-t="journal" onclick="pickTheme(this)" style="color:#d97706;border-color:#d97706;"><span class="theme-dot" style="background:#d97706;"></span>📜 Journal</button>
         <button class="theme-chip" data-t="doodle" onclick="pickTheme(this)" style="color:#ec4899;"><span class="theme-dot" style="background:#ec4899;"></span>✏️ Doodle</button>
+        <button class="theme-chip" data-t="pink" onclick="pickTheme(this)" style="color:#e84393;"><span class="theme-dot" style="background:#e84393;"></span>💖 Pink</button>
         <button class="theme-chip" data-t="purple" onclick="pickTheme(this)" style="color:#9b59b6;"><span class="theme-dot" style="background:#9b59b6;"></span>💜 Purple</button>
         <button class="theme-chip" data-t="sunset" onclick="pickTheme(this)" style="color:#e17055;"><span class="theme-dot" style="background:#e17055;"></span>🧡 Sunset</button>
         <button class="theme-chip" data-t="ocean" onclick="pickTheme(this)" style="color:#0984e3;"><span class="theme-dot" style="background:#0984e3;"></span>💙 Ocean</button>
         <button class="theme-chip" data-t="forest" onclick="pickTheme(this)" style="color:#00b894;"><span class="theme-dot" style="background:#00b894;"></span>💚 Forest</button>
         <button class="theme-chip" data-t="gold" onclick="pickTheme(this)" style="color:#d4a017;"><span class="theme-dot" style="background:#f9ca24;"></span>✨ Gold</button>
+      </div>
+
+      <p class="field-h" style="margin-top:14px;">Background Music 🎵</p>
+      <div class="theme-row" id="musicRow">
+        <button class="theme-chip sel" data-m="lofi" onclick="pickMusic(this)" style="color:#f59e0b;border-color:#f59e0b;">☕ Cozy Lofi</button>
+        <button class="theme-chip" data-m="piano" onclick="pickMusic(this)" style="color:#ec4899;">🎹 Soft Piano</button>
+        <button class="theme-chip" data-m="sunset" onclick="pickMusic(this)" style="color:#3b82f6;">🌸 Warm Vibe</button>
+        <button class="theme-chip" data-m="none" onclick="pickMusic(this)" style="color:rgba(255,255,255,.5);">🔇 Silent</button>
       </div>
       <div style="text-align:center;margin-top:6px;">
         <button class="btn-next" id="btn3" onclick="goTo(4)" disabled>Continue →</button>
@@ -785,7 +793,7 @@ function applyTheme(k){
 }
 
 // ========= STATE =========
-const S={occ:'',sender:'',friend:'',nick:'',met:'',year:'',bond:'',vibe:'',theme:'pink',letter:'',memories:[],pactClauses:[],photos:[],video:null,videoUrl:'',sessionKey:''};
+const S={occ:'',sender:'',friend:'',nick:'',met:'',year:'',bond:'',vibe:'',theme:'journal',music:'lofi',letter:'',memories:[],pactClauses:[],photos:[],video:null,videoUrl:'',sessionKey:''};
 let curPage=0;
 
 function goTo(n){
@@ -872,10 +880,15 @@ function pick(el,g){
   checkStep3();
 }
 function pickTheme(el){
-  document.querySelectorAll('.theme-chip').forEach(b=>b.classList.remove('sel'));
+  document.querySelectorAll('#themeRow .theme-chip').forEach(b=>b.classList.remove('sel'));
   el.classList.add('sel');
   S.theme=el.dataset.t;
   applyTheme(S.theme);
+}
+function pickMusic(el){
+  document.querySelectorAll('#musicRow .theme-chip').forEach(b=>b.classList.remove('sel'));
+  el.classList.add('sel');
+  S.music=el.dataset.m;
 }
 
 // ========= VALIDATION =========
@@ -1084,7 +1097,7 @@ async function generate(){
 
   const urlData={
     occ:S.occ,s:S.sender,f:S.friend,nick:S.nick,met:S.met,
-    y:S.year,b:S.bond,v:S.vibe,t:S.theme,
+    y:S.year,b:S.bond,v:S.vibe,t:S.theme,bgm:S.music||'lofi',
     l:S.letter,m:S.memories,pc:S.pactClauses,
     ph:S.photos,vu:S.videoUrl||'',
     sk:S.sessionKey,hp:S.photos.length>0,hv:(S.video!==null||Boolean(S.videoUrl))
@@ -1405,6 +1418,7 @@ if(window.location.hash&&window.location.hash.length>10){
 }
 S.sessionKey='hf_'+Date.now().toString(36);
 createSparkles();
+applyTheme('journal');
 updateBars();
 // Default occasion to friendship
 pickOcc(document.querySelector('[data-occ="friendship"]'));
