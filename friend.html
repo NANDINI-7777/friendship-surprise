@@ -1496,8 +1496,8 @@ function buildScreenList(){
   if(photos.length>0)screenList.push('photos');
   screenList.push('dnp','swipe');
   if(videoBlob || (D && (D.hv || D.vu || D.vd))) screenList.push('video');
-  const songUrl = (D && D.su ? D.su : '').trim();
-  if(D && D.ha && songUrl){
+  const songUrl = (D && D.su && typeof D.su === 'string') ? D.su.trim() : '';
+  if(songUrl.length > 5){
     screenList.push('audio');
   }
   screenList.push('letter','pact','finale');
@@ -1510,6 +1510,16 @@ function showScreen(idx){
       loader.style.visibility = 'hidden';
       setTimeout(() => { loader.style.display = 'none'; }, 400);
     }
+
+    // Safeguard: If target screen is 'audio' but no custom song URL exists, skip to next screen!
+    if (screenList[idx] === 'audio') {
+      const songUrl = (D && D.su && typeof D.su === 'string') ? D.su.trim() : '';
+      if (songUrl.length <= 5) {
+        showScreen(idx + 1);
+        return;
+      }
+    }
+
     document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
     curIdx=idx;
     const id='s-'+screenList[idx];
