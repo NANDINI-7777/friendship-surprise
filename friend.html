@@ -36,16 +36,8 @@
       color:#2d2421;-webkit-font-smoothing:antialiased;overflow-x:hidden;
     }
 
-    /* Floating Cute Pastel Stickers */
-    .sfld{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0;overflow:hidden;}
-    .sp{position:absolute;bottom:-30px;font-size:var(--sz);opacity:0;animation:floatSticker linear infinite;}
-    @keyframes floatSticker{
-      0%{transform:translateX(0) translateY(5vh) rotate(0deg);opacity:0}
-      10%{opacity:0.55;transform:translateX(calc(var(--dr)*.1)) translateY(-8vh) rotate(15deg)}
-      50%{transform:translateX(var(--dr)) translateY(-50vh) rotate(-20deg);opacity:0.65}
-      90%{opacity:0.3;transform:translateX(calc(var(--dr)*-.5)) translateY(-95vh) rotate(10deg)}
-      100%{transform:translateX(calc(var(--dr)*-1)) translateY(-105vh) rotate(30deg);opacity:0}
-    }
+    /* Floating Stickers REMOVED for clean atmosphere */
+    .sfld{display:none;}
 
     /* Confetti */
     .cfbox{position:fixed;inset:0;pointer-events:none;z-index:999;overflow:hidden;}
@@ -770,14 +762,14 @@ const OCC = {
 
 // ========= THEMES =========
 const THEMES={
-  journal:{p:'#e11d48',pd:'#be123c',pl:'#fb7185',s:'#f59e0b',a:'#8b5cf6',bg:'linear-gradient(135deg, #fdfbf7 0%, #faf4ed 50%, #f6ebe0 100%)'},
-  doodle: {p:'#f43f5e',pd:'#e11d48',pl:'#fda4af',s:'#3b82f6',a:'#10b981',bg:'linear-gradient(135deg, #faf4ed 0%, #fdfbf7 50%, #f5ebe0 100%)'},
-  pink:   {p:'#ec4899',pd:'#be185d',pl:'#f472b6',s:'#f59e0b',a:'#a855f7',bg:'linear-gradient(135deg, #fff5f7 0%, #fce7f3 50%, #fbcfe8 100%)'},
-  purple: {p:'#8b5cf6',pd:'#6d28d9',pl:'#c084fc',s:'#ec4899',a:'#3b82f6',bg:'linear-gradient(135deg, #f7f5ff 0%, #ede9fe 50%, #ddd6fe 100%)'},
-  sunset: {p:'#f97316',pd:'#c2410c',pl:'#fdba74',s:'#f59e0b',a:'#ec4899',bg:'linear-gradient(135deg, #fff7ed 0%, #ffedd5 50%, #fed7aa 100%)'},
-  ocean:  {p:'#0284c7',pd:'#0369a1',pl:'#38bdf8',s:'#10b981',a:'#6366f1',bg:'linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 50%, #bae6fd 100%)'},
-  forest: {p:'#059669',pd:'#047857',pl:'#34d399',s:'#f59e0b',a:'#6366f1',bg:'linear-gradient(135deg, #ecfdf5 0%, #d1fae5 50%, #a7f3d0 100%)'},
-  gold:   {p:'#d97706',pd:'#b45309',pl:'#fbbf24',s:'#e11d48',a:'#8b5cf6',bg:'linear-gradient(135deg, #fffbeb 0%, #fef3c7 50%, #fde68a 100%)'},
+  journal:{p:'#d176ac',pd:'#b55691',pl:'#f5dde3',s:'#f9de90',a:'#b8cec2',bg:'linear-gradient(135deg, #fcf8f2 0%, #f8e6ce 50%, #f5dde3 100%)'},
+  doodle: {p:'#fdb3a4',pd:'#e59283',pl:'#f8e6ce',s:'#b8cec2',a:'#b594d0',bg:'linear-gradient(135deg, #f8e6ce 0%, #faf4ed 50%, #ebc8b4 100%)'},
+  pink:   {p:'#d176ac',pd:'#b55691',pl:'#f5dde3',s:'#f9de90',a:'#b594d0',bg:'linear-gradient(135deg, #f5dde3 0%, #fce7f3 50%, #f8e6ce 100%)'},
+  purple: {p:'#b594d0',pd:'#9571b3',pl:'#e9d8f7',s:'#fdb3a4',a:'#b8cec2',bg:'linear-gradient(135deg, #f7f5ff 0%, #e9d8f7 50%, #f8e6ce 100%)'},
+  sunset: {p:'#ebc8b4',pd:'#d1a690',pl:'#f8e6ce',s:'#f9de90',a:'#d176ac',bg:'linear-gradient(135deg, #fff7ed 0%, #f8e6ce 50%, #fdb3a4 100%)'},
+  ocean:  {p:'#b8cec2',pd:'#96b3a3',pl:'#d1decd',s:'#f9de90',a:'#b594d0',bg:'linear-gradient(135deg, #f0f9ff 0%, #d1decd 50%, #b8cec2 100%)'},
+  forest: {p:'#96b3a3',pd:'#789987',pl:'#b8cec2',s:'#f9de90',a:'#d176ac',bg:'linear-gradient(135deg, #f2f7f4 0%, #b8cec2 50%, #f8e6ce 100%)'},
+  gold:   {p:'#f9de90',pd:'#e0c270',pl:'#f8e6ce',s:'#d176ac',a:'#b8cec2',bg:'linear-gradient(135deg, #fffbeb 0%, #f9de90 50%, #f8e6ce 100%)'},
 };
 function applyTheme(k){
   const t=THEMES[k]||THEMES.pink;
