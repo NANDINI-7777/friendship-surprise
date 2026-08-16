@@ -999,10 +999,29 @@ function buildExperience(){
   buildSwipeCards(nick);
 
   // Letter
+  const DEFAULT_LETTERS = {
+    friendship: `I was just thinking about how lucky I am to have you in my life. Through every up and down, every late-night conversation, and every inside joke that only we understand, you've been a constant source of joy and strength.\n\nThank you for being the kind of friend who always understands, who listens without judgment, and who makes life so much brighter just by being in it.\n\nHere's to all the unforgettable memories we've created so far — and to many more adventures waiting for us ahead! ✨`,
+
+    birthday: `Happy Birthday! Today is all about celebrating the wonderful, amazing person you are.\n\nThank you for bringing so much laughter, warmth, and positivity into the world. Every moment spent with you is a gift, and I am so grateful for our connection.\n\nMay this coming year bring you endless happiness, beautiful surprises, success in everything you do, and all the love you deserve! 🎂✨`,
+
+    valentine: `I just wanted to take a moment to tell you how deeply special you are to me. You bring a warmth into my life that nothing else can match.\n\nEvery laugh we share, every quiet moment together, and every little memory we build means the absolute world to me. Thank you for being your incredible self.\n\nNo matter where life takes us, know that you hold a very special place in my heart today and always! 💖✨`,
+
+    graduation: `Look how far you've come! I am so incredibly proud of everything you've achieved to reach this incredible milestone.\n\nYour hard work, dedication, and resilience have paid off, and seeing you succeed brings so much joy. The journey wasn't always easy, but you did it with grace and determination.\n\nThis is just the beginning of a brilliant chapter. Go out there and shine — the world is yours! 🎓✨`,
+
+    thankyou: `I don't think I say it often enough, but I am truly grateful for you. Thank you for your kindness, your support, and for always being someone I can count on.\n\nYour generosity and presence have made a genuine difference in my life, and I wanted to make sure you know how much you are appreciated.\n\nThank you from the bottom of my heart for being so wonderful! 🙏✨`,
+
+    missyou: `I was thinking about you today and realizing how much I miss our conversations and times together.\n\nDistance or busy schedules might get in the way, but every single memory we share still brings a huge smile to my face. You are always in my thoughts.\n\nI can't wait until we can catch up properly and create more amazing moments together soon! 🌙✨`,
+
+    anniversary: `Another year of sharing moments, smiles, and adventures together — and I would choose you again a thousand times over.\n\nThank you for being my anchor, my favorite person to talk to, and the one who makes every ordinary day feel extraordinary.\n\nHere's to our journey, our love, and to creating a lifetime of beautiful memories together! 💍✨`,
+
+    justbecause: `No special occasion, no big reason — just wanted to remind you today that you are genuinely appreciated and loved.\n\nLife gets busy, but having someone as wonderful as you in my life makes everything brighter and better.\n\nHope this little surprise brings a warm smile to your face today! 🌸✨`
+  };
+
   document.getElementById('letterTitle').textContent=occ.letterTitle;
   document.getElementById('ltrClosedText').textContent='A letter from '+D.s+'…';
   document.getElementById('ltrGreet').textContent='Dear '+(D.nick||D.f)+',';
-  document.getElementById('ltrBody').textContent=D.l||'';
+  const fallbackLtr = DEFAULT_LETTERS[D.occ] || DEFAULT_LETTERS.friendship;
+  document.getElementById('ltrBody').textContent = (D.l && D.l.trim().length > 10) ? D.l : fallbackLtr;
   document.getElementById('ltrSign').textContent='— '+D.s+', with love '+occ.icon;
 
   // Pact
