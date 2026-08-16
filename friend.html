@@ -550,6 +550,18 @@
   </style>
 </head>
 
+<!-- LOADING OVERLAY -->
+<div id="s-loader" style="position:fixed;inset:0;z-index:99999;background:#FAF4ED;background-image:radial-gradient(#d8c7b5 1.4px, transparent 1.4px);background-size:24px 24px;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity 0.4s ease, visibility 0.4s ease;">
+  <div style="background:#FFFDF9;border:2.5px dashed var(--peach);border-radius:28px;padding:32px 28px;box-shadow:0 20px 50px rgba(180,130,120,.22);text-align:center;max-width:320px;">
+    <div style="font-size:3.2rem;margin-bottom:12px;animation:heartBeat 1.4s ease-in-out infinite;">🎁</div>
+    <p style="font-family:var(--font-d);font-size:1.35rem;font-weight:700;color:var(--text);margin:0 0 6px;">Opening Your Surprise...</p>
+    <p style="font-family:var(--font-l);font-size:.88rem;color:var(--sub);font-style:italic;margin:0;">Crafting a special experience ✨</p>
+  </div>
+</div>
+<style>
+@keyframes heartBeat { 0%,100%{transform:scale(1);} 50%{transform:scale(1.18);} }
+</style>
+
 <div class="prog-bar"><div class="prog-fill" id="progFill" style="width:0%"></div></div>
 <div class="sfld" id="sfld"></div>
 <div class="cfbox" id="cfBox"></div>
@@ -1468,9 +1480,10 @@ function buildScreenList(){
 function showScreen(idx){
   try {
     const loader=document.getElementById('s-loader');
-    if(loader){
-      loader.classList.remove('active');
-      loader.style.display='none';
+    if(loader && loader.style.display !== 'none'){
+      loader.style.opacity = '0';
+      loader.style.visibility = 'hidden';
+      setTimeout(() => { loader.style.display = 'none'; }, 400);
     }
     document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
     curIdx=idx;
