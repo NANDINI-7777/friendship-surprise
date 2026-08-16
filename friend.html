@@ -410,9 +410,9 @@
       position: absolute;
       top: 0; left: -8px; right: -8px;
       height: 46px;
-      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      background: linear-gradient(135deg, var(--coral), var(--orchid));
       border-radius: 12px 12px 6px 6px;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.4), inset 0 2px 0 rgba(255,255,255,0.25);
+      box-shadow: 0 8px 20px rgba(224,122,95,0.3);
       z-index: 10;
       display: flex;
       align-items: center;
@@ -422,17 +422,17 @@
     .gift-bow {
       font-size: 2.2rem;
       margin-top: -18px;
-      filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));
+      filter: drop-shadow(0 4px 8px rgba(0,0,0,0.15));
       animation: bowPulse 1.8s ease-in-out infinite;
     }
     @keyframes bowPulse { 0%,100%{transform:scale(1);} 50%{transform:scale(1.15);} }
     .gift-body {
       position: absolute;
       top: 38px; left: 0; right: 0; bottom: 0;
-      background: linear-gradient(135deg, rgba(40,30,55,0.95), rgba(25,18,38,0.95));
-      border: 2px dashed rgba(249, 202, 36, 0.5);
+      background: linear-gradient(135deg, #fffdf9, #faf0e6);
+      border: 2.5px dashed var(--peach);
       border-radius: 0 0 16px 16px;
-      box-shadow: 0 16px 36px rgba(0,0,0,0.5);
+      box-shadow: 0 16px 40px rgba(180,130,120,0.22);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -442,27 +442,28 @@
       position: absolute;
       top: 0; bottom: 0; left: 50%; width: 22px;
       transform: translateX(-50%);
-      background: linear-gradient(90deg, var(--accent), #fecd1a);
-      opacity: 0.85;
+      background: linear-gradient(90deg, var(--coral), var(--orchid));
+      opacity: 0.9;
     }
     .gift-ribbon-h {
       position: absolute;
       left: 0; right: 0; top: 50%; height: 22px;
       transform: translateY(-50%);
-      background: linear-gradient(180deg, var(--accent), #fecd1a);
-      opacity: 0.85;
+      background: linear-gradient(180deg, var(--coral), var(--orchid));
+      opacity: 0.9;
     }
     .gift-tag {
       position: absolute;
       top: 16px; right: 10px;
-      background: #faf6f0;
-      color: #3a252c;
+      background: #ffffff;
+      color: var(--text);
+      border: 1.5px dashed var(--peach);
       font-family: var(--font-h);
-      font-size: 1.05rem;
+      font-size: 1.15rem;
       font-weight: 700;
-      padding: 3px 9px;
-      border-radius: 6px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      padding: 4px 12px;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(180,130,120,0.2);
       transform: rotate(8deg);
       z-index: 5;
     }
