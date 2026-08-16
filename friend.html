@@ -794,7 +794,7 @@ function applyTheme(k){
 
 // ========= STATE =========
 let D=null,photos=[],videoBlob=null;
-let screenList=[],curIdx=0;
+let screenList=['notif','envelope','museum','dnp','swipe','letter','pact','finale'],curIdx=0;
 let dnpN=0,ltrOpened=false,pactSigned=false,photoIdx=0;
 
 const BOND_CLAUSES={
@@ -1336,7 +1336,16 @@ function showScreen(idx){
     onEnter(screenList[idx]);
   } catch(e){ console.error('showScreen error', e); }
 }
-function nextScreen(){if(curIdx<screenList.length-1)showScreen(curIdx+1);}
+function nextScreen(){
+  if(!screenList || screenList.length === 0){
+    buildScreenList();
+  }
+  if(curIdx < screenList.length - 1){
+    showScreen(curIdx + 1);
+  } else {
+    showScreen(1);
+  }
+}
 function onEnter(name){
   try {
     if(name==='finale'){launchConfetti();launchConfetti();}
@@ -1361,8 +1370,10 @@ function openNotif(){
   }
   setTimeout(()=>{
     if(card) card.style.transform='scale(1)';
-    nextScreen();
-  },80);
+    if(!screenList || screenList.length === 0) buildScreenList();
+    const nextIdx = (curIdx >= 0 && curIdx < screenList.length - 1) ? curIdx + 1 : 1;
+    showScreen(nextIdx);
+  },60);
 }
 
 function openEnvelope(){
