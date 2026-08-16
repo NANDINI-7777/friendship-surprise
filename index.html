@@ -1066,6 +1066,23 @@ function openDB(){
 async function storeVid(key,blob){
   try{const db=await openDB();return new Promise((res)=>{const tx=db.transaction('media','readwrite');tx.objectStore('media').put({id:key,data:blob});tx.oncomplete=()=>res(true);tx.onerror=()=>res(false);});}catch{return false;}
 }
+async function clearAllSurprises(){
+  try {
+    const keysToRemove = [];
+    for (let i = 0; i < localStorage.length; i++) {
+      const k = localStorage.key(i);
+      if (k && (k.startsWith('hf_') || k.includes('_ph') || k.includes('_v') || k.includes('_loc') || k.includes('recent_'))) {
+        keysToRemove.push(k);
+      }
+    }
+    keysToRemove.forEach(k => localStorage.removeItem(k));
+    const db = await openDB();
+    if (db) {
+      const tx = db.transaction('media', 'readwrite');
+      tx.objectStore('media').clear();
+    }
+  } catch(e){}
+}
 
 // ========= MEMORIES & PACT =========
 function addMem(){
@@ -1230,7 +1247,8 @@ function shareWA(){
   const msg=occ.shareMsg(nm,url);
   window.open('https://wa.me/?text='+encodeURIComponent(msg),'_blank');
 }
-function makeAnother(){
+async function makeAnother(){
+  await clearAllSurprises();
   let target=new URL(window.location.href);
   target.pathname=target.pathname.replace(/\/index(\.html)?$/, '/');
   target.hash='';
