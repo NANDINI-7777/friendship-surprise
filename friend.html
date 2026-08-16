@@ -1418,27 +1418,36 @@ function toggleMusic(){
   const icon = document.getElementById('musicIcon');
   const label = document.getElementById('musicLabel');
 
-  if(isMusicPlaying){
-    isMusicPlaying = false;
-    if(audioCtx) audioCtx.suspend();
-    if(icon) icon.textContent = '🔇';
-    if(label) label.textContent = 'Muted';
-  } else {
-    isMusicPlaying = true;
-    if(!audioCtx){
-      initCozyMusic();
+  try {
+    if(isMusicPlaying){
+      isMusicPlaying = false;
+      if(audioCtx) audioCtx.suspend();
+      if(icon) icon.textContent = '🔇';
+      if(label) label.textContent = 'Muted';
     } else {
-      audioCtx.resume();
+      isMusicPlaying = true;
+      if(!audioCtx){
+        initCozyMusic();
+      }
+      if(audioCtx){
+        audioCtx.resume();
+      }
+      if(icon) icon.textContent = '🎵';
+      if(label) label.textContent = 'Playing';
     }
-    if(icon) icon.textContent = '🎵';
-    if(label) label.textContent = 'Playing';
+  } catch(e){
+    console.warn('Toggle music error', e);
   }
 }
 
 function initCozyMusic(){
   try {
     const AudioContext = window.AudioContext || window.webkitAudioContext;
+    if(!AudioContext) return;
     audioCtx = new AudioContext();
+    if(audioCtx.state === 'suspended'){
+      audioCtx.resume();
+    }
 
     const masterGain = audioCtx.createGain();
     masterGain.gain.setValueAtTime(0.08, audioCtx.currentTime);
@@ -1453,21 +1462,24 @@ function initCozyMusic(){
 
     let step = 0;
     function playChordStep(){
-      if(!isMusicPlaying || audioCtx.state !== 'running') return;
+      if(!isMusicPlaying || !audioCtx) return;
+      if(audioCtx.state === 'suspended') audioCtx.resume();
       const notes = chords[step % chords.length];
       notes.forEach((freq) => {
-        const osc = audioCtx.createOscillator();
-        const g = audioCtx.createGain();
-        osc.type = 'sine';
-        osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
-        g.gain.setValueAtTime(0, audioCtx.currentTime);
-        g.gain.linearRampToValueAtTime(0.04, audioCtx.currentTime + 1.2);
-        g.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 4.8);
+        try {
+          const osc = audioCtx.createOscillator();
+          const g = audioCtx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+          g.gain.setValueAtTime(0, audioCtx.currentTime);
+          g.gain.linearRampToValueAtTime(0.04, audioCtx.currentTime + 1.2);
+          g.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 4.8);
 
-        osc.connect(g);
-        g.connect(masterGain);
-        osc.start();
-        osc.stop(audioCtx.currentTime + 5.0);
+          osc.connect(g);
+          g.connect(masterGain);
+          osc.start();
+          osc.stop(audioCtx.currentTime + 5.0);
+        } catch(err){}
       });
       step++;
     }
