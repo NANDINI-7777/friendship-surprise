@@ -199,13 +199,14 @@
     .sw-lbl{font-size:.85rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;font-family:var(--font-b);}
     .sw-keep{color:#059669;}.sw-forget{color:#e11d48;}
     .swipe-stack{position:relative;width:300px;height:370px;margin:0 auto;}
-    .sw-card{position:absolute;width:100%;height:100%;border-radius:24px;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:26px 20px;cursor:grab;user-select:none;will-change:transform;box-shadow:0 20px 50px rgba(180,130,120,.25);}
+    .sw-card{position:absolute;width:100%;height:100%;border-radius:24px;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:26px 20px;cursor:grab;user-select:none;will-change:transform;background:#fffdf9 !important;border:2.5px dashed var(--peach) !important;box-shadow:0 20px 50px rgba(180,130,120,.22) !important;opacity:1 !important;}
+    .sw-card::before{content:'';position:absolute;top:-10px;left:50%;transform:translateX(-50%);width:70px;height:20px;background:rgba(246,224,181,.85);border-left:2px dashed rgba(210,160,120,.4);border-right:2px dashed rgba(210,160,120,.4);z-index:5;}
     .sw-card:active{cursor:grabbing;}
-    .sw-card.photo-card{padding:8px 8px 18px;justify-content:flex-end;}
+    .sw-card.photo-card{padding:8px 8px 18px;justify-content:flex-end;background:#ffffff !important;border:2px solid #ede1d7 !important;}
     .sw-card.photo-card img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:24px;}
-    .sw-card.photo-card .sw-caption{position:relative;z-index:2;font-family:var(--font-h);font-size:1.1rem;font-weight:700;color:#ffffff;text-shadow:0 2px 8px rgba(0,0,0,.8);background:rgba(0,0,0,.5);border-radius:12px;padding:6px 14px;}
-    .sw-emoji{font-size:3.5rem;margin-bottom:14px;filter:drop-shadow(0 4px 10px rgba(0,0,0,.15));}
-    .sw-mem{font-family:var(--font-h);font-size:1.35rem;font-weight:700;line-height:1.45;color:#ffffff;text-shadow:0 2px 10px rgba(0,0,0,.4);padding:0 8px;text-align:center;}
+    .sw-card.photo-card .sw-caption{position:relative;z-index:2;font-family:var(--font-h);font-size:1.15rem;font-weight:700;color:#ffffff;text-shadow:0 2px 8px rgba(0,0,0,.8);background:rgba(0,0,0,.6);border-radius:12px;padding:6px 14px;}
+    .sw-emoji{font-size:3.5rem;margin-bottom:14px;filter:drop-shadow(0 4px 10px rgba(0,0,0,.1));}
+    .sw-mem{font-family:var(--font-h);font-size:1.45rem;font-weight:700;line-height:1.45;color:var(--text) !important;text-shadow:none !important;padding:0 8px;text-align:center;}
     .done-msg{display:none;flex-direction:column;align-items:center;gap:12px;padding:40px 20px;}
     .done-msg.show{display:flex;}
     .done-msg p{font-family:var(--font-d);font-size:1.4rem;font-style:italic;color:var(--text);font-weight:700;}
@@ -1310,7 +1311,7 @@ function buildSwipeCards(nick){
         <span class="sw-caption">${m.t}</span>
       </div>`;
     }
-    return `<div class="sw-card" data-i="${i}" data-swiped="0" style="background:${cols[i%cols.length]};z-index:${mems.length-i};transform:rotate(${(i-2)*2}deg) scale(${1-i*.03});top:${i*4}px;opacity:${i<2?1:.85};">
+    return `<div class="sw-card" data-i="${i}" data-swiped="0" style="z-index:${mems.length-i};transform:rotate(${(i-2)*2}deg) scale(${1-i*.03});top:${i*4}px;">
       <span class="sw-emoji">${m.e}</span><p class="sw-mem">"${m.t}"</p>
     </div>`;
   }).join('');
