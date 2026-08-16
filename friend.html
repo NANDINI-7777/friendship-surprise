@@ -1383,7 +1383,13 @@ function checkSwipeDone(){
     document.getElementById('swipeStack').classList.add('hidden');
     document.getElementById('swipeBtns').style.display='none';
     document.getElementById('doneMsgEl').classList.add('show');
-    document.getElementById('swipeNext').style.display='inline-block';
+    const swipeNextBtn = document.getElementById('swipeNext');
+    if (screenList.includes('audio')) {
+      swipeNextBtn.textContent = 'Listen to your mixtape →';
+    } else {
+      swipeNextBtn.textContent = 'Open your gift & letter →';
+    }
+    swipeNextBtn.style.display='inline-block';
   }
 }
 
@@ -1441,7 +1447,10 @@ function buildScreenList(){
   if(photos.length>0)screenList.push('photos');
   screenList.push('dnp','swipe');
   if(videoBlob||D.hv||D.vu)screenList.push('video');
-  screenList.push('audio');
+  const songUrl = (D && (D.su || D.vd) ? (D.su || D.vd) : '').trim();
+  if(D && D.ha && songUrl){
+    screenList.push('audio');
+  }
   screenList.push('letter','pact','finale');
 }
 function showScreen(idx){
