@@ -1318,68 +1318,58 @@ function buildScreenList(){
   screenList.push('letter','pact','finale');
 }
 function showScreen(idx){
-  const loader=document.getElementById('s-loader');
-  if(loader){
-    loader.classList.remove('active');
-    loader.style.display='none';
-  }
-  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
-  curIdx=idx;
-  const id='s-'+screenList[idx];
-  const target=document.getElementById(id);
-  if(target) target.classList.add('active');
-  window.scrollTo(0,0);
-  const pct=((idx)/(screenList.length-1))*100;
-  document.getElementById('progFill').style.width=pct+'%';
-  onEnter(screenList[idx]);
+  try {
+    const loader=document.getElementById('s-loader');
+    if(loader){
+      loader.classList.remove('active');
+      loader.style.display='none';
+    }
+    document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+    curIdx=idx;
+    const id='s-'+screenList[idx];
+    const target=document.getElementById(id);
+    if(target) target.classList.add('active');
+    window.scrollTo(0,0);
+    const pct=((idx)/(screenList.length-1))*100;
+    const progFill=document.getElementById('progFill');
+    if(progFill) progFill.style.width=pct+'%';
+    onEnter(screenList[idx]);
+  } catch(e){ console.error('showScreen error', e); }
 }
 function nextScreen(){if(curIdx<screenList.length-1)showScreen(curIdx+1);}
 function onEnter(name){
-  if(name==='finale'){launchConfetti();launchConfetti();}
-  if(name==='video'){
-    const vid=document.getElementById('vidPlayer');
-    if(vid.src){
-      vid.muted=false;
-      vid.currentTime=0;
-      vid.play().catch(err=>{
-        let btn=document.getElementById('vidPlayBtn');
-        if(!btn){
-          btn=document.createElement('button');
-          btn.id='vidPlayBtn';
-          btn.className='nav-btn';
-          btn.innerHTML='▶ Play Video 🔊';
-          btn.style.marginTop='14px';
-          btn.onclick=()=>{vid.muted=false;vid.play();btn.remove();};
-          vid.parentNode.appendChild(btn);
-        }
-      });
+  try {
+    if(name==='finale'){launchConfetti();launchConfetti();}
+    if(name==='video'){
+      const vid=document.getElementById('vidPlayer');
+      if(vid && vid.src){
+        vid.muted=false;
+        vid.currentTime=0;
+        vid.play().catch(()=>{});
+      }
     }
-  }
-  if(name==='pact'){
-    if(!pactSigned){
-      document.getElementById('signArea').classList.remove('signed');
-    }
-  }
+  } catch(e){}
 }
 
 // ========= INTERACTIONS =========
 function openNotif(){
-  startMusicAuto();
-  // Animate card tap then go to next screen
+  try { startMusicAuto(); } catch(e){}
   const card=document.getElementById('notifCard');
-  card.style.transform='scale(.95)';
-  card.style.transition='transform .15s ease';
+  if(card){
+    card.style.transform='scale(.95)';
+    card.style.transition='transform .15s ease';
+  }
   setTimeout(()=>{
-    card.style.transform='scale(1)';
-    setTimeout(()=>nextScreen(),200);
-  },150);
+    if(card) card.style.transform='scale(1)';
+    nextScreen();
+  },80);
 }
 
 function openEnvelope(){
-  startMusicAuto();
+  try { startMusicAuto(); } catch(e){}
   const env=document.getElementById('envEl');
-  env.classList.add('opened');
-  setTimeout(()=>nextScreen(),900);
+  if(env) env.classList.add('opened');
+  setTimeout(()=>nextScreen(),600);
 }
 
 function openGiftBox(){
