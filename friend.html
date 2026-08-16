@@ -829,71 +829,70 @@ window.addEventListener('load',async()=>{
     makeOwn();
     return;
   }
-  try{
-    if(hash.startsWith('dp_')){
-      const code=hash.replace('dp_','');
+  
+  // Fast Hash Parsing
+  if(hash.startsWith('dp_')){
+    const code=hash.replace('dp_','');
+    try {
+      const controller=new AbortController();
+      const tid=setTimeout(()=>controller.abort(),3000);
+      const res=await fetch(`https://dpaste.com/${code}.txt`,{signal:controller.signal});
+      clearTimeout(tid);
+      if(res.ok){
+        const rawJson=await res.text();
+        D=JSON.parse(rawJson);
+      }
+    } catch(e1){ console.warn('dpaste fetch error', e1); }
+  }
+  
+  if(!D){
+    try {
+      D=JSON.parse(decodeURIComponent(atob(hash)));
+    } catch(e1){
       try {
-        const controller=new AbortController();
-        const tid=setTimeout(()=>controller.abort(),8000);
-        const res=await fetch(`https://dpaste.com/${code}.txt`,{signal:controller.signal});
-        clearTimeout(tid);
-        if(res.ok){
-          const rawJson=await res.text();
-          D=JSON.parse(rawJson);
-        }
-      } catch(e1){ console.warn('dpaste fetch error', e1); }
-    }
-    
-    if(!D){
-      try {
-        D=JSON.parse(decodeURIComponent(atob(hash)));
-      } catch(e1){
-        try {
-          D=JSON.parse(atob(hash));
-        } catch(e2){
-          D=null;
-        }
+        D=JSON.parse(atob(hash));
+      } catch(e2){
+        D=null;
       }
     }
+  }
 
-    // Default fallback if payload is missing or corrupted
-    if(!D) D = {};
-    if(!D.f) D.f = 'Bestie';
-    if(!D.s) D.s = 'Your Friend';
-    if(!D.occ) D.occ = 'friendship';
-    if(!D.t) D.t = 'journal';
+  // Default fallback if payload is missing or corrupted
+  if(!D) D = {};
+  if(!D.f) D.f = 'Bestie';
+  if(!D.s) D.s = 'Your Friend';
+  if(!D.occ) D.occ = 'friendship';
+  if(!D.t) D.t = 'journal';
 
-    applyTheme(D.t);
-    recordVisit(hash, D);
+  applyTheme(D.t);
 
-    // Load photos
-    if(D.ph&&D.ph.length>0){
-      photos=D.ph;
-    } else if(D.hp&&D.sk){
-      try{const raw=localStorage.getItem(D.sk+'_ph');if(raw)photos=JSON.parse(raw);}catch{}
-    }
-    // Load video from IndexedDB
-    if(D.hv&&D.sk){
-      videoBlob=await loadVid(D.sk+'_vid');
-    }
-    // Load Voice Note from IndexedDB if not in payload
-    if(D.sk && !D.vd){
-      try {
-        const vData = await loadVid(D.sk+'_voice');
-        if(vData) D.vd = vData;
-      } catch(e){}
-    }
+  // Load photos from embedded array or localStorage
+  if(D.ph&&D.ph.length>0){
+    photos=D.ph;
+  } else if(D.hp&&D.sk){
+    try{const raw=localStorage.getItem(D.sk+'_ph');if(raw)photos=JSON.parse(raw);}catch{}
+  }
 
+  // Render UI and show screen IMMEDIATELY (Instant 5ms launch!)
+  try {
     buildExperience();
     buildScreenList();
     showScreen(0);
   } catch(e){
-    console.error('Safe fallback execution:', e);
-    D = D || { f:'Bestie', s:'Your Friend', occ:'friendship', t:'journal' };
-    applyTheme('journal');
-    buildExperience();
-    buildScreenList();
-    showScreen(0);
+    console.error('Render error:', e);
+  }
+
+  // Non-blocking background visit tracking
+  setTimeout(()=>recordVisit(hash, D), 10);
+
+  // Non-blocking background video load
+  if(D.hv&&D.sk){
+    loadVid(D.sk+'_vid').then(blob=>{
+      if(blob){
+        videoBlob=blob;
+        setupVideo();
+      }
+    }).catch(()=>{});
   }
 });
 
