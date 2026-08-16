@@ -553,11 +553,9 @@
         <label>Your message</label>
         <textarea id="i-letter" maxlength="700"></textarea>
         <div class="char-count"><span id="charCount">0</span>/700</div>
+      <div style="text-align:center;margin-top:16px;">
+        <button class="btn-next" id="btn5" onclick="generate()">✨ Create the Surprise →</button>
       </div>
-      <div style="text-align:center;margin-top:6px;">
-        <button class="btn-next" id="btn5" onclick="generate()" disabled>✨ Create the Surprise →</button>
-      </div>
-      <span class="skip-link" onclick="goTo(5)">Skip both — use defaults →</span>
     </div>
   </div>
 </section>
@@ -960,7 +958,6 @@ document.getElementById('i-letter').addEventListener('input',()=>{
   const v=document.getElementById('i-letter').value;
   S.letter=v;
   document.getElementById('charCount').textContent=v.length;
-  document.getElementById('btn5').disabled=v.trim().length<10;
 });
 function checkStep2(){
   S.sender=document.getElementById('i-sender').value.trim();
@@ -1201,7 +1198,9 @@ async function generate(){
   S.nick=document.getElementById('i-nick').value.trim();
   S.met=document.getElementById('i-met').value.trim();
   S.year=document.getElementById('i-year').value.trim();
-  S.letter=document.getElementById('i-letter').value.trim();
+  const typedLetter=document.getElementById('i-letter').value.trim();
+  const occObj=OCCASIONS[S.occ]||OCCASIONS.friendship;
+  S.letter=typedLetter||occObj.letterPlaceholder;
 
   const btn5=document.getElementById('btn5');
   btn5.textContent='⏳ Creating your surprise...';
