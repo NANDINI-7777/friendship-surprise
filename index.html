@@ -35,6 +35,36 @@
     /* Floating Stickers REMOVED for clean atmosphere */
     .sparkle-field{display:none;}
 
+    /* Aesthetic Static Pinned Stickers */
+    .landing-sticker {
+      position: absolute;
+      font-size: 2.2rem;
+      z-index: 5;
+      filter: drop-shadow(0 6px 14px rgba(180, 140, 130, 0.25));
+      transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+      cursor: pointer;
+      -webkit-user-select: none;
+      user-select: none;
+    }
+    .landing-sticker:hover {
+      transform: scale(1.25) rotate(10deg);
+    }
+    .st-tl { top: 12%; left: 8%; transform: rotate(-14deg); }
+    .st-tr { top: 14%; right: 8%; transform: rotate(16deg); }
+    .st-bl { bottom: 18%; left: 10%; transform: rotate(-8deg); }
+    .st-br { bottom: 20%; right: 10%; transform: rotate(12deg); }
+    .st-mid-l { top: 48%; left: 5%; transform: rotate(6deg); }
+    .st-mid-r { top: 46%; right: 5%; transform: rotate(-10deg); }
+
+    @media (max-width: 768px) {
+      .landing-sticker { font-size: 1.6rem; }
+      .st-tl { top: 6%; left: 4%; }
+      .st-tr { top: 7%; right: 4%; }
+      .st-mid-l, .st-mid-r { display: none; }
+      .st-bl { bottom: 12%; left: 4%; }
+      .st-br { bottom: 12%; right: 4%; }
+    }
+
     /* Confetti */
     .confetti-box{position:fixed;inset:0;pointer-events:none;z-index:999;overflow:hidden;}
     .cf{position:absolute;top:-20px;opacity:0;animation:cfFall linear forwards;}
@@ -228,6 +258,14 @@
 
 <!-- ======= PAGE 0: LANDING ======= -->
 <section class="page active" id="page-0">
+  <!-- Pinned Aesthetic Stickers -->
+  <div class="landing-sticker st-tl" title="Cute Bow">🎀</div>
+  <div class="landing-sticker st-tr" title="Blossom">🌸</div>
+  <div class="landing-sticker st-mid-l" title="Coffee">☕</div>
+  <div class="landing-sticker st-mid-r" title="Polaroid Camera">📷</div>
+  <div class="landing-sticker st-bl" title="Vintage Stamp">📮</div>
+  <div class="landing-sticker st-br" title="Sparkle Heart">💖</div>
+
   <div class="landing">
     <div class="badge"><span class="badge-dot"></span>Interactive Gift Experience</div>
     <div>
