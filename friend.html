@@ -963,7 +963,12 @@ window.addEventListener('load',async()=>{
     showScreen(0);
   } catch(e){
     console.error('Render error:', e);
+  } finally {
+    hideLoader();
   }
+
+  // Emergency safety timer: Never stay stuck on loader under any circumstance!
+  setTimeout(hideLoader, 600);
 
   // Non-blocking background visit tracking
   setTimeout(()=>recordVisit(hash, D), 10);
@@ -978,6 +983,17 @@ window.addEventListener('load',async()=>{
     }).catch(()=>{});
   }
 });
+
+function hideLoader(){
+  try {
+    const loader = document.getElementById('s-loader');
+    if(loader && loader.style.display !== 'none'){
+      loader.style.opacity = '0';
+      loader.style.visibility = 'hidden';
+      setTimeout(() => { loader.style.display = 'none'; }, 400);
+    }
+  } catch(e){}
+}
 
 async function getVisitorLocation(){
   try {
