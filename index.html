@@ -64,11 +64,9 @@
     .hero-title{font-family:var(--font-d);font-size:clamp(2.2rem,5.5vw,3.8rem);font-weight:700;line-height:1.16;letter-spacing:-.015em;color:#1c1917;margin:0 0 14px;padding:0 8px;}
     .shimmer{
       color:#e11d48;
-      background:rgba(254,240,138,.7);
-      padding:0 8px;border-radius:8px;border:1px dashed rgba(217,119,6,.4);
       font-style:italic;
     }
-    .hero-sub{font-size:1.05rem;color:#78716c;margin:0 auto;line-height:1.65;max-width:560px;font-family:var(--font-l);font-style:italic;}
+    .hero-sub{font-size:1.05rem;color:#57534e;margin:0 auto;line-height:1.65;max-width:560px;font-family:var(--font-l);font-style:italic;}
     .pills{display:grid;grid-template-columns:repeat(3,minmax(140px,auto));justify-content:center;align-items:center;gap:10px;max-width:560px;width:100%;margin:4px auto;}
     .pill{display:flex;align-items:center;justify-content:center;gap:8px;background:#ffffff;border:1.5px solid #e7d7ce;border-radius:50px;padding:10px 18px;font-size:.84rem;font-weight:600;color:#44403c;box-shadow:0 2px 8px rgba(0,0,0,.04);transition:all .25s ease;white-space:nowrap;}
     .pill:hover{background:#fff8f3;border-color:#f43f5e;transform:translateY(-2px);}
@@ -781,14 +779,14 @@ const OCCASIONS = {
 
 // ========= THEMES =========
 const THEMES = {
-  pink:   {p:'#e84393',pd:'#d63384',pl:'#fd79a8',s:'#f9ca24',a:'#6c5ce7',bg:'linear-gradient(135deg,#0a0612,#0f0a1a 40%,#0d1b2a)'},
-  journal:{p:'#d97706',pd:'#b45309',pl:'#fcd34d',s:'#ec4899',a:'#8b5cf6',bg:'linear-gradient(135deg,#1f1815,#2a211c 40%,#191412)'},
-  doodle: {p:'#ec4899',pd:'#be185d',pl:'#f472b6',s:'#3b82f6',a:'#10b981',bg:'linear-gradient(135deg,#1a131f,#271b30 40%,#15101a)'},
-  purple: {p:'#9b59b6',pd:'#8e44ad',pl:'#c39bd3',s:'#e056f5',a:'#74b9ff',bg:'linear-gradient(135deg,#0a0618,#130a20 40%,#1a0d2e)'},
-  sunset: {p:'#e17055',pd:'#d35400',pl:'#f0a899',s:'#f9ca24',a:'#fd79a8',bg:'linear-gradient(135deg,#1a0800,#2d1200 40%,#1a0010)'},
-  ocean:  {p:'#0984e3',pd:'#0770c2',pl:'#74b9ff',s:'#00cec9',a:'#a29bfe',bg:'linear-gradient(135deg,#000d1a,#001420 40%,#000d2a)'},
-  forest: {p:'#00b894',pd:'#00997a',pl:'#55efc4',s:'#fdcb6e',a:'#6c5ce7',bg:'linear-gradient(135deg,#001409,#001f12 40%,#000d08)'},
-  gold:   {p:'#f0b429',pd:'#d4a017',pl:'#fdcb6e',s:'#e84393',a:'#6c5ce7',bg:'linear-gradient(135deg,#0a0808,#100c00 40%,#0a0612)'},
+  journal:{p:'#e11d48',pd:'#be123c',pl:'#fb7185',s:'#f59e0b',a:'#8b5cf6',bg:'linear-gradient(135deg, #fdfbf7 0%, #faf4ed 50%, #f6ebe0 100%)'},
+  doodle: {p:'#f43f5e',pd:'#e11d48',pl:'#fda4af',s:'#3b82f6',a:'#10b981',bg:'linear-gradient(135deg, #faf4ed 0%, #fdfbf7 50%, #f5ebe0 100%)'},
+  pink:   {p:'#ec4899',pd:'#be185d',pl:'#f472b6',s:'#f59e0b',a:'#a855f7',bg:'linear-gradient(135deg, #fff5f7 0%, #fce7f3 50%, #fbcfe8 100%)'},
+  purple: {p:'#8b5cf6',pd:'#6d28d9',pl:'#c084fc',s:'#ec4899',a:'#3b82f6',bg:'linear-gradient(135deg, #f7f5ff 0%, #ede9fe 50%, #ddd6fe 100%)'},
+  sunset: {p:'#f97316',pd:'#c2410c',pl:'#fdba74',s:'#f59e0b',a:'#ec4899',bg:'linear-gradient(135deg, #fff7ed 0%, #ffedd5 50%, #fed7aa 100%)'},
+  ocean:  {p:'#0284c7',pd:'#0369a1',pl:'#38bdf8',s:'#10b981',a:'#6366f1',bg:'linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 50%, #bae6fd 100%)'},
+  forest: {p:'#059669',pd:'#047857',pl:'#34d399',s:'#f59e0b',a:'#6366f1',bg:'linear-gradient(135deg, #ecfdf5 0%, #d1fae5 50%, #a7f3d0 100%)'},
+  gold:   {p:'#d97706',pd:'#b45309',pl:'#fbbf24',s:'#e11d48',a:'#8b5cf6',bg:'linear-gradient(135deg, #fffbeb 0%, #fef3c7 50%, #fde68a 100%)'},
 };
 function applyTheme(k){
   const t=THEMES[k]||THEMES.pink;
