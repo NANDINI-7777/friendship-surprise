@@ -1070,7 +1070,15 @@ function buildExperience(){
   document.getElementById('ltrClosedText').textContent='A letter from '+D.s+'…';
   document.getElementById('ltrGreet').textContent='Dear '+(D.nick||D.f)+',';
   const fallbackLtr = DEFAULT_LETTERS[D.occ] || DEFAULT_LETTERS.friendship;
-  document.getElementById('ltrBody').textContent = (D.l && D.l.trim().length > 10) ? D.l : fallbackLtr;
+  let rawLetter = (D.l || '').trim();
+  // Strip out "Dear Friend," and "- with love" if typed inside the body string
+  let cleanedBody = rawLetter.replace(/^Dear\s+[\w\s]+,?\n*/i, '').replace(/[\-—]\s*with\s+love.*/i, '').trim();
+  
+  if (cleanedBody.length > 25) {
+    document.getElementById('ltrBody').textContent = cleanedBody;
+  } else {
+    document.getElementById('ltrBody').textContent = fallbackLtr;
+  }
   document.getElementById('ltrSign').textContent='— '+D.s+', with love '+occ.icon;
 
   // Pact
