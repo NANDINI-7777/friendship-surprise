@@ -912,6 +912,15 @@ window.addEventListener('load',async()=>{
     makeOwn();
     return;
   }
+
+  // Block explicitly deleted test links
+  const DELETED_CODES = ['2KYJVQLMZ'];
+  if(DELETED_CODES.some(c => hash.includes(c))){
+    document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+    document.getElementById('s-error').classList.add('active');
+    hideLoader();
+    return;
+  }
   
   // Fast Hash Parsing
   if(hash.startsWith('dp_')){
