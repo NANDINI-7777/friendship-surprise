@@ -804,6 +804,56 @@ const BOND_CLAUSES={
   coworkers:['Complain about work only to each other','Be each other\'s meeting survival kit','Celebrate every tiny work win','Never let office drama come between you'],
   online:['Always be there no matter the time zone','Send memes that feel personally crafted','Never let the chat go dead for too long','Video calls count as actually meeting'],
 };
+const OCCASION_CLAUSES = {
+  friendship: [
+    'Always answer texts (eventually, no ghosting allowed!)',
+    'Never judge each other\'s chaotic or questionable decisions',
+    'Emergency chocolate & vent sessions are always in effect',
+    'Keep every secret and embarrassing memory classified intel forever'
+  ],
+  valentine: [
+    'Always share the last slice of pizza and the best dessert',
+    'Never go to sleep mad — always resolve it with a warm hug',
+    'Be each other\'s biggest hype person, partner, and safe haven',
+    'Love, respect, and choose each other every single day'
+  ],
+  birthday: [
+    'Celebrate every birthday like it\'s an international holiday',
+    'Never count candles or judge late-night birthday cake cravings',
+    'Be there to cheer for every new milestone and dream',
+    'Keep making legendary memories together for years to come'
+  ],
+  graduation: [
+    'Celebrate every career win and big dream with maximum hype',
+    'Never forget where we started and how hard we worked',
+    'Be each other\'s lifetime cheerleader through every new chapter',
+    'Stay connected no matter how busy adult life gets'
+  ],
+  anniversary: [
+    'Always prioritize quality time and cozy date nights',
+    'Never take each other\'s love, laughter, or presence for granted',
+    'Support each other\'s personal growth and shared dreams',
+    'Keep the romance, fun, and deep bond alive forever'
+  ],
+  thankyou: [
+    'Always appreciate the little things and thoughtful gestures',
+    'Never hesitate to reach out whenever help or support is needed',
+    'Return every kindness with genuine gratitude and love',
+    'Protect and cherish this bond forever'
+  ],
+  missyou: [
+    'Long distance rules: late-night calls count as hanging out',
+    'Send random memes and voice notes to keep the chat alive',
+    'Plan the next reunion as soon as humanly possible',
+    'Never let distance weaken the strength of our connection'
+  ],
+  justbecause: [
+    'Surprise each other with unexpected love and kindness',
+    'Be a safe space to vent, laugh, or cry whenever needed',
+    'Always remind each other how special and valued we are',
+    'Keep creating happy, spontaneous memories together'
+  ]
+};
 const VIBE_MEMS={
   chaotic:[{e:'🔥',t:'That time you both made the most chaotic plan ever'},{e:'💀',t:'Laughing until neither of you could breathe'},{e:'🎭',t:'Every "it\'s fine" that was absolutely not fine'},{e:'🌪️',t:'The plan that somehow worked despite everything'},{e:'😤',t:'Getting in trouble for laughing at the wrong moment'}],
   wholesome:[{e:'🌸',t:'Showing up without even being asked'},{e:'🍵',t:'Long calls that fixed everything somehow'},{e:'🌙',t:'Late night talks about everything and nothing'},{e:'🤗',t:'That hug that said more than words ever could'},{e:'💛',t:'Being each other\'s hype person always'}],
@@ -1028,14 +1078,27 @@ function buildExperience(){
   document.getElementById('pactTitle').textContent=occ.pactTitle;
   document.getElementById('pactCardTitle').textContent=occ.pactCardTitle;
   document.getElementById('pactSub').textContent='Between '+D.s+' and '+D.f;
-  const defaultPactClauses=[
-    'Always answer texts (eventually)',
-    'Never judge each other\'s questionable decisions',
-    'Be each other\'s safe space from everything',
-    'Keep every secret like it\'s classified intel'
-  ];
-  const clauses=(D.pc&&D.pc.length>0)?D.pc:((D.b&&BOND_CLAUSES[D.b])?BOND_CLAUSES[D.b]:defaultPactClauses);
-  document.getElementById('clauseList').innerHTML=clauses.map((c,i)=>`<li class="clause"><span class="clause-num">${i+1}</span><p>${c}</p></li>`).join('');
+  
+  let clauses = [];
+  if (D.pc && Array.isArray(D.pc) && D.pc.filter(Boolean).length > 0) {
+    clauses = D.pc.filter(Boolean);
+  } else if (D.b && BOND_CLAUSES[D.b]) {
+    clauses = BOND_CLAUSES[D.b];
+  } else if (D.occ && OCCASION_CLAUSES[D.occ]) {
+    clauses = OCCASION_CLAUSES[D.occ];
+  } else {
+    clauses = OCCASION_CLAUSES.friendship;
+  }
+
+  const clauseListEl = document.getElementById('clauseList');
+  if(clauseListEl){
+    clauseListEl.innerHTML = clauses.map((c, i) => `
+      <li class="clause" style="display:flex;align-items:flex-start;gap:12px;padding:12px 0;border-bottom:1px dashed #ede1d7;text-align:left;">
+        <span class="clause-num" style="width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,var(--coral),var(--orchid));color:#fff;font-size:.78rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;">${i + 1}</span>
+        <p style="margin:0;font-size:.92rem;color:var(--text);line-height:1.5;font-family:var(--font-l);font-weight:600;">${c}</p>
+      </li>
+    `).join('');
+  }
   document.getElementById('signName').textContent=nick||D.f||'Bestie';
 
   // Finale
