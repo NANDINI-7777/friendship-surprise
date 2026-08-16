@@ -657,7 +657,7 @@
     <button class="sw-btn-forget" onclick="tapSwipe(-1)">✕ Forget</button>
     <button class="sw-btn-keep" onclick="tapSwipe(1)">♥ Keep</button>
   </div>
-  <button class="nav-btn" id="swipeNext" onclick="nextScreen()" style="display:none;">Read your letter →</button>
+  <button class="nav-btn" id="swipeNext" onclick="nextScreen()" style="display:none;">Listen to your mixtape →</button>
 </section>
 
 <!-- VIDEO (conditional) -->
@@ -683,7 +683,7 @@
     <div id="audioEmbedWrap" style="margin-top:12px;"></div>
   </div>
 
-  <button class="nav-btn" onclick="nextScreen()">Continue →</button>
+  <button class="nav-btn" onclick="nextScreen()">Open your gift & letter →</button>
 </section>
 
 <!-- GIFT BOX & LETTER -->
@@ -810,7 +810,7 @@ function applyTheme(k){
 
 // ========= STATE =========
 let D=null,photos=[],videoBlob=null;
-let screenList=['notif','envelope','museum','dnp','swipe','letter','pact','finale'],curIdx=0;
+let screenList=['notif','envelope','museum','dnp','swipe','audio','letter','pact','finale'],curIdx=0;
 let dnpN=0,ltrOpened=false,pactSigned=false,photoIdx=0;
 
 const BOND_CLAUSES={
