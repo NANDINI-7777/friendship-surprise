@@ -195,25 +195,25 @@
 
     /* ===== SWIPE ===== */
     .swipe-labels{display:flex;justify-content:space-between;width:300px;padding:0 12px;margin-bottom:6px;}
-    .sw-lbl{font-size:.8rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;opacity:.5;font-family:var(--font-b);}
-    .sw-keep{color:#00cec9;}.sw-forget{color:var(--primary);}
+    .sw-lbl{font-size:.85rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;font-family:var(--font-b);}
+    .sw-keep{color:#059669;}.sw-forget{color:#e11d48;}
     .swipe-stack{position:relative;width:300px;height:370px;margin:0 auto;}
-    .sw-card{position:absolute;width:100%;height:100%;border-radius:24px;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:26px 20px;cursor:grab;user-select:none;will-change:transform;box-shadow:0 20px 50px rgba(0,0,0,.25);}
+    .sw-card{position:absolute;width:100%;height:100%;border-radius:24px;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:26px 20px;cursor:grab;user-select:none;will-change:transform;box-shadow:0 20px 50px rgba(180,130,120,.25);}
     .sw-card:active{cursor:grabbing;}
     .sw-card.photo-card{padding:8px 8px 18px;justify-content:flex-end;}
     .sw-card.photo-card img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:24px;}
-    .sw-card.photo-card .sw-caption{position:relative;z-index:2;font-family:var(--font-h);font-size:1.1rem;font-weight:700;color:#fff;text-shadow:0 2px 8px rgba(0,0,0,.7);background:rgba(0,0,0,.35);border-radius:12px;padding:6px 14px;}
-    .sw-emoji{font-size:3.2rem;margin-bottom:14px;}
-    .sw-mem{font-family:var(--font-h);font-size:1.25rem;font-weight:600;line-height:1.45;color:#fff;text-shadow:0 1px 6px rgba(0,0,0,.4);}
+    .sw-card.photo-card .sw-caption{position:relative;z-index:2;font-family:var(--font-h);font-size:1.1rem;font-weight:700;color:#ffffff;text-shadow:0 2px 8px rgba(0,0,0,.8);background:rgba(0,0,0,.5);border-radius:12px;padding:6px 14px;}
+    .sw-emoji{font-size:3.5rem;margin-bottom:14px;filter:drop-shadow(0 4px 10px rgba(0,0,0,.15));}
+    .sw-mem{font-family:var(--font-h);font-size:1.35rem;font-weight:700;line-height:1.45;color:#ffffff;text-shadow:0 2px 10px rgba(0,0,0,.4);padding:0 8px;text-align:center;}
     .done-msg{display:none;flex-direction:column;align-items:center;gap:12px;padding:40px 20px;}
     .done-msg.show{display:flex;}
-    .done-msg p{font-family:var(--font-d);font-size:1.4rem;font-style:italic;color:rgba(255,255,255,.8);}
+    .done-msg p{font-family:var(--font-d);font-size:1.4rem;font-style:italic;color:var(--text);font-weight:700;}
     .swipe-stack.hidden{display:none;}
     .swipe-btns{display:flex;gap:16px;margin-top:18px;}
-    .sw-btn-forget{padding:13px 28px;border-radius:50px;background:rgba(255,255,255,.08);border:1.5px solid rgba(232,67,147,.4);color:var(--primary-light);font-size:.98rem;font-weight:700;font-family:var(--font-b);cursor:pointer;transition:all .2s;}
-    .sw-btn-forget:hover{background:rgba(232,67,147,.2);transform:translateX(-3px);}
-    .sw-btn-keep{padding:13px 28px;border-radius:50px;background:rgba(0,206,201,.15);border:1.5px solid rgba(0,206,201,.4);color:#55efc4;font-size:.98rem;font-weight:700;font-family:var(--font-b);cursor:pointer;transition:all .2s;}
-    .sw-btn-keep:hover{background:rgba(0,206,201,.25);transform:translateX(3px);}
+    .sw-btn-forget{padding:13px 32px;border-radius:50px;background:#ffffff;border:2px solid #e11d48;color:#e11d48;font-size:1rem;font-weight:700;font-family:var(--font-b);cursor:pointer;transition:all .2s;box-shadow:0 4px 14px rgba(225,29,72,.2);}
+    .sw-btn-forget:hover{background:#fff1f2;transform:translateX(-3px);}
+    .sw-btn-keep{padding:13px 32px;border-radius:50px;background:#10b981;border:2px solid #059669;color:#ffffff;font-size:1rem;font-weight:700;font-family:var(--font-b);cursor:pointer;transition:all .2s;box-shadow:0 4px 14px rgba(16,185,129,.35);}
+    .sw-btn-keep:hover{background:#059669;transform:translateX(3px);}
 
     /* ===== VIDEO ===== */
     .vid-card{background:rgba(0,0,0,.8);border:1px solid rgba(255,255,255,.15);border-radius:20px;max-width:340px;width:100%;padding:10px;margin:12px 0 14px;position:relative;}
