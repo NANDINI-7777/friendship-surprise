@@ -1735,17 +1735,7 @@ function replayAll(){
   if(photos.length>0){showPhoto(0);}
   showScreen(0);
 }
-async function makeOwn(){
-  try {
-    const keysToRemove = [];
-    for (let i = 0; i < localStorage.length; i++) {
-      const k = localStorage.key(i);
-      if (k && (k.startsWith('hf_') || k.includes('_ph') || k.includes('_v') || k.includes('_loc') || k.includes('recent_'))) {
-        keysToRemove.push(k);
-      }
-    }
-    keysToRemove.forEach(k => localStorage.removeItem(k));
-  } catch(e){}
+function makeOwn(){
   let target=new URL(window.location.href);
   target.pathname=target.pathname.replace(/\/friend(\.html)?$/, '/');
   target.hash='';

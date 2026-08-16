@@ -1247,8 +1247,7 @@ function shareWA(){
   const msg=occ.shareMsg(nm,url);
   window.open('https://wa.me/?text='+encodeURIComponent(msg),'_blank');
 }
-async function makeAnother(){
-  await clearAllSurprises();
+function makeAnother(){
   let target=new URL(window.location.href);
   target.pathname=target.pathname.replace(/\/index(\.html)?$/, '/');
   target.hash='';
