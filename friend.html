@@ -549,8 +549,8 @@
 <section class="screen active" id="s-loader">
   <div style="text-align:center;">
     <div style="font-size:3.5rem;animation:hb 1.2s ease-in-out infinite;">💌</div>
-    <p style="font-family:var(--font-d);font-size:1.4rem;font-style:italic;color:rgba(255,255,255,.9);margin:14px 0 6px;">Opening your surprise...</p>
-    <p style="font-size:.85rem;color:rgba(255,255,255,.45);margin:0;font-family:var(--font-l);font-style:italic;">Preparing magical moments ✨</p>
+    <h2 style="font-family:var(--font-d);font-size:1.6rem;font-weight:700;font-style:italic;color:var(--text);margin:14px 0 6px;">Opening your surprise...</h2>
+    <p style="font-size:.9rem;color:var(--sub);margin:0;font-family:var(--font-l);font-style:italic;">Preparing magical moments ✨</p>
   </div>
 </section>
 
@@ -1307,10 +1307,16 @@ function buildScreenList(){
   screenList.push('letter','pact','finale');
 }
 function showScreen(idx){
+  const loader=document.getElementById('s-loader');
+  if(loader){
+    loader.classList.remove('active');
+    loader.style.display='none';
+  }
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   curIdx=idx;
   const id='s-'+screenList[idx];
-  document.getElementById(id).classList.add('active');
+  const target=document.getElementById(id);
+  if(target) target.classList.add('active');
   window.scrollTo(0,0);
   const pct=((idx)/(screenList.length-1))*100;
   document.getElementById('progFill').style.width=pct+'%';
