@@ -739,7 +739,7 @@
   <h2 class="sc-title" id="finaleTitle">You're absolutely loved! 💛</h2>
   <p class="sc-sub" id="finaleSub">Your friend made this just for you.</p>
   <div class="finale-card">
-    <p class="finale-quote" id="finaleQuote"></p>
+    <p class="finale-quote" id="finaleQuote">"The moments we share become the memories we keep forever — and this is one of them." 💛</p>
   </div>
   <button class="nav-btn" style="background:linear-gradient(135deg,#f9ca24,#fdcb6e);color:#1a0e2e;box-shadow:0 12px 28px rgba(249,202,36,.3);" onclick="replayAll()">🔁 Replay the surprise</button>
   <button class="nav-btn sec" onclick="makeOwn()">💌 Make one for your friend too!</button>
@@ -1102,14 +1102,18 @@ function buildExperience(){
   document.getElementById('signName').textContent=nick||D.f||'Bestie';
 
   // Finale
+  const senderName = D.s || 'Your friend';
   document.getElementById('finaleTitle').textContent=occ.finaleTitle;
-  document.getElementById('finaleSub').textContent=D.s+' made this just for you, '+nick+'. Treasure it always.';
+  document.getElementById('finaleSub').textContent=senderName+' made this just for you, '+nick+'. Treasure it always.';
   const quotes=[
-    `"${D.s} chose to pour their heart into this — because you mean the world to them." ✨`,
+    `"${senderName} chose to pour their heart into this — because you mean the world to them." ✨`,
     `"The moments we share become the memories we keep forever — and this is one of them." 💛`,
-    `"People like ${D.s} are rare. Hold on tight." 🌸`,
+    `"People like ${senderName} are rare and special. Hold on tight to this connection." 🌸`,
   ];
-  document.getElementById('finaleQuote').textContent=quotes[Math.floor(Math.random()*quotes.length)];
+  const finaleQuoteEl = document.getElementById('finaleQuote');
+  if(finaleQuoteEl){
+    finaleQuoteEl.textContent = quotes[Math.floor(Math.random() * quotes.length)];
+  }
 }
 
 function buildMuseum(nick){
