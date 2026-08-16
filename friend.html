@@ -832,23 +832,41 @@ window.addEventListener('load',async()=>{
   try{
     if(hash.startsWith('dp_')){
       const code=hash.replace('dp_','');
-      const controller=new AbortController();
-      const tid=setTimeout(()=>controller.abort(),8000);
-      const res=await fetch(`https://dpaste.com/${code}.txt`,{signal:controller.signal});
-      clearTimeout(tid);
-      if(!res.ok)throw new Error('Cloud fetch failed');
-      const rawJson=await res.text();
-      D=JSON.parse(rawJson);
-    } else {
-      D=JSON.parse(decodeURIComponent(atob(hash)));
+      try {
+        const controller=new AbortController();
+        const tid=setTimeout(()=>controller.abort(),8000);
+        const res=await fetch(`https://dpaste.com/${code}.txt`,{signal:controller.signal});
+        clearTimeout(tid);
+        if(res.ok){
+          const rawJson=await res.text();
+          D=JSON.parse(rawJson);
+        }
+      } catch(e1){ console.warn('dpaste fetch error', e1); }
+    }
+    
+    if(!D){
+      try {
+        D=JSON.parse(decodeURIComponent(atob(hash)));
+      } catch(e1){
+        try {
+          D=JSON.parse(atob(hash));
+        } catch(e2){
+          D=null;
+        }
+      }
     }
 
-    if(!D.f||!D.s){showErr();return;}
-    applyTheme(D.t||'pink');
-    // Track visit
+    // Default fallback if payload is missing or corrupted
+    if(!D) D = {};
+    if(!D.f) D.f = 'Bestie';
+    if(!D.s) D.s = 'Your Friend';
+    if(!D.occ) D.occ = 'friendship';
+    if(!D.t) D.t = 'journal';
+
+    applyTheme(D.t);
     recordVisit(hash, D);
 
-    // Load photos: prioritize embedded array (D.ph) for cross-device support
+    // Load photos
     if(D.ph&&D.ph.length>0){
       photos=D.ph;
     } else if(D.hp&&D.sk){
@@ -858,10 +876,25 @@ window.addEventListener('load',async()=>{
     if(D.hv&&D.sk){
       videoBlob=await loadVid(D.sk+'_vid');
     }
+    // Load Voice Note from IndexedDB if not in payload
+    if(D.sk && !D.vd){
+      try {
+        const vData = await loadVid(D.sk+'_voice');
+        if(vData) D.vd = vData;
+      } catch(e){}
+    }
+
     buildExperience();
     buildScreenList();
     showScreen(0);
-  }catch(e){showErr();}
+  } catch(e){
+    console.error('Safe fallback execution:', e);
+    D = D || { f:'Bestie', s:'Your Friend', occ:'friendship', t:'journal' };
+    applyTheme('journal');
+    buildExperience();
+    buildScreenList();
+    showScreen(0);
+  }
 });
 
 async function getVisitorLocation(){

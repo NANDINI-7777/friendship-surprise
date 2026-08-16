@@ -1206,12 +1206,20 @@ async function generate(){
   btn5.textContent='⏳ Creating your surprise...';
   btn5.disabled=true;
 
+  // Save voice note to IndexedDB
+  if(S.voiceData){
+    try { await storeVid(S.sessionKey+'_voice', S.voiceData); } catch(e){}
+  }
+
+  // Include voiceData in urlData only if small enough for URL
+  const includeVoice = (S.voiceData && S.voiceData.length < 60000) ? S.voiceData : '';
+
   const urlData={
     occ:S.occ,s:S.sender,f:S.friend,nick:S.nick,met:S.met,
     y:S.year,b:S.bond,v:S.vibe,t:S.theme,bgm:S.music||'lofi',
     l:S.letter,m:S.memories,pc:S.pactClauses,
     ph:S.photos,vu:S.videoUrl||'',
-    su:S.songUrl||'',vd:S.voiceData||'',
+    su:S.songUrl||'',vd:includeVoice,
     sk:S.sessionKey,hp:S.photos.length>0,hv:(S.video!==null||Boolean(S.videoUrl)),
     ha:(Boolean(S.songUrl)||Boolean(S.voiceData))
   };
