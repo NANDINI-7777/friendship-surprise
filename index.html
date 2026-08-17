@@ -1131,8 +1131,7 @@ async function generate(){
   S.met=document.getElementById('i-met').value.trim();
   S.year=document.getElementById('i-year').value.trim();
   const typedLetter=document.getElementById('i-letter').value.trim();
-  const occObj=OCCASIONS[S.occ]||OCCASIONS.friendship;
-  S.letter=typedLetter||occObj.letterPlaceholder;
+  S.letter=typedLetter;
 
   const btn5=document.getElementById('btn5');
   btn5.textContent='⏳ Creating your surprise...';
